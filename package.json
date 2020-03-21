@@ -4,7 +4,6 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "postinstall": "bower install && grunt build",
     "start": "node index.js"
   },
   "author": "",
