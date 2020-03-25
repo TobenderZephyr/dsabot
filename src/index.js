@@ -1,3 +1,4 @@
+require('dotenv').config();
 const Discord = require('discord.js');
 const bot = new Discord.Client();
 const mysql = require('mysql'); 
@@ -129,5 +130,5 @@ bot.on('message', (message) =>{
     );}
 });
 
-bot.login('NjkwMjIxODMwMTk5NDQzNDgy.XnPXvg.w3zGhtCtjzfM2CJ-yiOvuDWT3cw');
+bot.login('process.env.BOT_TOKEN');
 
