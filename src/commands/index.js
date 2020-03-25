@@ -19,7 +19,7 @@ var db = mysql.createConnection({
   host     : 'localhost',
   port     : '3306',
   user     : 'root',
-  password : 'dsa_bot_db',
+  password : process.env.DB_PASSWORD,
   database : 'DSA'
 });
 
@@ -41,20 +41,4 @@ module.exports = async (message) =>{
     commands[command](message, args, db);
   }
   
-  /*//dice:
-    if(command === 'roll') roll(message, args);
-  
-    //create money 'account'
-    if(command == 'create') create(message, args);
-  
-    //add money
-    if(command === 'add') add(message, ags);
-  
-    //remove money
-    if(command === 'remove') remove(message, args);
-  
-    //show money
-  
-    if(command === 'show') show(message, args);
-    */
 };
