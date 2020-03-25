@@ -1,22 +1,22 @@
-#DSA Discord Bot
+# DSA Discord Bot
 
 This is a Discord Bot that can be used for the german P&PRPG "Das Schwarze Auge" or "The Dark Eye" in english. The Bot can be used to roll dice and keep track of the In-Game Money as well as the life points.
 
-#Commands
+# Commands
 
-##Dice Rolling
+## Dice Rolling
 
-###!roll *x* W/D *y*
+### !roll *x* W/D *y*
 
 This command can be used to roll dice. To use it one has to put in the number of dice to use as the *x* and the number of sides as the *y* in between those Numbers stands W/D which simply means dice(D) or the german word "Würfel" (W). Theoretically it doesn't matter what Letter is in between but for roleplay gamers this should feel natural.
 
-##Tracking System
+## Tracking System
 
-###!Create
+### !Create
 
 With this command one can create an record for tracking money and life points in a database. It is saved with the user name so currently it is not possible to have multiple records for one user. 
 
-###!add *x* GD/ST/BH/EK/LP
+### !add *x* GD/ST/BH/EK/LP
 
 This command adds to the record. For that the user has to type in the ammount *x* he wish to add and what he wants to add. The abrreviations mean:
 
@@ -26,15 +26,15 @@ BH: "Bronzeheller" (bronce ?)
 EK: "Eisenkreuzer" (iron kreutzer)
 LP: "Lebenspunkte"(life points)
 
-###!remove *x* GD/ST/BH/EK/LP
+### !remove *x* GD/ST/BH/EK/LP
 
 This commands removes from the record. It works just like the add command just that it removes the ammount *x* from the choosen.
 
-###!show
+### !show
 
 This command simply shows the record of the peron that writes the command.
 
-#How to use
+# How to use
 
 After cloning you need to install npm in the directory of the Bot. For that you need to have Node.js installed. You can install this from [here](https://nodejs.org/en/download/).
 
