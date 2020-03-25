@@ -4,6 +4,7 @@ const add = require('./add');
 const remove = require('./remove');
 const show = require('./show');
 const mysql = require('mysql'); 
+require('dotenv').config();
 const prefix = '!';
 
 const commands = {
@@ -15,11 +16,11 @@ const commands = {
 };
 
 var db = mysql.createConnection({
-  host     : 'remotemysql.com',
+  host     : 'localhost',
   port     : '3306',
-  user     : 'tftipudgeE',
-  password : 'GYKju7YA1p',
-  database : 'tftipudgeE'
+  user     : 'root',
+  password : 'dsa_bot_db',
+  database : 'DSA'
 });
 
 db.connect((err) => {
