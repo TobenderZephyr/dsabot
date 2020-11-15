@@ -3,7 +3,7 @@ module.exports = async (message, args, db) => {
 
   if(!isNaN(args[0]) && (args[1] === 'GD' || args[1] === 'ST' || args[1] === 'BH' || args[1] === 'EK')) {
     // eslint-disable-next-line no-undef
-    db.query('SELECT * FROM dsaeld WHERE userName = ' + '"' + message.author.tag + '"', function(err, row) { //the row is the user's data
+    db.query('SELECT * FROM dsageld WHERE userName = ' + '"' + message.author.tag + '"', function(err, row) { //the row is the user's data
       if(row && err) {
         message.reply('Es gab einen Fehler.');
       }
