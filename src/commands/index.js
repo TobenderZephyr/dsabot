@@ -5,6 +5,7 @@ const create = require('./create');
 const add = require('./add');
 const remove = require('./remove');
 const show = require('./show');
+const tp = require('./tp')
 const talent = require('./talent')
 const skill = require('./skill')
 const createFromFile = require('./createFromFile')
@@ -19,6 +20,7 @@ const commands = {
   remove,
   show,
   skill,
+  tp,
   talent,
 };
 var Datastore = require('nedb'),
@@ -28,8 +30,7 @@ var Datastore = require('nedb'),
   });
 
 module.exports = async (message) => {
-
-  if ((message.attachments.length > 0) && message.channel.type == 'dm') {
+  if ((message.attachments.size > 0) && message.channel.type == 'dm') {
     try {
       let response = await fetch(message.attachments.first().url)
       let data = await validateJSON(response);
