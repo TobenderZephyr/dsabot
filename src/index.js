@@ -1,9 +1,26 @@
 require('dotenv').config();
 const Discord = require('discord.js');
-const bot = new Discord.Client();
+const client = new Discord.Client();
+const SERVERID = process.env.SERVERID;
 const commandHandler = require('./commands');
 
-bot.on('message', commandHandler);
+client.on('message', commandHandler);
 
-bot.login(process.env.BOT_TOKEN);
+client.login(process.env.BOT_TOKEN);
+client.once('ready', () => {
+	console.log('Ready!');
+});
 
+
+client.on('error', err => {
+	console.error('Error\n' + err);
+	process.exit(1);
+});
+client.on('disconnect', message => {
+	console.error('User Disconnected');
+	process.exit(1);
+});
+
+client.on('reconnecting', message => {
+	console.log('User Reconnecting');
+});
