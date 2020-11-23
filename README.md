@@ -1,6 +1,11 @@
+
 # DSA Discord Bot
 
-This is a Discord Bot that can be used for the german P&PRPG "Das Schwarze Auge" or "The Dark Eye" in english. The Bot can be used to roll dice and keep track of the In-Game Money as well as the life points.
+This Project is a fork of LucaSchwan/dsa-bot.
+
+It is a Discord.js Bot written in JavaScript to support playing the German Pen & Paper RPG "Das Schwarze Auge" (The Dark Eye). The Bot has a built-in Database based on Endb and can handle character sheets from [The Dark Aid](https://www.ulisses-ebooks.de/product/212543/The-Dark-Aid-alpha).
+
+It can roll dice and even compare results with your characters attributes.
 
 # Commands
 
@@ -11,30 +16,58 @@ This is a Discord Bot that can be used for the german P&PRPG "Das Schwarze Auge"
 This command can be used to roll dice. To use it one has to put in the number of dice to use as the *x* and the number of sides as the *y* in between those Numbers stands W/D which simply means dice(D) or the german word "Würfel" (W). Theoretically it doesn't matter what Letter is in between but for roleplay gamers this should feel natural.
 
 ## Tracking System
+As this Bot should help with tracking your character, simply attach your .tda file in a private message.
 
-### !Create
+### !skill [skillname]
+Returns the current level of the desired skill.
 
-With this command one can create an record for tracking money and life points in a database. It is saved with the user name so currently it is not possible to have multiple records for one user. 
 
-### !add *x* GD/ST/BH/EK/LP
+### !talent [skillname] ([-Disadvantages/+Advantages])
+Rolls 3 dice and compares the results with your current level of character attributes including your bonus on that particular skill.
+`caution`: It does not yet make use of any benefits or disadvantages your character has (at the moment).
 
-This command adds to the record. For that the user has to type in the ammount *x* he wish to add and what he wants to add. The abrreviations mean:
-
-GD: "Golddukaten" (gold ducats)
-ST: "Silbertaler" (silver thaler)
-BH: "Bronzeheller" (bronce ?)
-EK: "Eisenkreuzer" (iron kreutzer)
-LP: "Lebenspunkte"(life points)
-
-### !remove *x* GD/ST/BH/EK/LP
-
-This commands removes from the record. It works just like the add command just that it removes the ammount *x* from the choosen.
-
-### !show
-
-This command simply shows the record of the peron that writes the command.
+ie. `!talent klettern -2`
+```
+@TobenderZephyr, Du würfelst auf das Talent Klettern.
+Deine Werte für MU, GE, KK sind 12, 13, 12. (Bonus: 6)
+Das waren deine 🎲: 1, 16, 2. Damit hast du 3/3 Proben bestanden. Dein Bonus: 3/6.
+```
+### !tp [attribute1] [attribute2] [attribute3] ([bonus] [-Disadvantage/+Advantages])
+This command also rolls 3 dice and compares their values with entered arguments.
+This one is better suited for people, who did not provide a `.tda`-File or if one of the other numerous Advantages and/or Disadvantages need to be considered aswell.
 
 # How to use
+To connect the script to a Bot, you need to create a Bot using the Discord Developer Portal. To do this you can follow a guide like [this](https://discordpy.readthedocs.io/en/latest/discord.html).
+## Docker
+Just pull the docker image and you are good to go.
+
+`docker pull tobenderzephyr/dsabot:latest`
+
+The container needs at least the following Environment variables:
+`BOT_TOKEN`: The token which you retrieve for your bot Discord Developer Portal
+`CMDPREFIX`: Instead of using `!` as your prefix, you may want to use your own.
+
+You may run the container with `docker run -rm -v ./data:/usr/src/app/data -e BOT_TOKEN=[token] -e CMDPREFIX=! tobenderzephyr/dsabot:latest`
+
+The database is stored under `./data`, so you are good to just mount this as a volume as seen in the example above.
+
+### docker-compose
+You may aswell use a simple `docker-compose.yml` and use docker-compose for easy running the app:
+```
+version: "3"
+services:
+  dsabot:
+    container_name: dsabot
+    image: TobenderZephyr/dsabot:latest
+    restart: unless-stopped
+    environment:
+      BOT_TOKEN: <YOUR TOKEN>
+      CMDPREFIX: !
+    volumes:
+      - ./data:/usr/src/app/data
+```
+
+## manual setup
 
 After cloning you need to install npm in the directory of the Bot. For that you need to have Node.js installed. You can install this from [here](https://nodejs.org/en/download/).
 
@@ -42,28 +75,11 @@ Then you need to run the following code inside of a terminal while beeing in the
 
 `npm install`
 
-As the next thing after this you should rename the .sample.env file to only .env
+Rename `.sample.env` file to `.env`
+Enter the token you received on the Discord Developer Portal into the variable BOT_TOKEN inside  `.env`.
 
-To connect the script to a Bot, you need to create a Bot using the Discord Developer Portal. To do this you can follow a guide like [this](https://discordpy.readthedocs.io/en/latest/discord.html).
 
-Then you need to take the Token of your Bot and put it in the BOT_TOKEN in the .env file.
-
-Then you need to either start a local server with mysql or connect to a remote one. For localhosting you can use [XAMPP](https://nodejs.org/en/download/) for windows or [MAMP](https://www.mamp.info/en/mac/) for Mac.
-
-Then you need to change the DB_PASSWORD in the .env file to the one you have on your database server. After that you may have to update the connection Data int the /src/index.js file if you have a different host or port. Your database should either be named 'DSA' or you need to change the name of the database in the connection in /src/index.js. In your database you need to create a table named 'dsageld' with 6 columns:
-
-|column defintion|column definition|
-|:---------------|:----------------|
-|userName        | TEXT            |
-|GD              | INT             |
-|ST              | INT             |
-|BH              | INT             |
-|LP              | INT             |
-|EK              | INT             |
-
-You could change the names of the columns and table but than you would have to change every query.
-
-When you joined your Bot to your desired channel you need to start your database server if you have a local one and than type the following command in a terminal when you are in the directory of the bot:
+When you joined your Bot to your desired channel all you need to enter inside the bots directory:
 
 `npm start`
 
