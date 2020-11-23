@@ -8,5 +8,20 @@ client.on('message', commandHandler);
 
 client.login(process.env.BOT_TOKEN);
 client.once('ready', () => {
-    console.log('Ready!');
-  });
+  console.log('Ready!');
+});
+
+
+
+client.on('error', err => {
+  console.error("Error\n" + err)
+  process.exit(1);
+});
+client.on('disconnect', message => {
+  console.error(`User Disconnected`)
+  process.exit(1);
+});
+
+client.on('reconnecting', message => {
+  console.log(`User Reconnecting`)
+});
