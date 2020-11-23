@@ -25,7 +25,7 @@ const commands = {
 };
 const Datastore = require('nedb'),
 	db = new Datastore({
-		filename: 'dsabot.db',
+		filename: 'data/dsabot.db',
 		autoload: true,
 	});
 
