@@ -11,7 +11,7 @@ const skill = require('./skill');
 const createFromFile = require('./createFromFile');
 require('dotenv').config();
 
-const prefix = process.env.PREFIX || '!';
+const cmdprefix = process.env.CMDPREFIX || '!';
 
 const commands = {
 	roll,
@@ -30,8 +30,8 @@ const Datastore = require('nedb'),
 	});
 
 module.exports = async (message) => {
-	console.log(`${new Date().toUTCString} ${message.author.tag}`)
-	if ((message.attachments.size > 0) && message.channel.type == 'dm') {
+	console.log(`${new Date().toUTCString()} ${message.author.tag} (size: ${message.attachments.size})`)
+	if ((message.attachments.size > 0) && message.channel.type == 'dm' && !message.author.bot) {
 		try {
 			const response = await fetch(message.attachments.first().url);
 			const data = await validateJSON(response);
@@ -43,8 +43,8 @@ module.exports = async (message) => {
 	}
 	else {
 
-		if (!message.content.startsWith(prefix) || message.author.bot) return;
-		const args = message.content.slice(prefix.length).split(' ');
+		if (!message.content.startsWith(cmdprefix) || message.author.bot) return;
+		const args = message.content.slice(cmdprefix.length).split(' ');
 		const command = args.shift().toLowerCase();
 		if (Object.keys(commands).includes(command)) {
 			commands[command](message, args, db);
