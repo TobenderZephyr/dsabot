@@ -9,8 +9,14 @@ const tp = require('./tp');
 const talent = require('./talent');
 const skill = require('./skill');
 const createFromFile = require('./createFromFile');
-const {kopf, zahl, heads, tails} = require('./HeadsOrTails');
-const {attribute, eigenschaft, e, a} = require('./attribute')
+const kopf = require('./HeadsOrTails');
+const zahl = require('./HeadsOrTails');
+const heads = require('./HeadsOrTails');
+const tails = require('./HeadsOrTails');
+const e = require('./attribute')
+const ew = require('./attribute')
+const a = require('./attribute')
+const attr = require('./attribute')
 require('dotenv').config();
 
 const cmdprefix = process.env.CMDPREFIX || '!';
@@ -30,8 +36,8 @@ const commands = {
 	tails,
 	e,
 	a,
-	attribute,
-	eigenschaft
+	attr,
+	ew
 };
 
 const Datastore = require('nedb'),
