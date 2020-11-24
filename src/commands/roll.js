@@ -1,18 +1,19 @@
 // eslint-disable-next-line no-unused-vars
 module.exports = async (message, args, db) => {
-	if (!args.length == 3) {
-		message.reply('Du hast die Würfel nicht korrekt angegeben.');
-	}
+	let command = args.join('')
+	let regex = /\s?[DdWw]\s?/;
+	let command = command.split(regex);
 
-	else if(!isNaN(args[0]) && !isNaN(args[2]) && args[0] > 0 && args[2] > 0) {
-		const roll = [];
-		for (let i = 0; i < args[0]; i++) {
-			const a = Math.floor(Math.random() * args[2]) + 1;
-			roll.push(a);
+	if (command.length == 2){
+		let numberOfDice = command[0];
+		let diceValues = command[1];
+		let roll = [];
+		for (let i = 0; i<numberOfDice; i++) {
+			let a = Math.floor(Math.random() * diceValues) + 1;
+			roll.push(a)
 		}
-		message.reply('Deine Würfe(' + args[0] + 'W' + args[2] + '): ' + roll.join(', ') + '.');
+		message.reply('Das waren deine 🎲 für ' + command.join('').toUpperCase() + ':' + roll.join(', ') + '.')
 	}
-	else {
-		message.reply('Du hast die Würfel nicht korrekt angegeben.');
-	}
+	else { message.reply('Leider kann ich damit nichts anfangen. Bitte noch einmal so probieren:\n'+
+	                      '!roll <Anzahl> W <Augenzahl>')}
 };
