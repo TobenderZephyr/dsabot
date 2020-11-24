@@ -7,7 +7,7 @@ module.exports = async (message, args, db) => {
 			return;
 		}
 		let level = 8;
-		let attributename;
+        let attributename;
 
 		await db.find({
 			user: message.author.tag,
@@ -24,7 +24,9 @@ module.exports = async (message, args, db) => {
 					// try to get id of short formatted attributes.
 					if (args[0].length == 2) {
 						for (const i in globals.Werte) {
-							if (globals.Werte[i].kuerzel == args[0].toUpperCase()) attributename = globals.Werte[i].id;
+							if (globals.Werte[i].kuerzel == args[0].toUpperCase()) {
+                                attributename = globals.Werte[i].id;
+                            }
 						}
 					}
 					else {
