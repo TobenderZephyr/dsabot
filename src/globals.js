@@ -4,7 +4,7 @@ const money = [{
 
 
 }];
-
+const Coin = ['Kopf','Zahl'];
 const Werte = [
 	{ id: 'mut', kuerzel: 'MU', name: 'Mut' },
 	{ id: 'klugheit', kuerzel: 'KL', name: 'Klugheit' },
@@ -85,4 +85,4 @@ const Talente = [
 	{ id: 'stoffbearbeitung', name: 'Stoffbearbeitung', values: ['KL', 'FF', 'FF'] },
 
 ];
-module.exports = { Werte, Talente };
+module.exports = { Werte, Talente, Coin };
