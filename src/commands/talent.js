@@ -24,7 +24,7 @@ module.exports = async (message, args, db) => {
 
 				for (i in globals.Talente)
 				{
-					if (globals.Talente[i].id == args[0]||globals.Talente.name==args[0]) {
+					if (globals.Talente[i].id.toLowerCase() == args[0].toLowerCase()||globals.Talente[i].name.toLowerCase()==args[0].toLowerCase()) {
 						found=true
 						talent = globals.Talente[i].id
 						break;
