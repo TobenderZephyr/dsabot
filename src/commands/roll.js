@@ -2,7 +2,7 @@
 module.exports = async (message, args, db) => {
 	let command = args.join('')
 	let regex = /\s?[DdWw]\s?/;
-	let command = command.split(regex);
+	command = command.split(regex);
 
 	if (command.length == 2){
 		let numberOfDice = command[0];
