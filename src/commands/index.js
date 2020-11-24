@@ -9,7 +9,8 @@ const tp = require('./tp');
 const talent = require('./talent');
 const skill = require('./skill');
 const createFromFile = require('./createFromFile');
-const {münze, kopf, zahl, heads, tails} = require('./HeadsOrTails')
+const {münze, kopf, zahl, heads, tails} = require('./HeadsOrTails');
+const {attribute, eigenschaft, e, a} = require('./attribute')
 require('dotenv').config();
 
 const cmdprefix = process.env.CMDPREFIX || '!';
@@ -27,7 +28,11 @@ const commands = {
 	kopf,
 	zahl,
 	heads,
-	tails
+	tails,
+	e,
+	a,
+	attribute,
+	eigenschaft
 };
 const Datastore = require('nedb'),
 	db = new Datastore({
