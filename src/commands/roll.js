@@ -13,7 +13,7 @@ module.exports = async (message, args, db) => {
 			const a = Math.floor(Math.random() * diceValues) + 1;
 			roll.push(a);
 		}
-		if(numberOfDice = 1) { let = 'n';}
+		if(numberOfDice == 1) { let = 'n';}
 		else { msg = ' ' + numberOfDice;}
 		message.reply('Das sind deine Ergebnisse für deine' + msg + ' ' + diceValues + '-seitigen 🎲: ' + roll.join(', ') + '.');
 	}
