@@ -15,18 +15,31 @@ module.exports = async (message, args, db) => {
 				}
 				const values = [];
 				const roll = [];
+				let found = false;
 				let talent
 				let bonus = 0;
 				let ok = 0;
 				let patzer = 0;
 				let crit = 0;
 
+				for (i in globals.Talente)
+				{
+					if (globals.Talente[i].id == args[0]||globals.Talente.name==args[0]) {
+						found=true
+						talent = globals.Talente[i].id
+						break;
+					}
+				}
+				if (!found) {
+					message.reply('Sorry, das Talent ist mir unbekannt.');
+					return;
+				}
 				for (i in docs[0].character.skills) {
-					if (docs[0].character.skills[i].id == talent) {bonus = docs[0].character.skills[i].level;}
+					if (docs[0].character.skills[i].id == talent) {bonus = docs[0].character.skills[i].level; found = true;}
 				}
 
 				const bonus_orig = bonus;
-				const result = globals.Talente.find(talent => talent.id === args[0]);
+				const result = globals.Talente.find(t => t.id === talent);
 
 				for (i in result.values) {
 					const kuerzel = globals.Werte.find(wert => wert.kuerzel === result.values[i]);
