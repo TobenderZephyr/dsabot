@@ -13,10 +13,10 @@ const kopf = require('./HeadsOrTails');
 const zahl = require('./HeadsOrTails');
 const heads = require('./HeadsOrTails');
 const tails = require('./HeadsOrTails');
-const e = require('./attribute')
-const ew = require('./attribute')
-const a = require('./attribute')
-const attr = require('./attribute')
+const e = require('./attribute');
+const ew = require('./attribute');
+const a = require('./attribute');
+const attr = require('./attribute');
 require('dotenv').config();
 
 const cmdprefix = process.env.CMDPREFIX || '!';
@@ -37,7 +37,7 @@ const commands = {
 	e,
 	a,
 	attr,
-	ew
+	ew,
 };
 
 const Datastore = require('nedb'),
@@ -47,7 +47,7 @@ const Datastore = require('nedb'),
 	});
 
 module.exports = async (message) => {
-	console.log(`${new Date().toUTCString()} ${message.author.tag} (size: ${message.attachments.size})`)
+	console.log(`${new Date().toUTCString()} ${message.author.tag} (size: ${message.attachments.size})`);
 	if ((message.attachments.size > 0) && message.channel.type == 'dm' && !message.author.bot) {
 		try {
 			const response = await fetch(message.attachments.first().url);

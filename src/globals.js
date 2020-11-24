@@ -4,7 +4,7 @@ const money = [{
 
 
 }];
-const Coin = ['Kopf','Zahl'];
+const Coin = ['Kopf', 'Zahl'];
 const Werte = [
 	{ id: 'mut', kuerzel: 'MU', name: 'Mut' },
 	{ id: 'klugheit', kuerzel: 'KL', name: 'Klugheit' },
