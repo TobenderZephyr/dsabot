@@ -9,7 +9,7 @@ const tp = require('./tp');
 const talent = require('./talent');
 const skill = require('./skill');
 const createFromFile = require('./createFromFile');
-const {münze, kopf, zahl, heads, tails} = require('./HeadsOrTails');
+const {kopf, zahl, heads, tails} = require('./HeadsOrTails');
 const {attribute, eigenschaft, e, a} = require('./attribute')
 require('dotenv').config();
 
@@ -24,7 +24,6 @@ const commands = {
 	skill,
 	tp,
 	talent,
-	münze,
 	kopf,
 	zahl,
 	heads,
@@ -34,6 +33,7 @@ const commands = {
 	attribute,
 	eigenschaft
 };
+
 const Datastore = require('nedb'),
 	db = new Datastore({
 		filename: 'data/dsabot.db',
