@@ -1,13 +1,26 @@
 const globals = require('../globals')
+const Discord = require('discord.js')
 module.exports = async (message, args, db) => {
-
-    let reply = 'Diese Talentnamen kenne ich:\n```';
-
-    for (let i in globals.Talente) {
-        reply += '+ ' +globals.Talente[i].id + '\n'
+    let fields = []
+    for (let i in globals.TalentKategorien) {
+        let ability = []
+        for (let a in globals.Talente) {
+            if(globals.Talente[a].categoryid == i) {
+                ability.push(globals.Talente[a].id)
+            }
+        }
+        ability.sort()
+        fields.push(ability)
     }
-    reply += '```'
+
+    const Embed = new Discord.MessageEmbed()
+	.setColor('#0099ff')
+	.setTitle('Talentübersicht')
+	.setDescription('Das sind die Talente, die ich kenne:')
+    for (let i in fields) {
+        Embed.addField(globals.TalentKategorien[i], fields[i].join('\n'), true)
+    }
     message.author.send(
-        reply
+        Embed
         );
 };
