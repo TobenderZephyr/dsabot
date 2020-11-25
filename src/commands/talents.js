@@ -6,7 +6,7 @@ module.exports = async (message, args, db) => {
         let ability = []
         for (let a in globals.Talente) {
             if(globals.Talente[a].categoryid == i) {
-                ability.push(globals.Talente[a].id)
+                ability.push(globals.Talente[a].id.charAt(0).toUpperCase() + globals.Talente[a].id.slice(1));
             }
         }
         ability.sort()
@@ -18,7 +18,7 @@ module.exports = async (message, args, db) => {
 	.setTitle('Talentübersicht')
 	.setDescription('Das sind die Talente, die ich kenne:')
     for (let i in fields) {
-        Embed.addField(globals.TalentKategorien[i], fields[i].join('\n'), true)
+        Embed.addField(globals.TalentKategorien[i], fields[i].join('\n'), true);
     }
     message.author.send(
         Embed
