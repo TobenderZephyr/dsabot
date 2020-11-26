@@ -1,4 +1,5 @@
 const globals = require('../globals');
+const Random = require('random')
 module.exports = async (message, args, db) => {
 	try {
 		db.find({
@@ -6,7 +7,14 @@ module.exports = async (message, args, db) => {
 		}, function(err, docs) {
 			if (!docs.length > 0) {message.reply('Sorry, Für dich habe ich keinen Eintrag 😥');}
 			else {
-				if (!args) message.reply('Sorry, du musst mir schon etwas zum prüfen geben.');
+				
+				if (!args){ 
+					message.reply('Sorry, du musst mir schon etwas zum prüfen geben.');
+					return
+				}
+
+				Random.use(message.author.tag)
+				
 				if (args[1]) {
 					var erschwernis = parseInt(args[1]);
 				}
@@ -15,15 +23,31 @@ module.exports = async (message, args, db) => {
 				}
 				const values = [];
 				const roll = [];
+				let found = false;
+				let talent
 				let bonus = 0;
 				let ok = 0;
 				let patzer = 0;
 				let crit = 0;
-				for (i in docs[0].character.skills) {
-					if (docs[0].character.skills[i].id == args[0]) bonus = docs[0].character.skills[i].level;
+
+				for (i in globals.Talente)
+				{
+					if (globals.Talente[i].id.toLowerCase() == args[0].toLowerCase()||globals.Talente[i].name.toLowerCase()==args[0].toLowerCase()) {
+						found=true
+						talent = globals.Talente[i].id
+						break;
+					}
 				}
+				if (!found) {
+					message.reply('Sorry, das Talent ist mir unbekannt.');
+					return;
+				}
+				for (i in docs[0].character.skills) {
+					if (docs[0].character.skills[i].id == talent) {bonus = docs[0].character.skills[i].level; found = true;}
+				}
+
 				const bonus_orig = bonus;
-				const result = globals.Talente.find(talent => talent.id === args[0]);
+				const result = globals.Talente.find(t => t.id === talent);
 
 				for (i in result.values) {
 					const kuerzel = globals.Werte.find(wert => wert.kuerzel === result.values[i]);
@@ -31,13 +55,9 @@ module.exports = async (message, args, db) => {
 						if (docs[0].character.attributes[val].id == kuerzel.id) values.push(docs[0].character.attributes[val].level);
 					}
 				}
-				// message.reply(`Du musst mit ${result.values.join(", ")} würfeln. Die werte sind: ${values.join(", ")}. Dein Bonus auf ${result.name}: ${bonus}`)
 
-
-				// roll dice.
 				for (i = 1; i <= 3; i++) {
-					const a = Math.floor(Math.random() * 20 + 1);
-					roll.push(a);
+					roll.push(Random.int(1,20));
 				}
 				// compare results
 				for (i = 0; i < 3; i++) {
@@ -73,8 +93,6 @@ module.exports = async (message, args, db) => {
             'Das waren deine 🎲: ' + roll.join(', ') + '. Damit hast du ' + ok + '/3 Proben bestanden. Dein Bonus: ' + bonus + '/' + bonus_orig + '.',
 					);
 				}
-
-
 			}
 		});
 	}

@@ -1,18 +1,26 @@
 // eslint-disable-next-line no-unused-vars
+const globals = require('../globals')
+const Random = require('random')
 module.exports = async (message, args, db) => {
-	if (!args.length == 3) {
-		message.reply('Du hast die Würfel nicht korrekt angegeben.');
-	}
+	Random.use(message.author.tag)
+	let msg;
+	let arguments = args.join('');
+	arguments = arguments.split(globals.DiceRegex);
 
-	else if(!isNaN(args[0]) && !isNaN(args[2]) && args[0] > 0 && args[2] > 0) {
+	if (arguments.length == 2) {
+		let numberOfDice = arguments[0];
+		const diceValues = arguments[1];
 		const roll = [];
-		for (let i = 0; i < args[0]; i++) {
-			const a = Math.floor(Math.random() * args[2]) + 1;
+		for (let i = 0; i < numberOfDice; i++) {
+			const a = Random.int(1,diceValues);
 			roll.push(a);
 		}
-		message.reply('Deine Würfe(' + args[0] + 'W' + args[2] + '): ' + roll.join(', ') + '.');
+		if(numberOfDice == 1) { msg = 'n';}
+		else { msg = ' ' + numberOfDice;}
+		message.reply('Das sind deine Ergebnisse für deine' + msg + ' ' + diceValues + '-seitigen 🎲: ' + roll.join(', ') + '.');
 	}
 	else {
-		message.reply('Du hast die Würfel nicht korrekt angegeben.');
+		message.reply('Leider kann ich damit nichts anfangen. Bitte noch einmal so probieren:\n' +
+	                      '!roll <Anzahl> W <Augenzahl>');
 	}
 };

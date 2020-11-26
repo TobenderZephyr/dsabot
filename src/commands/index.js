@@ -9,6 +9,14 @@ const tp = require('./tp');
 const talent = require('./talent');
 const skill = require('./skill');
 const createFromFile = require('./createFromFile');
+const kopf = require('./HeadsOrTails');
+const zahl = require('./HeadsOrTails');
+const heads = require('./HeadsOrTails');
+const tails = require('./HeadsOrTails');
+const ep = require('./attribute');
+const ap = require('./attribute');
+const help = require('./help')
+const talents = require('./talents')
 require('dotenv').config();
 
 const cmdprefix = process.env.CMDPREFIX || '!';
@@ -22,7 +30,16 @@ const commands = {
 	skill,
 	tp,
 	talent,
+	talents,
+	kopf,
+	zahl,
+	heads,
+	tails,
+	ep,
+	ap,
+	help
 };
+
 const Datastore = require('nedb'),
 	db = new Datastore({
 		filename: 'data/dsabot.db',
@@ -30,7 +47,7 @@ const Datastore = require('nedb'),
 	});
 
 module.exports = async (message) => {
-	console.log(`${new Date().toUTCString()} ${message.author.tag} (size: ${message.attachments.size})`)
+	console.log(`${new Date().toUTCString()} ${message.author.tag} (size: ${message.attachments.size})`);
 	if ((message.attachments.size > 0) && message.channel.type == 'dm' && !message.author.bot) {
 		try {
 			const response = await fetch(message.attachments.first().url);

@@ -1,10 +1,12 @@
 // eslint-disable-next-line no-unused-vars
+const Random = require('random')
 module.exports = async (message, args, db) => {
 	if (args.length < 3) {
 		message.reply('Der Talentwurf funktioniert so:\n' +
         '!tp Eigenschaftswert1 Eigenschaftswert2 Eigenschaftswert3 [Bonus] [Erschwernis]');
 	}
 	else {
+		Random.use(message.author.tag)
 		const roll = [];
 		if (args[3]) {
 			var bonus = parseInt(args[3]);
@@ -19,8 +21,7 @@ module.exports = async (message, args, db) => {
 			erschwernis = 0;
 		}
 		for (i = 1; i <= 3; i++) {
-			const a = Math.floor(Math.random() * 20 + 1);
-			roll.push(a);
+			roll.push(Random.int(1,20));
 		}
 		let ok = 0;
 		let patzer = 0;
