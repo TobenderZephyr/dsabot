@@ -9,18 +9,34 @@ It can roll dice and even compare results with your characters attributes.
 
 # Commands
 
+### !help
+Send the user a simple command list with things to do.
+
 ## Dice Rolling
 
 ### !roll *x* W/D *y*
 
 This command can be used to roll dice. To use it one has to put in the number of dice to use as the *x* and the number of sides as the *y* in between those Numbers stands W/D which simply means dice(D) or the german word "Würfel" (W). Theoretically it doesn't matter what Letter is in between but for roleplay gamers this should feel natural.
 
+### !heads
+Throw a coin. Heads or Tails?
+
 ## Tracking System
 As this Bot should help with tracking your character, simply attach your .tda file in a private message.
 
+### !ep / !ap [Value]
+Probes on your attributes.
+Rolls 1 dice and compares it with the given value. Rolls another, if returned number is 1 or 20.
+
+ie `!ep 11`
+
+### !ep / !ap [Attribute or Abbreviation]
+Does the same as above. You don't need to remember your stats (if you sent a `tdc`-File, that is.)
+
+ie. `!ep Mut` or `!ep KK`
+
 ### !skill [skillname]
 Returns the current level of the desired skill.
-
 
 ### !talent [skillname] ([-Disadvantages/+Advantages])
 Rolls 3 dice and compares the results with your current level of character attributes including your bonus on that particular skill.
@@ -32,9 +48,21 @@ ie. `!talent klettern -2`
 Deine Werte für MU, GE, KK sind 12, 13, 12. (Bonus: 6)
 Das waren deine 🎲: 1, 16, 2. Damit hast du 3/3 Proben bestanden. Dein Bonus: 3/6.
 ```
+### !talents
+Sends the User a list of talents to use on the `!talent` command.
+
 ### !tp [attribute1] [attribute2] [attribute3] ([bonus] [-Disadvantage/+Advantages])
 This command also rolls 3 dice and compares their values with entered arguments.
 This one is better suited for people, who did not provide a `.tda`-File or if one of the other numerous Advantages and/or Disadvantages need to be considered aswell.
+
+Roll with no Bonus:
+`!tp 11 11 13`
+
+Roll with a set Bonus of 4:
+`!tp 12 10 11 4`
+
+Roll with a Benefit given by the GM:
+`!tp 11 10 11 0 +2`
 
 # How to use
 To connect the script to a Bot, you need to create a Bot using the Discord Developer Portal. To do this you can follow a guide like [this](https://discordpy.readthedocs.io/en/latest/discord.html).
