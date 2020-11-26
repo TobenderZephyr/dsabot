@@ -1,38 +1,60 @@
-const cmdprefix = process.env.CMDPREFIX || '!';
+const Discord = require('discord.js')
+const cmdprefix = process.env.CMDPREFIX||'!'
 module.exports = async (message, args, db) => {
-	message.author.send(
-        'Hinweis: Werte in Klammern müssen nicht angegeben werden.\n\n' +
-        cmdprefix + '**kopf**\n' +
-        ' Wirf eine Münze. Kopf oder Zahl?\n\n' +
+        const Help = new Discord.MessageEmbed()
+                .setColor('#0099ff')
+                .setTitle('Hilfe')
+                .setDescription('Das sind die Befehle, die du verwenden kannst.\n' +
+                        'Werte in Klammern müssen nicht mit angegeben werden.')
 
-        cmdprefix + '**roll __Anzahl__ W __Augenzahl__**\n' +
-        ' Lass die Würfel rollen. Benötigt wird die Anzahl sowie die Augenzahl auf den Würfeln.\n\n' +
-
-        cmdprefix + '**ep/ap __Eigenschaftswert__** \n' +
-        ' Du machst eine Eigenschaftsprobe / Attributprobe.\n' +
-        ' Du würfelst mit einem W20 auf deinen Eigenschaftswert.\n' +
-        ' Bei einer 1 oder 20 wird der Bestätigungswurf ausgeführt.\n\n' +
-
-        cmdprefix + '**tp/fp __Eigenschaftswert1__ __Eigenschaftswert2__ __Eigenschaftswert3__ (Fertigkeitswert) (+Eleichtert/-Erschwert)**\n' +
-        ' Du machst eine Fertigkeitsprobe.\n' + 
-        ' Es werden drei Würfel auf deine Eigenschaftswerte geworfen. Hast du Boni auf dein Talent und/oder ' +
-        'ist der Wurf erleichtert oder erschwert, wird dies in die Berechnung einbezogen.\n\n' +
-
-        cmdprefix + '**talents**\\n' +
-        ' Du erhälst eine Liste mit den Talentnamen, die du für ' + cmdprefix + 'talent/skill nutzen kannst.\n\n' +
-
-        'Folgendes funktioniert, wenn du mir deine `tda`-Datei zuschickst:\n\n' +
-
-        cmdprefix + '**ep/ap Klugheit** oder ' + cmdprefix + '**ep/ap FF**\n\n' +
-
-        cmdprefix + '**talent __Talentname__ (+Erleichtert/-Erschwert)**\n' + 
-        ' siehe ' + cmdprefix + 'tp.\n' +
-        ' Hier musst du allerdings deine Eigenschaftswerte und Fertigkeitswerte nicht raussuchen.\n\n' +
-
-        cmdprefix + '**skill __Talentname__**\n' +
-        ' Ich sage dir deinen Fertigkeitswert im Talent.\n\n' +
-
-        cmdprefix + '**remove**\n' +
-        ' Ich lösche deinen Charakter aus meiner Datenbank. Schicke mir gerne erneut eine `tda`-Datei zu.'
-        );
+                .addFields({
+                                name: cmdprefix + 'kopf',
+                                value: 'Wirf eine Münze. Kopf oder Zahl?',
+                                inline: false
+                        }, {
+                                name: cmdprefix + 'roll <Anzahl> W <Augenzahl>',
+                                value: 'Lass die Würfel rollen. Benötigt wird die Anzahl sowie die Augenzahl auf den Würfeln.',
+                                inline: false
+                        }, {
+                                name: cmdprefix + 'ep/ap <Eigenschaftswert>',
+                                value: ' Du machst eine Eigenschaftsprobe / Attributprobe.\n' +
+                                        ' Du würfelst mit einem W20 auf deinen Eigenschaftswert.\n' +
+                                        ' Bei einer 1 oder 20 wird der Bestätigungswurf ausgeführt.',
+                                inline: false
+                        }, {
+                                name: cmdprefix + 'tp/fp <Eigenschaftswert1> <Eigenschaftswert2> <Eigenschaftswert3> (Fertigkeitswert) (+Erleichtert/-Erschwert)',
+                                value: ' Du machst eine Fertigkeitsprobe.\n' +
+                                        ' Es werden drei Würfel auf deine Eigenschaftswerte geworfen. Hast du Boni auf dein Talent und/oder' +
+                                        ' ist der Wurf erleichtert oder erschwert, wird dies in die Berechnung einbezogen.',
+                                inline: false
+                        }, {
+                                name: cmdprefix + 'talents',
+                                value: ' Du erhälst eine Liste mit den Talentnamen, die du für ' +
+                                        cmdprefix + 'talent/' + cmdprefix + 'skill nutzen kannst.',
+                                inline: false
+                        }, {
+                                name: '\u200B',
+                                value: '\u200B'
+                        }, {
+                                name: '\u200B',
+                                value: 'Wenn du mir deine .tdc Datei zusendest, kannst du folgendes nutzen:'
+                        }, {
+                                name: cmdprefix + 'ep/ap [Klugheit] oder ' + cmdprefix + 'ep/ap [FF]',
+                                value: 'siehe oben. Du brauchst deinen Wert nicht wissen.',
+                                inline: false
+                        }, {
+                                name: cmdprefix + 'talent <Talentname> (+Erleichtert/-Erschwert)',
+                                value: 'siehe tp. Allerdings musst du deine Werte nicht wissen.',
+                                inline: false
+                        }, {
+                                name: cmdprefix + 'skill <Talentname>',
+                                value: 'Zeigt dir deinen Fertigkeitswert im jeweiligen Talent.',
+                                inline: false
+                        }, {
+                                name: cmdprefix + 'remove',
+                                value: 'Löscht deinen Charakter aus der Datenbank. Sinnvoll, wenn du mir eine neue zusenden möchtest.',
+                                inline: false
+                        }
+                )
+        message.author.send(Help);
 };

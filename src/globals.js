@@ -1,9 +1,8 @@
 const money = [{
 	'GD': 'Golddukaten',
 	'ST': 'Silbertaler',
-
-
 }];
+const DiceRegex = /\s?[DdWw]\s?/;
 const Coin = ['Kopf', 'Zahl'];
 const Werte = [
 	{ id: 'mut', kuerzel: 'MU', name: 'Mut' },
@@ -86,4 +85,4 @@ const Talente = [
 	{ id: 'stoffbearbeitung', name: 'Stoffbearbeitung', values: ['KL', 'FF', 'FF'], categoryid: 4  },
 
 ];
-module.exports = { Werte, Talente, Coin, TalentKategorien };
+module.exports = { Werte, Talente, Coin, TalentKategorien, DiceRegex };

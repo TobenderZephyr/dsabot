@@ -1,4 +1,5 @@
 const globals = require('../globals');
+const Random = require('random')
 module.exports = async (message, args, db) => {
 	try {
 		// user calls without arguments.
@@ -40,11 +41,12 @@ module.exports = async (message, args, db) => {
 			else {
 				level = args[0];
 			}
+			Random.use(message.author.tag)
 			const countOccurrences = (arr, val) => arr.reduce((a, v) => (v === val ? a + 1 : a), 0);
 			const dice = [];
-			dice.push(Math.floor(Math.random() * 20) + 1);
+			dice.push(Random.int(1,20));
 			if (dice[0] == 1 || dice[0] == 20) {
-				dice.push(Math.floor(Math.random() * 20) + 1);
+				dice.push(Random.int(1,20));
 			}
 			// handle crits
 			if (countOccurrences(dice, 1) == 2) {
