@@ -1,3 +1,10 @@
+const Discord = require('discord.js')
+const Datastore = require('nedb'),
+	db = new Datastore({
+		filename: 'data/dsabot.db',
+		autoload: true,
+	});
+const MessageEmbed = new Discord.MessageEmbed()
 const money = [{
 	'GD': 'Golddukaten',
 	'ST': 'Silbertaler',
@@ -85,4 +92,24 @@ const Talente = [
 	{ id: 'stoffbearbeitung', name: 'Stoffbearbeitung', values: ['KL', 'FF', 'FF'], categoryid: 4  },
 
 ];
-module.exports = { Werte, Talente, Coin, TalentKategorien, DiceRegex };
+
+const Replies = [
+	{ id: 'NOENTRY',  			string: 'Sorry, für dich habe ich leider keinen Eintrag 😥' },
+	{ id: 'ERROR', 				string: 'Irgendwas ist schief gelaufen. 🤔'},
+	{ id: 'WRONG_ARGUMENTS',	string: 'Die Angaben sind fehlerhaft. Nutze !help um zu erfahren, wie es richtig geht.'},
+	{ id: 'TITLE_CRIT_FAILURE',	string: 'Patzer!' },
+	{ id: 'TITLE_CRIT_SUCCESS', string: 'Kritischer Erfolg!'},
+	{ id: 'TITLE_SUCCESS', 		string: 'Bestanden'},
+	{ id: 'TITLE_FAILURE', 		string: 'Nicht bestanden'},
+	{ id: 'MSG_CRIT_FAILURE', 	string: 'Du hast aber auch Pech 😥'},
+	{ id: 'MSG_CRIT_SUCCESS', 	string: '🎈✨🥳'},
+	{ id: 'MSG_SUCCESS', 		string: ''},
+	{ id: 'MSG_FAILURE', 		string: ''},
+	{ id: 'TOO_FEW_ARGS', 		string: 'Du hast zu wenig Angaben gemacht. Probiere es einmal so:\n'},
+	{ id: 'SAVED_DATA', 		string: 'Ich habe deine Daten abgespeichert.'},
+	{ id: 'DELETED_DATA',		string: 'Ich habe deine Daten entfernt.'},
+	{ id: 'TALENT_UNKNOWN', 	string: 'Das Talent ist mir unbekannt.'}
+]
+
+module.exports = { Werte, Talente, Coin, TalentKategorien, DiceRegex, Discord, MessageEmbed, db, Replies };
+

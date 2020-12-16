@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "lint": "eslint src/",
-    "start": "node src/index.js"
+    "lint": "eslint commands/",
+    "start": "node index.js"
   },
   "author": "",
   "license": "ISC",

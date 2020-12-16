@@ -18,15 +18,17 @@ Send the user a simple command list with things to do.
 
 This command can be used to roll dice. To use it one has to put in the number of dice to use as the *x* and the number of sides as the *y* in between those Numbers stands W/D which simply means dice(D) or the german word "Würfel" (W). Theoretically it doesn't matter what Letter is in between but for roleplay gamers this should feel natural.
 
+ie `!roll 3w20`
+
 ### !heads
 Throw a coin. Heads or Tails?
 
 ## Tracking System
-As this Bot should help with tracking your character, simply attach your .tda file in a private message.
+As this Bot should help with tracking your character, simply attach your .tdc file in a private message.
 
 ### !ep / !ap [Value]
 Probes on your attributes.
-Rolls 1 dice and compares it with the given value. Rolls another, if returned number is 1 or 20.
+Rolls 1 die and compares it with the given value. Rolls another, if returned number is 1 or 20.
 
 ie `!ep 11`
 
@@ -39,7 +41,7 @@ ie. `!ep Mut` or `!ep KK`
 Returns the current level of the desired skill.
 
 ### !talent [skillname] ([-Disadvantages/+Advantages])
-Rolls 3 dice and compares the results with your current level of character attributes including your bonus on that particular skill.
+Rolls 3 dice and compares the results of each with your current level of character attributes including your bonus on that particular skill.
 `caution`: It does not yet make use of any benefits or disadvantages your character has (at the moment).
 
 ie. `!talent klettern -2`
@@ -53,7 +55,7 @@ Sends the User a list of talents to use on the `!talent` command.
 
 ### !tp [attribute1] [attribute2] [attribute3] ([bonus] [-Disadvantage/+Advantages])
 This command also rolls 3 dice and compares their values with entered arguments.
-This one is better suited for people, who did not provide a `.tda`-File or if one of the other numerous Advantages and/or Disadvantages need to be considered aswell.
+This one is better suited for people, who did not provide a `.tdc`-File or if one of the other numerous Advantages and/or Disadvantages need to be taken into account.
 
 Roll with no Bonus:
 `!tp 11 11 13`
