@@ -132,8 +132,7 @@ const Replies = [
 	{ id: 'COMBAT_FAIL',		string: 'Leider gelingt dir kein Treffer.'},
 	{ id: 'COMBAT_SUCCESS',		string:	'Dir gelingt ein Treffer.'},
 	{ id: 'COMBAT_DOUBLEDAMAGE',string: 'Zusätzlich wird sämtlicher Schaden verdoppelt!\n'},
-  { id: 'TALENT_UNKNOWN', 	string: 'Das Talent ist mir unbekannt.'}
-]
+	{ id: 'TALENT_UNKNOWN', 	string: 'Das Talent ist mir unbekannt.'}
 ];
 const Declination = ['dem', 'der', 'dem', ''] // Maskulinum, Feminimum, Neutrum, None
 const Articles = ['Der','Die','Das','']
