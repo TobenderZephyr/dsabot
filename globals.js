@@ -93,6 +93,23 @@ const Talente = [
 
 ];
 
+const CombatTechniques = [
+	{ id: 'armbrueste', 		name: 'Armbrüste', 			Leiteigenschaft: ['FF'] },
+	{ id: 'boegen', 			name: 'Bögen', 				Leiteigenschaft: ['FF']},
+	{ id: 'dolche', 			name: 'Dolche', 			Leiteigenschaft: ['GE']},
+	{ id: 'fechtwaffen', 		name: 'Fechtwaffen', 		Leiteigenschaft: ['GE']},
+	{ id: 'hiebwaffen', 		name: 'Hiebwaffen', 		Leiteigenschaft: ['KK']},
+	{ id: 'kettenwaffen', 		name: 'Kettenwaffen', 		Leiteigenschaft: ['KK']},
+	{ id: 'lanzen', 			name: 'Lanzen', 			Leiteigenschaft: ['KK']},
+	{ id: 'raufen', 			name: 'Raufen', 			Leiteigenschaft: ['GE', 'KK']},
+	{ id: 'schilde', 			name: 'Schilde', 			Leiteigenschaft: ['KK']},
+	{ id: 'schwerter', 			name: 'Schwerter', 			Leiteigenschaft: ['GE', 'KK']},
+	{ id: 'stangenwaffen', 		name: 'Stangenwaffen', 		Leiteigenschaft: ['GE', 'KK']},
+	{ id: 'wurfwaffen', 		name: 'Wurfwaffen', 		Leiteigenschaft: ['FF']},
+	{ id: 'zweihandhiebwaffen', name: 'Zweihandhiebwaffen', Leiteigenschaft: ['KK']},
+	{ id: 'zweihandschwerter', 	name: 'Zweihandschwerter', 	Leiteigenschaft: ['KK']}
+];
+
 const Replies = [
 	{ id: 'NOENTRY',  			string: 'Sorry, für dich habe ich leider keinen Eintrag 😥' },
 	{ id: 'ERROR', 				string: 'Irgendwas ist schief gelaufen. 🤔'},
@@ -108,8 +125,108 @@ const Replies = [
 	{ id: 'TOO_FEW_ARGS', 		string: 'Du hast zu wenig Angaben gemacht. Probiere es einmal so:\n'},
 	{ id: 'SAVED_DATA', 		string: 'Ich habe deine Daten abgespeichert.'},
 	{ id: 'DELETED_DATA',		string: 'Ich habe deine Daten entfernt.'},
-	{ id: 'TALENT_UNKNOWN', 	string: 'Das Talent ist mir unbekannt.'}
+	{ id: 'TALENT_UNKNOWN', 	string: 'Das Talent ist mir unbekannt.'},
+	{ id: 'NO_SUCH_WEAPON',		string: 'Diese Waffe gibt es nicht.'},
+	{ id: 'COMBAT_CRIT_SUCCESS',string: 'Kritischer Treffer 🎈✨🥳! Der Verteidigungswert deines Gegners halbiert sich!\n'},
+	{ id: 'COMBAT_CRIT_FAIL',	string: 'Patzer 😪! Du erleidest 1W6+2 Schadenspunkte.'},
+	{ id: 'COMBAT_FAIL',		string: 'Leider gelingt dir kein Treffer.'},
+	{ id: 'COMBAT_SUCCESS',		string:	'Dir gelingt ein Treffer.'},
+	{ id: 'COMBAT_DOUBLEDAMAGE',string: 'Zusätzlich wird sämtlicher Schaden verdoppelt!\n'},
+  { id: 'TALENT_UNKNOWN', 	string: 'Das Talent ist mir unbekannt.'}
 ]
+];
+const Declination = ['dem', 'der', 'dem', ''] // Maskulinum, Feminimum, Neutrum, None
+const Articles = ['Der','Die','Das','']
+const MeleeWeapons = [
+	{ id: 'basiliskenzunge', 	name: 'Basiliskenzunge', 	dice: 1, diemodificator: 2, at_mod: 0, pa_mod: -1,	article: 1, combattechnique: 'dolche' },
+	{ id: 'dolch',				name: 'Dolch', 				dice: 1, diemodificator: 1, at_mod: 0, pa_mod: 0,	article: 0, combattechnique: 'dolche' },
+	{ id: 'drachenzahn', 		name: 'Drachenzahn', 		dice: 1, diemodificator: 2, at_mod: 0, pa_mod: -1,	article: 0, combattechnique: 'dolche' },
+	{ id: 'linkhand',			name: 'Linkhand', 			dice: 1, diemodificator: 1, at_mod: 0, pa_mod: 0,	article: 3, combattechnique: 'dolche' },
+	{ id: 'messer',				name: 'Messer',				dice: 1, diemodificator: 1, at_mod: 0, pa_mod: -2,	article: 2, combattechnique: 'dolche' },
+	{ id: 'schwererdolch',		name: 'Schwerer Dolch', 	dice: 1, diemodificator: 2, at_mod: 0, pa_mod: -1,	article: 0, combattechnique: 'dolche' },
+	{ id: 'waqqif', 			name: 'Waqqif', 			dice: 1, diemodificator: 2, at_mod: 0, pa_mod: -1,	article: 0, combattechnique: 'dolche' },
 
-module.exports = { Werte, Talente, Coin, TalentKategorien, DiceRegex, Discord, MessageEmbed, db, Replies };
+	{ id: 'florett', 			name: 'Florett',			dice: 1, diemodificator: 2, at_mod: 1, pa_mod: 0,	article: 2, combattechnique: 'fechtwaffen' },
+	{ id: 'rapier', 			name: 'Rapier',				dice: 1, diemodificator: 3, at_mod: 1, pa_mod: 0,	article: 2, combattechnique: 'fechtwaffen' },
+	{ id: 'wolfsmesser', 		name: 'Wolfsmesser',		dice: 1, diemodificator: 3, at_mod: 1, pa_mod: 1,	article: 2, combattechnique: 'fechtwaffen' },
+
+	{ id: 'brabakbengel',		name: 'Brabakbengel',		dice: 1, diemodificator: 5, at_mod: -1, pa_mod: -2,	article: 0, combattechnique: 'hiebwaffen'},
+	{ id: 'keule',				name: 'Keule',				dice: 1, diemodificator: 3, at_mod: 0, pa_mod: -1,	article: 1, combattechnique: 'hiebwaffen'},
+	{ id: 'knueppel',			name: 'Knüppel',			dice: 1, diemodificator: 2, at_mod: 0, pa_mod: -2,	article: 0, combattechnique: 'hiebwaffen'},
+	{ id: 'lindwurmschlaeger', 	name: 'Lindwurmschläger',	dice: 1, diemodificator: 4, at_mod: 0, pa_mod: -1,	article: 0, combattechnique: 'hiebwaffen'},
+	{ id: 'magierstabkurz', 	name: 'Magierstab: Kurz',	dice: 1, diemodificator: 1, at_mod: 0, pa_mod: -1,	article: 0, combattechnique: 'hiebwaffen'},
+	{ id: 'magierstabmittel',	name: 'Magierstab: Lang',	dice: 1, diemodificator: 2, at_mod: 0, pa_mod: -1,	article: 0, combattechnique: 'hiebwaffen'},
+	{ id: 'molokdeschnaja',		name: 'Molokdeschnaja',		dice: 1, diemodificator: 4, at_mod: 0, pa_mod: -1,	article: 3, combattechnique: 'hiebwaffen'},
+	{ id: 'orknase',			name: 'Orknase',			dice: 1, diemodificator: 5, at_mod: -1, pa_mod: -2,	article: 1, combattechnique: 'hiebwaffen'},
+	{ id: 'rabenschnabel',		name: 'Rabenschnabel',		dice: 1, diemodificator: 4, at_mod: 0, pa_mod: -1,	article: 3, combattechnique: 'hiebwaffen'},
+	{ id: 'sonnenzepter',		name: 'Sonnenzepter',		dice: 1, diemodificator: 3, at_mod: 0, pa_mod: -1,	article: 2, combattechnique: 'hiebwaffen'},
+	{ id: 'streitaxt',			name: 'Streitaxt',			dice: 1, diemodificator: 4, at_mod: 0, pa_mod: -1,	article: 1, combattechnique: 'hiebwaffen'},
+	{ id: 'streitkolben',		name: 'Streitkolben',		dice: 1, diemodificator: 4, at_mod: 0, pa_mod: -1,	article: 0, combattechnique: 'hiebwaffen'},
+
+	{ id: 'morgenstern',		name: 'Morgenstern',		dice: 1, diemodificator: 5, at_mod: 0, pa_mod: null,	article: 0, combattechnique: 'kettenwaffen' },
+
+	{ id: 'kriegslanze',		name: 'Kriegslanze',		dice: 2, diemodificator: 6, at_mod: null, pa_mod: null,	article: 1, combattechnique: 'lanzen' },
+
+	{ id: 'schlagring',			name: 'Schlagring',			dice: 1, diemodificator: 1, at_mod: 0, pa_mod: 0,	article: 0, combattechnique: 'raufen'},
+	{ id: 'waffenlos',			name: 'Waffenlos',			dice: 1, diemodificator: 0, at_mod: 0, pa_mod: 0,	article: 3, combattechnique: 'raufen'},
+
+	{ id: 'holzschild',			name: 'Holzschild',			dice: 1, diemodificator: 0, at_mod: -4, pa_mod: 1,	article: 2, combattechnique: 'schilde'},
+	{ id: 'lederschild',		name: 'Lederschild',		dice: 1, diemodificator: 0, at_mod: -4, pa_mod: 1,	article: 2, combattechnique: 'schilde'},
+	{ id: 'thorwalerschild',	name: 'Thorwalerschild',	dice: 1, diemodificator: 1, at_mod: -5, pa_mod: 2,	article: 2, combattechnique: 'schilde'},
+	{ id: 'grossschild',		name: 'Großschild',			dice: 1, diemodificator: 1, at_mod: -6, pa_mod: 3,	article: 2, combattechnique: 'schilde'},
+
+	{ id: 'barbarenschwert',	name: 'Barbarenschwert',	dice: 1, diemodificator: 5, at_mod: -1, pa_mod: -1,	article: 2, combattechnique: 'schwerter'},
+	{ id: 'entermesser', 		name: 'Entermesser',		dice: 1, diemodificator: 3, at_mod: 0, pa_mod: -1,	article: 2, combattechnique: 'schwerter'},
+	{ id: 'haumesser',			name: 'Haumesser',			dice: 1, diemodificator: 3, at_mod: 0, pa_mod: -1,	article: 2, combattechnique: 'schwerter'},
+	{ id: 'khunchomer',			name: 'Khunchomer',			dice: 1, diemodificator: 4, at_mod: 0, pa_mod: 0,	article: 3, combattechnique: 'schwerter'},
+	{ id: 'kurzschwert',		name: 'Kurzschwert',		dice: 1, diemodificator: 2, at_mod: 0, pa_mod: 0,	article: 2, combattechnique: 'schwerter'},
+	{ id: 'langschwert',		name: 'Langschwert',		dice: 1, diemodificator: 4, at_mod: 0, pa_mod: 0,	article: 2, combattechnique: 'schwerter'},
+	{ id: 'robbentoeter',		name: 'Robbentöter',		dice: 1, diemodificator: 4, at_mod: 0, pa_mod: 0,	article: 0, combattechnique: 'schwerter'},
+	{ id: 'saebel',				name: 'Säbel',				dice: 1, diemodificator: 3, at_mod: 0, pa_mod: 0,	article: 0, combattechnique: 'schwerter'},
+	{ id: 'sklaventod',			name: 'Sklaventod',			dice: 1, diemodificator: 4, at_mod: 0, pa_mod: 0,	article: 3, combattechnique: 'schwerter'},
+
+	{ id: 'dreizack',			name: 'Dreizack',			dice: 1, diemodificator: 4, at_mod: 0, pa_mod: 0,	article: 1, combattechnique: 'stangenwaffen'},
+	{ id: 'dschadra',			name: 'Dschadra',			dice: 1, diemodificator: 5, at_mod: 0, pa_mod: -1,	article: 3, combattechnique: 'stangenwaffen'},
+	{ id: 'hellebarde',			name: 'Hellebarde',			dice: 1, diemodificator: 6, at_mod: 0, pa_mod: -1,	article: 1, combattechnique: 'stangenwaffen'},
+	{ id: 'holzspeer',			name: 'Holzspeer',			dice: 1, diemodificator: 2, at_mod: 0, pa_mod: 0,	article: 0, combattechnique: 'stangenwaffen'},
+	{ id: 'kampfstab',			name: 'Kampfstab',			dice: 1, diemodificator: 2, at_mod: 0, pa_mod: 2,	article: 0, combattechnique: 'stangenwaffen'},
+	{ id: 'magierstablang',		name: 'Magierstab: Lang',	dice: 1, diemodificator: 2, at_mod: -1, pa_mod: 2,	article: 0, combattechnique: 'stangenwaffen'},
+	{ id: 'speer',				name: 'Speer',				dice: 1, diemodificator: 4, at_mod: 0, pa_mod: 0,	article: 0, combattechnique: 'stangenwaffen'},
+	{ id: 'zweililien',			name: 'Zweililien',			dice: 1, diemodificator: 4, at_mod: 0, pa_mod: 0,	article: 3, combattechnique: 'stangenwaffen'},
+
+	{ id: 'anderthalbhaender',	name: 'Anderthalbhänder',	dice: 1, diemodificator: 6, at_mod: 0, pa_mod: 0,	article: 0, combattechnique: 'zweihandschwerter'},
+	{ id: 'doppelkhunchomer',	name: 'Doppelkhunchomer',	dice: 2, diemodificator: 3, at_mod: 0, pa_mod: -2,	article: 3, combattechnique: 'zweihandschwerter'},
+	{ id: 'grossersklaventod',	name: 'Großer Sklaventod', 	dice: 2, diemodificator: 6, at_mod: 0, pa_mod: -2,	article: 3, combattechnique: 'zweihandschwerter'},
+	{ id: 'tuzakmesser',		name: 'Tuzakmesser',		dice: 2, diemodificator: 2, at_mod: 0, pa_mod: -1,	article: 2, combattechnique: 'zweihandschwerter'},
+	{ id: 'rondrakamm',			name: 'Rondrakamm',			dice: 2, diemodificator: 6, at_mod: 0, pa_mod: 0,	article: 3, combattechnique: 'zweihandschwerter'},
+	{ id: 'zweihaender',		name: 'Zweihänder',			dice: 2, diemodificator: 4, at_mod: 0, pa_mod: -3,	article: 0, combattechnique: 'zweihandschwerter'},
+
+	{ id: 'barbarenstreitaxt',	name: 'Barbarenstreitaxt',	dice: 2, diemodificator: 4, at_mod: 0, pa_mod: -4,	article: 1, combattechnique: 'zweihandhiebwaffen'},
+	{ id: 'felsspalter',		name: 'Felsspalter',		dice: 2, diemodificator: 2, at_mod: 0, pa_mod: -2,	article: 0, combattechnique: 'zweihandhiebwaffen'},
+	{ id: 'kriegshammer',		name: 'Kriegshammer',		dice: 2, diemodificator: 3, at_mod: 0, pa_mod: -3,	article: 0, combattechnique: 'zweihandhiebwaffen'},
+	{ id: 'zwergenschlaegel', 	name: 'Zwergenschlägel',	dice: 1, diemodificator: 6, at_mod: 0, pa_mod: -1,	article: 0, combattechnique: 'zweihandhiebwaffen'},
+]
+const RangedWeapons = [
+
+	{ id: 'balestrina',			name: 'Balestrina',			dice: 1, diemodificator: 4,	article: 1, combattechnique: 'armbrueste'},
+	{ id: 'eisenwalder',		name: 'Eisenwalder',		dice: 1, diemodificator: 4,	article: 0, combattechnique: 'armbrueste'},
+	{ id: 'handarmbrust',		name: 'Handarmbrust',		dice: 1, diemodificator: 3,	article: 1, combattechnique: 'armbrueste'},
+	{ id: 'leichtearmbrust',	name: 'Leichte Armbrust',	dice: 1, diemodificator: 6,	article: 1, combattechnique: 'armbrueste'},
+	{ id: 'schwerearmbrust',	name: 'Schwere Armbrust',	dice: 2, diemodificator: 6,	article: 1, combattechnique: 'armbrueste'},
+	{ id: 'elfenbogen',			name: 'Elfenbogen',			dice: 1, diemodificator: 5,	article: 0, combattechnique: 'boegen'},
+	{ id: 'kompositbogen',		name: 'Kompositbogen',		dice: 1, diemodificator: 7,	article: 0, combattechnique: 'boegen'},
+	{ id: 'kurzbogen',			name: 'kurzbogen',			dice: 1, diemodificator: 4,	article: 0, combattechnique: 'boegen'},
+	{ id: 'langbogen',			name: 'langbogen',			dice: 1, diemodificator: 8,	article: 0, combattechnique: 'boegen'},
+	{ id: 'schneidzahn',		name: 'Schneidzahn',		dice: 1, diemodificator: 4,	article: 3, combattechnique: 'wurfwaffen'},
+	{ id: 'stein',				name: 'Stein',				dice: 1, diemodificator: 0,	article: 0, combattechnique: 'wurfwaffen'},
+	{ id: 'wurfbeil',			name: 'Wurfbeil',			dice: 1, diemodificator: 3,	article: 0, combattechnique: 'wurfwaffen'},
+	{ id: 'wurfdolch',			name: 'Wurfdolch',			dice: 1, diemodificator: 1,	article: 0, combattechnique: 'wurfwaffen'},
+	{ id: 'wurfkeule',			name: 'Wurfkeule',			dice: 1, diemodificator: 2,	article: 1, combattechnique: 'wurfwaffen'},
+	{ id: 'wurfring',			name: 'Wurfring',			dice: 1, diemodificator: 1,	article: 0, combattechnique: 'wurfwaffen'},
+	{ id: 'wurfscheibe',		name: 'Wurfscheibe',		dice: 1, diemodificator: 1,	article: 1, combattechnique: 'wurfwaffen'},
+	{ id: 'wurfstern',			name: 'Wurfstern',			dice: 1, diemodificator: 1,	article: 0, combattechnique: 'wurfwaffen'},
+	{ id: 'wurfspeer',			name: 'Wurfspeer',			dice: 1, diemodificator: 2,	article: 0, combattechnique: 'wurfwaffen'}
+]
+const Weapons = MeleeWeapons.concat(RangedWeapons)
+module.exports = { Werte, Talente, Coin, TalentKategorien, DiceRegex, Discord, MessageEmbed, db, Replies, MeleeWeapons, Weapons, RangedWeapons, CombatTechniques, Articles, Declination };
 

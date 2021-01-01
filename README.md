@@ -40,6 +40,14 @@ ie. `!ep Mut` or `!ep KK`
 ### !skill [skillname]
 Returns the current level of the desired skill.
 
+### !attack [weaponname] ([-Disadvantages/+Advantages])
+Rolls an attack by using the weapon based skillset. Calculates your combat technique value and takes into account for `MU` or `FF`.
+`caution`: It does not yet make use of any benefits or disadvantages your character possesses.
+
+ie. `!attack Waqqif`
+
+For a list of weapons to chose from, use `!weapons`
+
 ### !talent [skillname] ([-Disadvantages/+Advantages])
 Rolls 3 dice and compares the results of each with your current level of character attributes including your bonus on that particular skill.
 `caution`: It does not yet make use of any benefits or disadvantages your character has (at the moment).

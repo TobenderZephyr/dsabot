@@ -72,11 +72,6 @@ async function CreateFromFile(message, data) {
 				if (!docs.length > 0) {
 					db.insert({
 						user: message.author.tag,
-						gold: 0,
-						silver: 0,
-						bronce: 0,
-						iron: 0,
-						hp: 0,
 						character: data,
 					}, function(err, docs) {
 						message.reply(globals.Replies.find(r => r.id === 'SAVED_DATA').string);
