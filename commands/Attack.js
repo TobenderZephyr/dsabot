@@ -77,8 +77,25 @@ module.exports = {
 						if(CriticalHit) 	{ Reply += globals.Replies.find(reply => reply.id === 'COMBAT_CRIT_SUCCESS').string }
 						if(DoubleDamage) 	{ Reply += globals.Replies.find(reply => reply.id === 'COMBAT_DOUBLEDAMAGE').string }
 						if(!CriticalHit) 	{ Reply += globals.Replies.find(reply => reply.id === 'COMBAT_SUCCESS').string }
+
+						// adding 1 to damage for every point above weapon's "Leiteigenschaft"
+						// applies only to Melee Weapons.
+						let AttackBonus = 0
+						if (globals.MeleeWeapons.find(MeleeWeapon => MeleeWeapon.id === Weapon.id))
+						{
+							if(Weapon.DmgThreshold) {
+								CombatTechnique.Leiteigenschaft.forEach(LEKuerzel => {
+									let Leiteigenschaft = globals.Werte.find(attribute => attribute.kuerzel === LEKuerzel)
+									let DmgThreshold = Weapon.DmgThreshold
+									let AttributeValue = Player.attributes.find(attribute => attribute.id === Leiteigenschaft.id).level
+									if(DmgThreshold<AttributeValue) {
+										AttackBonus += Math.floor(AttributeValue - DmgThreshold)
+									}
+								})
+							}
+						}
 						const DieModificator  = Weapon.diemodificator
-						let Damage = DieModificator
+						let Damage = DieModificator + AttackBonus
 						let DamageDice = []
 						for (let i = 0; i < Weapon.dice; i++) {
 							DamageDice.push(Random.int(1,6))
