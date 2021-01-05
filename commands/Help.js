@@ -55,6 +55,10 @@ module.exports = {
 				name: cmdprefix + 'attack [Waffe] (+Erleichtert/-Erschwert)',
 				value: 'Du greifst mit deiner Waffe an. Es wird gleichzeitig Schaden gewürfelt, sofern dein Gegner den Schaden nicht abwenden kann.',
 				inline: false,
+			}, {
+				name: cmdprefix + 'parry [Waffe] (+Erleichtert/-Erschwert)',
+				value: 'Du versuchst, mit der gewählten Waffe zu parieren.',
+				inline: false,
 			},{
 				name: cmdprefix + 'ep/ap [Klugheit] oder ' + cmdprefix + 'ep/ap [FF]',
 				value: 'siehe oben. Du brauchst deinen Wert nicht wissen.',
