@@ -86,6 +86,7 @@ const Talente = [
 	{ id: 'lebensmittel', name: 'Lebensmittelbearbeitung', values: ['IN', 'FF', 'FF'], categoryid: 4  },
 	{ id: 'lederbearbeitung', name: 'Lederbearbeitung', values: ['FF', 'GE', 'KO'], categoryid: 4  },
 	{ id: 'malenzeichnen', name: 'Malen & Zeichnen', values: ['IN', 'FF', 'FF'], categoryid: 4  },
+	{ id: 'metallbearbeitung', name: 'Metallbearbeitung', values: ['FF','KO','KK'], categoryid: 4 },
 	{ id: 'musizieren', name: 'Musizieren', values: ['CH', 'FF', 'KO'], categoryid: 4  },
 	{ id: 'schloesserknacken', name: 'Schlösserknacken', values: ['IN', 'FF', 'FF'], categoryid: 4  },
 	{ id: 'steinbearbeitung', name: 'Steinbearbeitung', values: ['FF', 'FF', 'KK'], categoryid: 4  },
@@ -222,5 +223,13 @@ const RangedWeapons = [
 	{ id: 'wurfspeer',			name: 'Wurfspeer',			dice: 1, diemodificator: 2,	article: 0, combattechnique: 'wurfwaffen'}
 ]
 const Weapons = MeleeWeapons.concat(RangedWeapons)
+
+const Advantages = [
+	{}
+]
+const Disadvantages = [
+	{}
+]
+
 module.exports = { Werte, Talente, Coin, TalentKategorien, DiceRegex, Discord, MessageEmbed, db, Replies, MeleeWeapons, Weapons, RangedWeapons, CombatTechniques, Articles, Declination };
 
