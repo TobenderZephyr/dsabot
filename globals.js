@@ -1,15 +1,15 @@
-const Discord = require('discord.js')
+const Discord = require('discord.js');
 const Datastore = require('nedb'),
 	db = new Datastore({
 		filename: 'data/dsabot.db',
 		autoload: true,
 	});
-const MessageEmbed = new Discord.MessageEmbed()
+const MessageEmbed = new Discord.MessageEmbed();
 const money = [{
 	'GD': 'Golddukaten',
 	'ST': 'Silbertaler',
 }];
-const DiceRegex = /\s?[DdWw]\s?/;
+const DiceRegex = /\s?[DdWw]\s?|(?=\-|\+)/;
 const Coin = ['Kopf', 'Zahl'];
 const Werte = [
 	{ id: 'mut', kuerzel: 'MU', name: 'Mut' },
@@ -21,7 +21,7 @@ const Werte = [
 	{ id: 'konstitution', kuerzel: 'KO', name: 'Konstitution' },
 	{ id: 'koerperkraft', kuerzel: 'KK', name: 'Körperkraft' },
 ];
-const TalentKategorien = ['Körpertalente','Gesellschaftstalente','Naturtalente','Wissenstalente','Handwerkstalente']
+const TalentKategorien = ['Körpertalente','Gesellschaftstalente','Naturtalente','Wissenstalente','Handwerkstalente'];
 
 const Talente = [
 	// Körpertalente
@@ -140,8 +140,8 @@ const Replies = [
 	{ id: 'PARRY_SUCCESS',		string: 'Parade erfolgreich.'},
 	{ id: 'PARRY_CRIT_SUCCESS',	string: 'Kritischer Erfolg! Du darfst einen Passierschlag ausführen!'}
 ];
-const Declination = ['dem', 'der', 'dem', ''] // Maskulinum, Feminimum, Neutrum, None
-const Articles = ['Der','Die','Das','']
+const Declination = ['dem', 'der', 'dem', '']; // Maskulinum, Feminimum, Neutrum, None
+const Articles = ['Der','Die','Das',''];
 const MeleeWeapons = [
 	{ id: 'basiliskenzunge', 	name: 'Basiliskenzunge', 	dice: 1, diemodificator: 2, at_mod: 0, pa_mod: -1,	article: 1, DmgThreshold: 14, combattechnique: 'dolche' },
 	{ id: 'dolch',				name: 'Dolch', 				dice: 1, diemodificator: 1, at_mod: 0, pa_mod: 0,	article: 0, DmgThreshold: 14, combattechnique: 'dolche' },
@@ -200,7 +200,7 @@ const MeleeWeapons = [
 	{ id: 'felsspalter',		name: 'Felsspalter',		dice: 2, diemodificator: 2, at_mod: 0, pa_mod: -2,	article: 0, DmgThreshold: 13, combattechnique: 'zweihandhiebwaffen'},
 	{ id: 'kriegshammer',		name: 'Kriegshammer',		dice: 2, diemodificator: 3, at_mod: 0, pa_mod: -3,	article: 0, DmgThreshold: 13, combattechnique: 'zweihandhiebwaffen'},
 	{ id: 'zwergenschlaegel', 	name: 'Zwergenschlägel',	dice: 1, diemodificator: 6, at_mod: 0, pa_mod: -1,	article: 0, DmgThreshold: 13, combattechnique: 'zweihandhiebwaffen'},
-]
+];
 const RangedWeapons = [
 
 	{ id: 'balestrina',			name: 'Balestrina',			dice: 1, diemodificator: 4,	article: 1, combattechnique: 'armbrueste'},
@@ -221,15 +221,14 @@ const RangedWeapons = [
 	{ id: 'wurfscheibe',		name: 'Wurfscheibe',		dice: 1, diemodificator: 1,	article: 1, combattechnique: 'wurfwaffen'},
 	{ id: 'wurfstern',			name: 'Wurfstern',			dice: 1, diemodificator: 1,	article: 0, combattechnique: 'wurfwaffen'},
 	{ id: 'wurfspeer',			name: 'Wurfspeer',			dice: 1, diemodificator: 2,	article: 0, combattechnique: 'wurfwaffen'}
-]
-const Weapons = MeleeWeapons.concat(RangedWeapons)
+];
+const Weapons = MeleeWeapons.concat(RangedWeapons);
 
 const Advantages = [
 	{}
-]
+];
 const Disadvantages = [
 	{}
-]
-
+];
 module.exports = { Werte, Talente, Coin, TalentKategorien, DiceRegex, Discord, MessageEmbed, db, Replies, MeleeWeapons, Weapons, RangedWeapons, CombatTechniques, Articles, Declination };
 

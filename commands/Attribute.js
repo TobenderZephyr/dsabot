@@ -1,6 +1,6 @@
 const globals = require('../globals');
 const Random = require('random');
-const db = globals.db
+const db = globals.db;
 
 module.exports = {
 	name: 'attribute',
@@ -19,7 +19,7 @@ module.exports = {
 
 				// user calls with text. need to gather info from database
 				if (isNaN(args[0])) {
-					if (!docs.length > 0) {
+					if (docs.length === 0) {
 						message.reply(globals.Replies.find(r => r.id === 'NOENTRY').string);
 						return;
 					}

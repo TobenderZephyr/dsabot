@@ -1,8 +1,8 @@
 require('dotenv').config();
-const fs = require('fs')
+const fs = require('fs');
 const fetch = require('node-fetch');
-const globals = require('./globals')
-const db = globals.db
+const globals = require('./globals');
+const db = globals.db;
 const cmdprefix = process.env.CMDPREFIX || '!';
 const Discord = require('discord.js');
 const client = new Discord.Client();
@@ -28,7 +28,7 @@ async function commandHandler(message) {
 			const data = await validateJSON(response);
 			if (data) await CreateFromFile(message, data);
 		} catch (e) {
-			console.log(e)
+			console.log(e);
 			return message.reply(globals.Replies.find(x => x.id === 'ERROR').string);
 		}
 	} else {
@@ -50,10 +50,10 @@ async function commandHandler(message) {
 				command.exec(message, args);
 			}
 		} catch (e) {
-			message.reply(globals.Replies.find(x => x.id === 'ERROR').string)
+			message.reply(globals.Replies.find(x => x.id === 'ERROR').string);
 		}
 	}
-};
+}
 
 function validateJSON(body) {
 	try {
@@ -69,7 +69,7 @@ async function CreateFromFile(message, data) {
 			db.find({
 				user: message.author.tag,
 			}, function(err, docs) {
-				if (!docs.length > 0) {
+				if (docs.length === 0) {
 					db.insert({
 						user: message.author.tag,
 						character: data,

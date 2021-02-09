@@ -1,5 +1,5 @@
-const globals = require('../globals')
-const db = globals.db
+const globals = require('../globals');
+const db = globals.db;
 module.exports = {
 	name: 'remove',
 	description: 'Löscht deinen Charakter aus der Datenbank. Sinnvoll, wenn du mir eine neue zusenden möchtest.',

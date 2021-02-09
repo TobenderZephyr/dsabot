@@ -1,7 +1,7 @@
 const globals = require('../globals');
 const Random = require('random');
-const Discord = require('discord.js')
-const db = globals.db
+const Discord = require('discord.js');
+const db = globals.db;
 
 module.exports = {
 	name: 'talent',
@@ -16,11 +16,11 @@ module.exports = {
 			db.find({
 				user: message.author.tag,
 			}, function(err, docs) {
-				if (!docs.length > 0) {
+				if (docs.length === 0) {
 					return message.reply(globals.Replies.find(r => r.id === 'NOENTRY').string);
 				}
 				if(!isNaN(args[0])) {
-					return message.reply(globals.Replies.find(x => x.id === 'WRONG_ARGUMENTS').string)
+					return message.reply(globals.Replies.find(x => x.id === 'WRONG_ARGUMENTS').string);
 				}
 				else {
 					Random.use(message.author.tag);
@@ -32,7 +32,7 @@ module.exports = {
 					let ok = 0;
 					let patzer = 0;
 					let crit = 0;
-					let erschwernis = 0
+					let erschwernis = 0;
 
 					if (args[1]) {
 						 erschwernis = parseInt(args[1]);
@@ -59,12 +59,12 @@ module.exports = {
 					const bonus_orig = bonus;
 					const result = globals.Talente.find(t => t.id === talent);
 
-					for (i in result.values) {
-						const kuerzel = globals.Werte.find(wert => wert.kuerzel === result.values[i]);
-						for (val in docs[0].character.attributes) {
-							if (docs[0].character.attributes[val].id == kuerzel.id) values.push(docs[0].character.attributes[val].level);
-						}
-					}
+					result.values.forEach(value => {
+						let kuerzel = globals.Werte.find(wert => wert.kuerzel === value);
+						docs[0].character.attributes.forEach(attr => {
+							if (attr == kuerzel.id) { values.push(attr.level);}
+						});
+					});
 
 					for (let i = 1; i <= 3; i++) {
 						roll.push(Random.int(1, 20));
@@ -81,25 +81,25 @@ module.exports = {
 						if (roll[i] == 1) crit++;
 						if (roll[i] == 20) patzer++;
 					}
-					const Reply = new Discord.MessageEmbed()
-					Reply.setTitle('Du würfelst auf das Talent ' + result.name + '.')
-					Reply.setDescription('Deine Werte für ' + result.values.join(', ') + ' sind ' + values.join(', ') + '. (Bonus: ' + bonus_orig + ')')
+					const Reply = new Discord.MessageEmbed();
+					Reply.setTitle('Du würfelst auf das Talent ' + result.name + '.');
+					Reply.setDescription('Deine Werte für ' + result.values.join(', ') + ' sind ' + values.join(', ') + '. (Bonus: ' + bonus_orig + ')');
 					Reply.addFields({
 						name: 'Deine 🎲: ' + roll.join(', ') + '.',
-						value: '\u200B', inline: false})
+						value: '\u200B', inline: false});
 					if (patzer >= 2) {
-						Reply.setColor('#900c3f')
+						Reply.setColor('#900c3f');
 						Reply.addFields({
 							name: globals.Replies.find(x => x.id === 'TITLE_CRIT_FAILURE').string, 
 							value: globals.Replies.find(x => x.id === 'MSG_CRIT_FAILURE').string, 
-							inline: false})
+							inline: false});
 					}
 					else if (crit >= 2) {
-						Reply.setColor('#1E8449')
+						Reply.setColor('#1E8449');
 						Reply.addFields({
 							name: globals.Replies.find(x => x.id === 'TITLE_CRIT_SUCCESS').string, 
 							value:globals.Replies.find(x => x.id === 'MSG_CRIT_SUCCESS').string,
-							inline: false})
+							inline: false});
 					}
 					else if (ok < 3) {
 						Reply.addFields({name: globals.Replies.find(x => x.id === 'TITLE_FAILURE').string,
@@ -109,10 +109,10 @@ module.exports = {
 					else {
 						Reply.addFields({name: globals.Replies.find(x => x.id === 'TITLE_SUCCESS').string,
 						value: ok + '/3 Proben erfolgreich. Dein Bonus: ' + bonus + '/' + bonus_orig + '.', 
-            inline: false})
+            inline: false});
 					}
 
-					message.reply(Reply)
+					message.reply(Reply);
 				}
 			});
 		}
