@@ -1,4 +1,10 @@
 const globals = require('../globals');
+const {
+	CountOccurences
+} = require('@dsabot/CountOccurences');
+const {
+	findMessage
+} = require('@dsabot/findMessage');
 const Random = require('random');
 const db = globals.db;
 
@@ -15,47 +21,26 @@ module.exports = {
 
 			await db.find({
 				user: message.author.tag,
-			}, async function(err, docs) {
+			}, async function (err, docs) {
 
 				// user calls with text. need to gather info from database
 				if (isNaN(args[0])) {
-					if (docs.length === 0) {
-						message.reply(globals.Replies.find(r => r.id === 'NOENTRY').string);
-						return;
-					}
-					else {
-						// try to get id of short formatted attributes.
-						if (args[0].length == 2) {
-							for (const i in globals.Werte) {
-								if (globals.Werte[i].kuerzel == args[0].toUpperCase()) {
-									attributename = globals.Werte[i].id;
-								}
-							}
-						}
-						else {
-							attributename = args[0].toLowerCase();
-						}
-						for (const i in docs[0].character.attributes) {
-							if (docs[0].character.attributes[i].id == attributename) level = docs[0].character.attributes[i].level;
-						}
-					}
-				}
-				else {
+					HandleNamedAttributes();
+				} else {
 					level = args[0];
 				}
 				Random.use(message.author.tag);
-				const countOccurrences = (arr, val) => arr.reduce((a, v) => (v === val ? a + 1 : a), 0);
+
 				const dice = [];
 				dice.push(Random.int(1, 20));
 				if (dice[0] == 1 || dice[0] == 20) {
 					dice.push(Random.int(1, 20));
 				}
 				// handle crits
-				if (countOccurrences(dice, 1) == 2) {
+				if (CountOccurences(dice, 1) == 2) {
 					message.reply('Du hast einen kritischen Erfolg erzielt (' + dice.join(', ') + ')! 🎉🥳🎆');
 					return;
-				}
-				else if (countOccurrences(dice, 20) == 2) {
+				} else if (CountOccurences(dice, 20) == 2) {
 					message.reply('Du hast einen Patzer (' + dice.join(', ') + ')! 😭 Viel Erfolg beim nächsten mal!');
 					return;
 				}
@@ -63,24 +48,47 @@ module.exports = {
 					if (attributename) {
 						message.reply('Du hast die Probe auf ' + attributename + ' (Stufe ' + level + ') bestanden.\n' +
 							'Deine 🎲: ' + dice.join(', '));
-					}
-					else {
+					} else {
 						message.reply('Du hast die Probe (Stufe ' + level + ') bestanden.\n' +
 							'Deine 🎲: ' + dice.join(', '));
 					}
-				}
-				else if (attributename) {
+				} else if (attributename) {
 					message.reply('Du hast die Probe auf ' + attributename + ' (Stufe ' + level + ') leider nicht bestanden 😢.\n' +
 						'Deine 🎲: ' + dice.join(', '));
-				}
-				else {
+				} else {
 					message.reply('Du hast die Probe (Stufe ' + level + ') leider nicht bestanden 😢.\n' +
 						'Deine 🎲: ' + dice.join(', '));
 				}
 			});
-		}
-		catch (e) {
+		} catch (e) {
 			throw e;
 		}
 	},
 };
+
+const HandleCrits = (dice) => {
+
+};
+
+const HandleNamedAttributes = () => {
+	if (docs.length === 0) {
+		message.reply(findMessage('NOENTRY'));
+		return;
+	} else {
+		// try to get id of short formatted attributes.
+		if (args[0].length == 2) {
+			for (const i in globals.Werte) {
+				if (globals.Werte[i].kuerzel == args[0].toUpperCase()) {
+					attributename = globals.Werte[i].id;
+				}
+			}
+		} else {
+			attributename = args[0].toLowerCase();
+		}
+		for (const i in docs[0].character.attributes) {
+			if (docs[0].character.attributes[i].id == attributename) level = docs[0].character.attributes[i].level;
+		}
+	}
+};
+//const docs = [];
+//console.log(HandleNamedAttributes())

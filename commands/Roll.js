@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 const globals = require('../globals');
-const Random = require('random');
-
+const { roll } = require('@dsabot/Roll');
+const { findMessage }= require('@dsabot/findMessage');
 
 module.exports = {
 	name: 'roll',
@@ -10,30 +10,17 @@ module.exports = {
 	usage: '<Anzahl> w <Augenzahl>',
 	needs_args: true,
 	async exec(message, args) {
-
-		Random.use(message.author.tag);
-		let msg;
-		let arguments = args.join('').split(globals.DiceRegex);
-		if (arguments.length >= 2) {
+		let params = args.join('').split(globals.DiceRegex);
+		if ( params.length >= 2 ) {
 			let bonus = 0;
-			const numberOfDice = parseInt(arguments[0]);
-			const diceValues = parseInt(arguments[1]);
-			if (arguments.length==3)  { bonus = parseInt(arguments[2]); }
-			let sum = bonus;
-			const roll = [];
-			for (let i = 0; i < numberOfDice; i++) {
-				const a = Random.int(1, diceValues);
-				roll.push(a);
-				sum += a;
+			const numberOfDice = parseInt( params[0] );
+			const diceValues = parseInt( params[1] );
+			if ( params.length == 3 )  {
+				bonus = parseInt( params[2] ); 
 			}
-			if (numberOfDice == 1) {
-				msg = 'n';
-			}
-			else {
-				msg = ' ' + numberOfDice;
-			}
-			//message.reply('Das sind deine Ergebnisse für deine' + msg + ' ' + diceValues + '-seitigen 🎲: ' + roll.join(', ') + '. (Gesamt: ' + roll.reduce((pv, cv) => pv + cv, 0) + ' + ' + bonus[1] + ' = ' + sum + ')');
-			message.reply(`Das sind die Ergebnisse für deine${msg} ${diceValues}-seitigen 🎲: ${roll.join(', ')}. (Gesamt: ${roll.reduce((pv, cv) => pv + cv, 0)} + ${bonus} = ${sum})`);
+
+			const result = roll( numberOfDice, diceValues, message.author.tag );
+			message.reply(`${findMessage('ROLL')} ${result.dice.join(', ')} (Gesamt: ${result.sum} + ${bonus} = ${result.sum + bonus})` );
 		}
 	},
 };

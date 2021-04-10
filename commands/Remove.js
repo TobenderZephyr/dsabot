@@ -1,3 +1,4 @@
+const { findMessage }= require('@dsabot/findMessage');
 const globals = require('../globals');
 const db = globals.db;
 module.exports = {
@@ -10,7 +11,7 @@ module.exports = {
 		db.remove({
 			user: message.author.tag,
 		}, {}, function(err, numRemoved) {
-			message.reply(globals.Replies.find(x => x.id === 'DELETED_DATA').string);
+			return message.reply(findMessage('DELETED_DATA'));
 		});
 	},
 };

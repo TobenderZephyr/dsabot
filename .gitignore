@@ -3,4 +3,6 @@ node_modules
 .eslintrc.js
 .eslintrc.json
 .vscode
+data/dsabot.db
+data/data
 
