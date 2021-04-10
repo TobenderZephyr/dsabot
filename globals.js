@@ -49,7 +49,7 @@ const Talente = [
 	{ id: 'menschenkenntnis', name: 'Menschenkenntnis', values: ['KL', 'IN', 'CH'], categoryid: 1  },
 	{ id: 'ueberreden', name: 'Überreden', values: ['MU', 'IN', 'CH'], categoryid: 1  },
 	{ id: 'willenskraft', name: 'Willenskraft', values: ['MU', 'IN', 'CH'], categoryid: 1  },
-
+	{ id: 'verkleiden', name: 'Verkleiden', values: ['IN','CH','GE'], categoryid: 1 },
 	// Naturtalente
 	{ id: 'faehrtensuchen', name: 'Fährtensuchen', values: ['MU', 'IN', 'GE'], categoryid: 2  },
 	{ id: 'fesseln', name: 'Fesseln', values: ['KL', 'FF', 'KK'], categoryid: 2  },
