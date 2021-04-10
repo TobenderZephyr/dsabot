@@ -1,13 +1,18 @@
 const globals = require('../globals');
-const Random = require('random');
 const Discord = require('discord.js');
 const db = globals.db;
+const {
+	roll
+} = require('@dsabot/Roll');
+const {
+	findMessage
+} = require('@dsabot/findMessage');
 
 module.exports = {
 	name: 'talent',
 	description: ' Du machst eine Fertigkeitsprobe.\n' +
-	' Es werden drei Würfel auf deine Eigenschaftswerte geworfen. Hast du Boni auf dein Talent und/oder' +
-	' ist der Wurf erleichtert oder erschwert, wird dies in die Berechnung einbezogen.',
+		' Es werden drei Würfel auf deine Eigenschaftswerte geworfen. Hast du Boni auf dein Talent und/oder' +
+		' ist der Wurf erleichtert oder erschwert, wird dies in die Berechnung einbezogen.',
 	aliases: ['t'],
 	usage: '<Talent> [<-Erschwernis> / <+Erleichterung>]',
 	needs_args: true,
@@ -15,108 +20,91 @@ module.exports = {
 		try {
 			db.find({
 				user: message.author.tag,
-			}, function(err, docs) {
+			}, function (err, docs) {
 				if (docs.length === 0) {
-					return message.reply(globals.Replies.find(r => r.id === 'NOENTRY').string);
+					return message.reply(findMessage('NOENTRY'));
 				}
-				if(!isNaN(args[0])) {
-					return message.reply(globals.Replies.find(x => x.id === 'WRONG_ARGUMENTS').string);
-				}
-				else {
-					Random.use(message.author.tag);
+				if (!isNaN(args[0])) {
+					return message.reply(findMessage('WRONG_ARGUMENTS'));
+				} else {
+					const Character = docs[0].character;
 					const values = [];
-					const roll = [];
-					let found = false;
-					let talent;
-					let bonus = 0;
+
+					const erschwernis = parseInt(args[1]) || 0;
+					const talent = globals.Talente.find(talent => talent.id.toLocaleLowerCase() === args[0].toLowerCase());
+
+					if (!talent) {
+						return message.reply(findMessage('TALENT_UNKNOWN'));
+					}
+
+					let bonus = Character.skills.find(skill => skill.id === talent.id).level || 0;
+					const bonus_orig = bonus;
+
+					talent.values.forEach(v => {
+						let abbr = globals.Werte.find(wert => wert.kuerzel === v);
+						values.push((Character.attributes.find(attr => attr.id === abbr.id)).level);
+					});
+					const dice = roll(3, 20, message.author.tag).dice;
+
 					let ok = 0;
 					let patzer = 0;
 					let crit = 0;
-					let erschwernis = 0;
 
-					if (args[1]) {
-						 erschwernis = parseInt(args[1]);
-					}
-
-					for (let i in globals.Talente) {
-						if (globals.Talente[i].id.toLowerCase() == args[0].toLowerCase() || globals.Talente[i].name.toLowerCase() == args[0].toLowerCase()) {
-							found = true;
-							talent = globals.Talente[i].id;
-							break;
-						}
-					}
-					if (!found) {
-						message.reply(globals.Replies.find(x => x.id === 'TALENT_UNKNOWN').string);
-						return;
-					}
-					for (let i in docs[0].character.skills) {
-						if (docs[0].character.skills[i].id == talent) {
-							bonus = docs[0].character.skills[i].level;
-							found = true;
-						}
-					}
-
-					const bonus_orig = bonus;
-					const result = globals.Talente.find(t => t.id === talent);
-
-					result.values.forEach(value => {
-						let kuerzel = globals.Werte.find(wert => wert.kuerzel === value);
-						docs[0].character.attributes.forEach(attr => {
-							if (attr == kuerzel.id) { values.push(attr.level);}
-						});
-					});
-
-					for (let i = 1; i <= 3; i++) {
-						roll.push(Random.int(1, 20));
-					}
 					// compare results
-					for (let i = 0; i < 3; i++) {
-						if (Math.floor(values[i] + parseInt(erschwernis)) >= roll[i]) {
+					for (let i = 0; i < dice.length; i++) {
+						if (Math.floor(values[i] + erschwernis) >= dice[i]) {
 							ok++;
-						}
-						else if ((Math.floor(values[i]) + parseInt(bonus) + parseInt(erschwernis)) >= roll[i]) {
+						} else if (Math.floor(values[i] + bonus + erschwernis) >= dice[i]) {
 							ok++;
-							bonus = bonus - (roll[i] - parseInt(erschwernis) - values[i]);
+							bonus -= (dice[i] - erschwernis - values[i]);
 						}
-						if (roll[i] == 1) crit++;
-						if (roll[i] == 20) patzer++;
+						if (dice[i] == 1) {
+							crit++;
+						}
+						if (dice[i] == 20) {
+							patzer++;
+						}
 					}
 					const Reply = new Discord.MessageEmbed();
-					Reply.setTitle('Du würfelst auf das Talent ' + result.name + '.');
-					Reply.setDescription('Deine Werte für ' + result.values.join(', ') + ' sind ' + values.join(', ') + '. (Bonus: ' + bonus_orig + ')');
+					Reply.setTitle('Du würfelst auf das Talent ' + talent.name + '. (v2)');
+					Reply.setDescription('Deine Werte für ' + talent.values.join(', ') + ' sind ' + values.join(', ') + '. (Bonus: ' + bonus_orig + ')');
 					Reply.addFields({
-						name: 'Deine 🎲: ' + roll.join(', ') + '.',
-						value: '\u200B', inline: false});
+						name: 'Deine 🎲: ' + dice.join(', ') + '.',
+						value: '\u200B',
+						inline: false
+					});
 					if (patzer >= 2) {
 						Reply.setColor('#900c3f');
 						Reply.addFields({
-							name: globals.Replies.find(x => x.id === 'TITLE_CRIT_FAILURE').string, 
-							value: globals.Replies.find(x => x.id === 'MSG_CRIT_FAILURE').string, 
-							inline: false});
-					}
-					else if (crit >= 2) {
+							name: findMessage('TITLE_CRIT_FAILURE'),
+							value: findMessage('MSG_CRIT_FAILURE'),
+							inline: false
+						});
+					} else if (crit >= 2) {
 						Reply.setColor('#1E8449');
 						Reply.addFields({
-							name: globals.Replies.find(x => x.id === 'TITLE_CRIT_SUCCESS').string, 
-							value:globals.Replies.find(x => x.id === 'MSG_CRIT_SUCCESS').string,
-							inline: false});
-					}
-					else if (ok < 3) {
-						Reply.addFields({name: globals.Replies.find(x => x.id === 'TITLE_FAILURE').string,
-						value: 'nur ' + ok + '/3 Proben erfolgreich. 😪',
-						inline: false});
-					}
-					else {
-						Reply.addFields({name: globals.Replies.find(x => x.id === 'TITLE_SUCCESS').string,
-						value: ok + '/3 Proben erfolgreich. Dein Bonus: ' + bonus + '/' + bonus_orig + '.', 
-            inline: false});
+							name: findMessage('TITLE_CRIT_SUCCESS'),
+							value: findMessage('MSG_CRIT_SUCCESS'),
+							inline: false
+						});
+					} else if (ok < 3) {
+						Reply.addFields({
+							name: findMessage('TITLE_FAILURE'),
+							value: 'nur ' + ok + '/3 Proben erfolgreich. 😪',
+							inline: false
+						});
+					} else {
+						Reply.addFields({
+							name: findMessage('TITLE_SUCCESS'),
+							value: ok + '/3 Proben erfolgreich. Dein Bonus: ' + bonus + '/' + bonus_orig + '.',
+							inline: false
+						});
 					}
 
 					message.reply(Reply);
 				}
 			});
-		}
-		catch (e) {
+		} catch (e) {
 			throw e;
 		}
 	},

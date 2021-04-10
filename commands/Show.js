@@ -2,6 +2,7 @@
 const globals = require('../globals');
 const Discord = require('discord.js');
 const db = globals.db;
+const { findMessage }= require('@dsabot/findMessage');
 
 module.exports = {
 	name: 'show',
@@ -16,7 +17,7 @@ module.exports = {
 				user: message.author.tag,
 			}, function(err, docs) {
 				if (docs.length === 0) {
-					return message.reply(globals.Replies.find(r => r.id === 'NOENTRY').string);
+					return message.reply(findMessage('NOENTRY'));
 				}
 				else {
 					let gender;

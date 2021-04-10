@@ -1,5 +1,6 @@
 const globals = require('../globals');
 const db = globals.db;
+const { findMessage }= require('@dsabot/findMessage');
 module.exports = {
 	name: 'skill',
 	description: 'Zeigt dir deinen Fertigkeitswert im jeweiligen Talent.',
@@ -13,13 +14,18 @@ module.exports = {
 				user: message.author.tag,
 			}, function(err, docs) {
 				if (docs.length === 0) {
-					return message.reply(globals.Replies.find(r => r.id === 'NOENTRY').string);
+					return message.reply(findMessage('NOENTRY'));
 				}
 				else {
 					let level = 0;
+					/*
 					for (let i in docs[0].character.skills) {
-						if (docs[0].character.skills[i].id == args[0]) level = docs[0].character.skills[i].level;
+						if (docs[0].character.skills[i].id == args[0]) { 
+							level = docs[0].character.skills[i].level; 
+						}
 					}
+					*/
+					level = docs[0].character.skills.find(skill => skill.id === args[0]).level;
 					message.reply('Du hast folgenden Talentwert in ' + args[0] + ': ' + level);
 				}
 			});

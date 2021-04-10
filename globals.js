@@ -138,7 +138,9 @@ const Replies = [
 	{ id: 'PARRY_FAIL',			string: 'Deine Parade schlägt fehl.'},
 	{ id: 'PARRY_CRIT_FAIL',	string: 'Kritischer Fehlschlag! Du erleidest zusätzlich 1W6+2 Schadenspunkte!'},
 	{ id: 'PARRY_SUCCESS',		string: 'Parade erfolgreich.'},
-	{ id: 'PARRY_CRIT_SUCCESS',	string: 'Kritischer Erfolg! Du darfst einen Passierschlag ausführen!'}
+	{ id: 'PARRY_CRIT_SUCCESS',	string: 'Kritischer Erfolg! Du darfst einen Passierschlag ausführen!'},
+	{ id: 'ROLL', 				string: 'Du würfelst:'},
+	{ id: 'HEADS_OR_TAILS',		string: 'Die Münze landet auf '}
 ];
 const Declination = ['dem', 'der', 'dem', '']; // Maskulinum, Feminimum, Neutrum, None
 const Articles = ['Der','Die','Das',''];

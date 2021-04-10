@@ -1,6 +1,8 @@
 const globals = require('../globals');
 const db = globals.db;
 const Random = require('random');
+//const { roll } = require('@dsabot/Roll');
+const { findMessage }= require('@dsabot/findMessage');
 
 module.exports = {
 	name: 'attack',
@@ -15,7 +17,7 @@ module.exports = {
 				user: message.author.tag,
 			}, function(err, docs) {
 				if (docs.length === 0) {
-					return message.reply(globals.Replies.find(r => r.id === 'NOENTRY').string);
+					return message.reply(findMessage('NOENTRY'));
 				}
 				else {
 
