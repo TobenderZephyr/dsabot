@@ -1,4 +1,6 @@
-const CountOccurrences = require('@dsabot/CountOccurences');
+const {
+  CountOccurences
+} = require('../../functions/CountOccurences');
 test('Counting Occurences', () => {
-    expect(CountOccurrences([1, 2, 3, 4, 1],1)).toBe(2);
-  });
+  expect(CountOccurences([1, 2, 3, 4, 1], 1)).toBe(2);
+});
