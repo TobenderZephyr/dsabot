@@ -1,3 +1,4 @@
+require('module-alias/register');
 require('dotenv').config();
 const fs = require('fs');
 const fetch = require('node-fetch');
@@ -45,7 +46,7 @@ async function commandHandler(message) {
 				return message.reply(
 					globals.Replies.find(x => x.id === 'TOO_FEW_ARGS').string +
 					cmdprefix + commandName + ' ' + command.usage
-					);
+				);
 			} else {
 				command.exec(message, args);
 			}
@@ -65,21 +66,20 @@ function validateJSON(body) {
 }
 
 async function CreateFromFile(message, data) {
-		try {
-			db.find({
-				user: message.author.tag,
-			}, function(err, docs) {
-				if (docs.length === 0) {
-					db.insert({
-						user: message.author.tag,
-						character: data,
-					}, function(err, docs) {
-						message.reply(globals.Replies.find(r => r.id === 'SAVED_DATA').string);
-					});
-				}
-			});
-		}
-		catch (e) {
-			throw e;
-		}
+	try {
+		db.find({
+			user: message.author.tag,
+		}, function (err, docs) {
+			if (docs.length === 0) {
+				db.insert({
+					user: message.author.tag,
+					character: data,
+				}, function (err, docs) {
+					message.reply(globals.Replies.find(r => r.id === 'SAVED_DATA').string);
+				});
+			}
+		});
+	} catch (e) {
+		throw e;
+	}
 }
