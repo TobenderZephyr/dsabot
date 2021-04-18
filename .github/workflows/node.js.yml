@@ -13,10 +13,6 @@ on:
       - 'Dockerfile'
   pull_request:
     branches: [ master ]
-    paths:
-      - '**.jsx?'
-      - '**.json'
-      - '**.yml'
 
 jobs:
   build:
