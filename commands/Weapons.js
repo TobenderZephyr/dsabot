@@ -1,5 +1,6 @@
 const globals = require('../globals');
 const Discord = require('discord.js');
+const { Capitalize } = require('@dsabot/Capitalize');
 
 
 module.exports = {
@@ -38,6 +39,3 @@ const GenerateWeaponList = () => {
 	return WeaponList.sort();
 };
 
-const Capitalize = (Word = '') => {
-	return Word[0].toUpperCase() + Word.substring(1);
-};
