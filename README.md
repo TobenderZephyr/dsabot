@@ -1,4 +1,4 @@
-
+[![CodeQL](https://github.com/TobenderZephyr/dsabot/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/TobenderZephyr/dsabot/actions/workflows/codeql-analysis.yml)
 # DSA Discord Bot
 
 This Project is a fork of LucaSchwan/dsa-bot.
