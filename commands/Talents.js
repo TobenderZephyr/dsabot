@@ -1,6 +1,6 @@
 const globals = require('../globals');
 const Discord = require('discord.js');
-
+const { Capitalize } = require('@dsabot/Capitalize');
 
 module.exports = {
 	name: 'talents',
@@ -10,27 +10,33 @@ module.exports = {
 	needs_args: false,
 
 	async exec(message, args) {
-		const fields = [];
-		for (const i in globals.TalentKategorien) {
-			const ability = [];
-			for (const a in globals.Talente) {
-				if (globals.Talente[a].categoryid == i) {
-					ability.push(globals.Talente[a].id.charAt(0).toUpperCase() + globals.Talente[a].id.slice(1));
-				}
-			}
-			ability.sort();
-			fields.push(ability);
-		}
 
 		const Embed = new Discord.MessageEmbed()
 			.setColor('#0099ff')
 			.setTitle('Talentübersicht')
 			.setDescription('Das sind die Talente, die ich kenne:');
-		for (const i in fields) {
-			Embed.addField(globals.TalentKategorien[i], fields[i].join('\n'), true);
+		for (let Talent of GenerateTalentList()) {
+			Embed.addField(Talent.Category, Talent.Talents.join('\n'), true);
 		}
 		message.author.send(
 			Embed,
 		);
 	},
+};
+
+const GenerateTalentList = () => {
+	const Categories = globals.TalentKategorien;
+	const Talents = globals.Talente;
+	const TalentList = [];
+
+	Categories.forEach(Category => {
+		TalentList.push({
+			Category: Category,
+			Talents: Talents.filter(Talent => Talent.categoryid === Categories.indexOf(Category))
+					.map(Talent => Capitalize(Talent.id))
+					.sort()
+		});	
+	});
+
+	return TalentList.sort();
 };
