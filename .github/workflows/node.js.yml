@@ -7,14 +7,14 @@ on:
   push:
     branches: [ master ]
       paths:
-      - '**.jsx?'
-      - '**.json'
-      - 'Dockerfile'
+        - '**.jsx?'
+        - '**.json'
+        - 'Dockerfile'
   pull_request:
     branches: [ master ]
       paths:
-      - '**.jsx?'
-      - '**.json'
+        - '**.jsx?'
+        - '**.json'
 
 jobs:
   build:
