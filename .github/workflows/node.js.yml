@@ -6,15 +6,15 @@ name: Node.js CI
 on:
   push:
     branches: [ master ]
-      paths:
-        - '**.jsx?'
-        - '**.json'
-        - 'Dockerfile'
+    paths:
+      - '**.jsx?'
+      - '**.json'
+      - 'Dockerfile'
   pull_request:
     branches: [ master ]
-      paths:
-        - '**.jsx?'
-        - '**.json'
+    paths:
+      - '**.jsx?'
+      - '**.json'
 
 jobs:
   build:
