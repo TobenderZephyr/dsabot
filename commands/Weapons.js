@@ -10,27 +10,34 @@ module.exports = {
 	needs_args: false,
 
 	async exec(message, args) {
-		let fields = [];
-		for (let CombatTechnique in globals.CombatTechniques) {
-			let Weapons = [];
-			for (let Weapon in globals.Weapons) {
-				if (globals.Weapons[Weapon].combattechnique == globals.CombatTechniques[CombatTechnique].id) {
-					Weapons.push(globals.Weapons[Weapon].id.charAt(0).toUpperCase() + globals.Weapons[Weapon].id.slice(1));
-				}
-			}
-			Weapons.sort();
-			fields.push(Weapons);
-		}
-
 		const Embed = new Discord.MessageEmbed()
 			.setColor('#0099ff')
 			.setTitle('Waffenübersicht')
 			.setDescription('Folgende Waffen können für einen Angriff genutzt werden:');
-		for (let i in fields) {
-			Embed.addField(globals.CombatTechniques[i].name, fields[i].join('\n'), true);
+		for (let Technique of GenerateWeaponList()) {
+			Embed.addField(Technique.Technique_Name, Technique.Weapons.join('\n'), true);
 		}
 		message.author.send(
 			Embed,
 		);
 	},
+};
+
+const GenerateWeaponList = () => {
+	let WeaponList = [];
+	const Techniques = globals.CombatTechniques;
+	const Weapons = globals.Weapons;
+
+	Techniques.forEach(Technique => {
+		WeaponList.push({
+			Technique_Name: Technique.name, 
+			Weapons: Weapons.filter(Weapon => Weapon.combattechnique === Technique.id)
+							.map(Weapon => Capitalize(Weapon.id))
+		});
+	});
+	return WeaponList.sort();
+};
+
+const Capitalize = (Word = '') => {
+	return Word[0].toUpperCase() + Word.substring(1);
 };
