@@ -126,7 +126,6 @@ const Replies = [
 	{ id: 'TOO_FEW_ARGS', 		string: 'Du hast zu wenig Angaben gemacht. Probiere es einmal so:\n'},
 	{ id: 'SAVED_DATA', 		string: 'Ich habe deine Daten abgespeichert.'},
 	{ id: 'DELETED_DATA',		string: 'Ich habe deine Daten entfernt.'},
-	{ id: 'TALENT_UNKNOWN', 	string: 'Das Talent ist mir unbekannt.'},
 	{ id: 'NO_SUCH_WEAPON',		string: 'Diese Waffe gibt es nicht.'},
 	{ id: 'COMBAT_CRIT_SUCCESS',string: 'Kritischer Treffer 🎈✨🥳! Der Verteidigungswert deines Gegners halbiert sich!\n'},
 	{ id: 'COMBAT_CRIT_FAIL',	string: 'Patzer 😪! Du erleidest 1W6+2 Schadenspunkte.'},
