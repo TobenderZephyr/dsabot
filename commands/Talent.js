@@ -1,13 +1,9 @@
 const globals = require('../globals');
 const Discord = require('discord.js');
 const db = globals.db;
-const {
-	roll
-} = require('@dsabot/Roll');
-const {
-	findMessage
-} = require('@dsabot/findMessage');
-
+const {	roll } = require('@dsabot/Roll');
+const {	findMessage } = require('@dsabot/findMessage');
+const { getSkill } = require('@dsabot/getSkill')
 module.exports = {
 	name: 'talent',
 	description: ' Du machst eine Fertigkeitsprobe.\n' +
@@ -27,80 +23,59 @@ module.exports = {
 				if (!isNaN(args[0])) {
 					return message.reply(findMessage('WRONG_ARGUMENTS'));
 				} else {
-					const Character = docs[0].character;
-					const values = [];
-
-					const erschwernis = parseInt(args[1]) || 0;
-					const talent = globals.Talente.find(talent => talent.id.toLocaleLowerCase() === args[0].toLowerCase());
-
-					if (!talent) {
-						return message.reply(findMessage('TALENT_UNKNOWN'));
-					}
-
-					let bonus = Character.skills.find(skill => skill.id === talent.id).level || 0;
-					const bonus_orig = bonus;
-
-					talent.values.forEach(v => {
-						let abbr = globals.Werte.find(wert => wert.kuerzel === v);
-						values.push((Character.attributes.find(attr => attr.id === abbr.id)).level);
-					});
-					const dice = roll(3, 20, message.author.tag).dice;
-
-					let ok = 0;
-					let patzer = 0;
-					let crit = 0;
-
-					// compare results
-					for (let i = 0; i < dice.length; i++) {
-						if (Math.floor(values[i] + erschwernis) >= dice[i]) {
-							ok++;
-						} else if (Math.floor(values[i] + bonus + erschwernis) >= dice[i]) {
-							ok++;
-							bonus -= (dice[i] - erschwernis - values[i]);
-						}
-						if (dice[i] == 1) {
-							crit++;
-						}
-						if (dice[i] == 20) {
-							patzer++;
-						}
-					}
+	
+					const Skill = getSkill({Character: docs[0].character, args: args});
+					if(!Skill) { return message.reply(findMessage('TALENT_UNKNOWN'));}
+	
+					const Attributes = Skill.Attributes;
+					const DiceThrow = roll(3, 20, message.author.tag).dice;
+					const Bonus = parseInt(args[1]) || 0;
+					let { Passed, 
+						CriticalHit, 
+						Fumbles,
+						PointsUsed,
+						PointsRemaining } = CompareResults(
+														DiceThrow, 
+														Attributes.map(attr => attr.Level), 
+														Bonus, 
+														Skill.Level);
 					const Reply = new Discord.MessageEmbed();
-					Reply.setTitle('Du würfelst auf das Talent ' + talent.name + '. (v2)');
-					Reply.setDescription('Deine Werte für ' + talent.values.join(', ') + ' sind ' + values.join(', ') + '. (Bonus: ' + bonus_orig + ')');
 					Reply.addFields({
-						name: 'Deine 🎲: ' + dice.join(', ') + '.',
-						value: '\u200B',
+						name: `Du würfelst auf das Talent **${Skill.Name}** (Stufe ${Skill.Level} + ${Bonus})`,
+						value:`\`\`\`\u200B\u2003\u2003\u2003\u2003${Attributes.map(a => a.Name).join('\u2003\u2003')}\n` +
+						`\u200B✊🏻\u2003\u2003${Attributes.map(a => a.Level).join('\u2003\u2003')}\n` +
+						`\u200B🎲\u2003\u2003${DiceThrow.join('\u2003\u2003')}\n` +
+						`\u200B-\u2003\u2003\u2003${PointsUsed.join('\u2003\u2003')}\`\`\``,
 						inline: false
 					});
-					if (patzer >= 2) {
+					if (Fumbles >= 2) {
 						Reply.setColor('#900c3f');
 						Reply.addFields({
 							name: findMessage('TITLE_CRIT_FAILURE'),
 							value: findMessage('MSG_CRIT_FAILURE'),
 							inline: false
 						});
-					} else if (crit >= 2) {
+					} else if (CriticalHit >= 2) {
 						Reply.setColor('#1E8449');
 						Reply.addFields({
 							name: findMessage('TITLE_CRIT_SUCCESS'),
 							value: findMessage('MSG_CRIT_SUCCESS'),
 							inline: false
 						});
-					} else if (ok < 3) {
+					} else if (Passed < 3) {
 						Reply.addFields({
 							name: findMessage('TITLE_FAILURE'),
-							value: 'nur ' + ok + '/3 Proben erfolgreich. 😪',
+							value: `nur ${Passed}/3 Proben erfolgreich. 😪`,
 							inline: false
 						});
 					} else {
 						Reply.addFields({
 							name: findMessage('TITLE_SUCCESS'),
-							value: ok + '/3 Proben erfolgreich. Dein Bonus: ' + bonus + '/' + bonus_orig + '.',
+							value: `Dein Bonus: ${PointsRemaining}/${Skill.Level} (QS${CalculateQuality(PointsRemaining)})`,
 							inline: false
 						});
 					}
-
+	
 					message.reply(Reply);
 				}
 			});
@@ -109,3 +84,50 @@ module.exports = {
 		}
 	},
 };
+
+const CalculateQuality = (PointsAvailable = 0) => {
+	if (PointsAvailable<=3) return 1;
+	else if (PointsAvailable>3&&PointsAvailable<=6) return 2;
+	else if (PointsAvailable>6&&PointsAvailable<=9) return 3;
+	else if (PointsAvailable>9&&PointsAvailable<=12) return 4;
+	else if (PointsAvailable>12&&PointsAvailable<=15) return 5;
+	else if (PointsAvailable>15) return 6;
+};
+
+const CompareResults = (Throws = [], AttributeLevels = [8,8,8], Bonus = 0, PointsRemaining= 0) => {
+	
+	let Passed = 0;
+	let Fumbles = 0;
+	let CriticalHit = 0;
+	let AllPointsUsed = [];
+
+	for (let i = 0; i < Throws.length; i++) {
+		let PointsUsed = 0;
+		if (Math.floor(AttributeLevels[i] + Bonus) >= Throws[i]) {
+			Passed++;
+		} else if (Math.floor(AttributeLevels[i] + PointsRemaining + Bonus) >= Throws[i]) {
+			Passed++;
+			PointsUsed = (Throws[i] - Bonus - AttributeLevels[i]);
+			PointsRemaining -= PointsUsed;
+		}
+		else {
+			// We need to use all our points, so that next die/dice
+			// would not return a 'Passed'.
+			PointsUsed = PointsRemaining;
+			PointsRemaining -= PointsUsed;
+		}
+		if(Throws[i] == 1) {CriticalHit++;}
+		if(Throws[i] == 20) {Fumbles++;}
+		AllPointsUsed.push(PointsUsed);
+	}
+	return { 
+		Passed: Passed, 
+		CriticalHit: CriticalHit,
+		Fumbles: Fumbles,
+		PointsUsed: AllPointsUsed,
+		PointsRemaining: PointsRemaining };
+};
+
+function Pad(Number = 0) {
+	return Number.toString().padStart(2, '0');
+}
