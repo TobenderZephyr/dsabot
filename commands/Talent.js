@@ -42,10 +42,7 @@ module.exports = {
 					const Reply = new Discord.MessageEmbed();
 					Reply.addFields({
 						name: `Du würfelst auf das Talent **${Skill.Name}** (Stufe ${Skill.Level} + ${Bonus})`,
-						value:`\`\`\`\u200B\u2003\u2003\u2003\u2003${Attributes.map(a => a.Name).join('\u2003\u2003')}\n` +
-						`\u200B✊🏻\u2003\u2003${Attributes.map(a => a.Level).join('\u2003\u2003')}\n` +
-						`\u200B🎲\u2003\u2003${DiceThrow.join('\u2003\u2003')}\n` +
-						`\u200B-\u2003\u2003\u2003${PointsUsed.join('\u2003\u2003')}\`\`\``,
+						value: CreateTable({Attributes: Attributes, Throws: DiceThrow, PointsUsed: PointsUsed}),
 						inline: false
 					});
 					if (Fumbles >= 2) {
@@ -94,6 +91,7 @@ const CalculateQuality = (PointsAvailable = 0) => {
 	else if (PointsAvailable>15) return 6;
 };
 
+
 const CompareResults = (Throws = [], AttributeLevels = [8,8,8], Bonus = 0, PointsRemaining= 0) => {
 	
 	let Passed = 0;
@@ -129,5 +127,17 @@ const CompareResults = (Throws = [], AttributeLevels = [8,8,8], Bonus = 0, Point
 };
 
 function Pad(Number = 0) {
-	return Number.toString().padStart(2, '0');
+	return Number.toString().padStart(1, ' ');
 }
+
+const CreateTable = ({Attributes: Attributes, Throws: Throws, PointsUsed: PointsUsed}) => {
+	return `
+	\`\`\`
+	${' '.padEnd(15)} ${Attributes.map(attr => `${attr.Name}`.padStart(5)).join('\t|\t')}\t|
+	${'Dein Wert'.padEnd(15)} ${Attributes.map(attr => `${attr.Level}`.padStart(5)).join('\t|\t')}\t|
+	${'Dein Wurf'.padEnd(15)} ${Throws.map(Throw => `${Throw}`.padStart(5)).join('\t|\t')}\t|
+	${'Abzüge'.padEnd(15)} ${PointsUsed.map(Points => `${Points}`.replace(0,'--').padStart(5)).join('\t|\t')}\t|
+	${'Gesamt'.padEnd(15)} ${PointsUsed.reduce((acc,cur) => acc+cur).toString().padStart(5)}
+	\`\`\`
+	`;
+};
