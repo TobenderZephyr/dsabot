@@ -12,15 +12,11 @@ module.exports = {
 	async exec(message, args) {
 		let params = args.join('').split(globals.DiceRegex);
 		if ( params.length >= 2 ) {
-			let bonus = 0;
+			const Bonus = params[2] || 0;
 			const numberOfDice = parseInt( params[0] );
 			const diceValues = parseInt( params[1] );
-			if ( params.length == 3 )  {
-				bonus = parseInt( params[2] ); 
-			}
-
 			const result = roll( numberOfDice, diceValues, message.author.tag );
-			message.reply(`${findMessage('ROLL')} ${result.dice.join(', ')} (Gesamt: ${result.sum} + ${bonus} = ${result.sum + bonus})` );
+			message.reply(`${findMessage('ROLL')} ${result.dice.join(', ')} (Gesamt: ${result.sum} + ${Bonus} = ${result.sum + Bonus})` );
 		}
 	},
 };

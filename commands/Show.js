@@ -20,14 +20,15 @@ module.exports = {
 					return message.reply(findMessage('NOENTRY'));
 				}
 				else {
-					let gender;
-					if (docs[0].character.sex == 'female') { gender = '♀️'; }
-					else { gender = '♂️'; }
+					const Character = docs[0].character;
+					let Gender;
+					if (Character.sex == 'female') { Gender = '♀️'; }
+					else { Gender = '♂️'; }
 					const Reply = new Discord.MessageEmbed();
 					Reply.setColor('#0099ff');
-					Reply.setTitle(gender + ' ' + docs[0].character.name);
-					Reply.setDescription(docs[0].character.age + ' Jahre, ' + docs[0].character.race + '/' + docs[0].character.culture);
-					Reply.addField(docs[0].character.professionname, docs[0].character.xp.startinglevel);
+					Reply.setTitle(`${Gender} ${Character.name}`);
+					Reply.setDescription(`${Character.age} Jahre, ${Character.race}/${Character.culture}`);
+					Reply.addField(Character.professionname, Character.xp.startinglevel);
 					
 					message.reply( Reply );
 				}

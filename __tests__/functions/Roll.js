@@ -1,14 +1,8 @@
-const {
-  roll
-} = require('../../functions/Roll');
+const { roll } = require('@dsabot/Roll');
 
 describe('rolling dice', () => {
   const expected = [1, 2, 3, 4, 5, 6];
-  it('contain only numbers from 1 to 6', () => {
-    expect(roll(100, 6).dice).toEqual(
-      expect.arrayContaining(expected),
-    );
+  test.each(expected)('contains only numbers from 1 to 6', (value) => {
+    expect(roll(200, 6).dice).toContain(value);
   });
 });
-
-//todo: return sum
