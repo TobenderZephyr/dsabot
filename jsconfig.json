@@ -1,9 +1,13 @@
 {
     "compilerOptions": {
-        "baseUrl": "./",
+        "baseUrl": ".",
         "paths": {
-            "@dsabot/*": ["functions/*"],
+            "@dsabot/*": ["./functions/*"],
             "@globals": ["./globals"]
-        }
-    }
+        },
+    },
+    "exclude": ["node_modules"],
+    "typeAcquisition": {
+        "exclude": [ "dotenv" ]
+      },
 }

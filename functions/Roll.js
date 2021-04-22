@@ -1,4 +1,6 @@
-const Random = require('random');
+const { Random } = require("@dsabot/Random");
+//const Random = require('random');
+
 const roll = (numberOfDice, numberOfEyes, tag) => {
     let dice = [];
     let sum = 0;
@@ -13,3 +15,4 @@ const roll = (numberOfDice, numberOfEyes, tag) => {
     return { dice, sum };
 };
 module.exports = { roll };
+
