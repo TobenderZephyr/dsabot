@@ -1,3 +1,12 @@
+/**
+ * Compares each item inside an array Throws 
+ * with corresponding AttributeLevels (With added bonus)
+ * 
+ * @param  {Array} Throws=[]
+ * @param  {Array} AttributeLevels=[8,8,8]
+ * @param  {BigInt} Bonus=0
+ * @param  {BigInt} PointsRemaining=0
+ */
 const CompareResults = (Throws = [], AttributeLevels = [8, 8, 8], Bonus = 0, PointsRemaining = 0) => {
 
 	let Passed = 0;

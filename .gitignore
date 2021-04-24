@@ -6,5 +6,5 @@ node_modules
 .github
 data/dsabot.db
 data/dsabot.db~
-data
+private
 
