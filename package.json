@@ -9,7 +9,9 @@
     "test": "jest"
   },
   "_moduleAliases": {
-    "@dsabot": "functions"
+    "@dsabot": "functions",
+    "@data": "data",
+    "@Commands": "commands"
   },
   "author": "",
   "license": "ISC",

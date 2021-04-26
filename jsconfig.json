@@ -3,7 +3,9 @@
         "baseUrl": ".",
         "paths": {
             "@dsabot/*": ["./functions/*"],
-            "@globals": ["./globals"]
+            "@globals": ["./globals"],
+            "@data": ["./data/*"],
+            "@Commands": ["./commands/*"]
         },
     },
     "exclude": ["node_modules"],

@@ -233,7 +233,5 @@ const Disadvantages = [
 	{}
 ];
 
-const Spells = require('data/Spells.json');
-
-module.exports = { Spells, Werte, Talente, Coin, TalentKategorien, DiceRegex, Discord, MessageEmbed, db, Replies, MeleeWeapons, Weapons, RangedWeapons, CombatTechniques, Articles, Declination };
+module.exports = { Werte, Talente, Coin, TalentKategorien, DiceRegex, Discord, MessageEmbed, db, Replies, MeleeWeapons, Weapons, RangedWeapons, CombatTechniques, Articles, Declination };
 

@@ -1,3 +1,4 @@
+//const globals = require('../globals');
 const globals = require('../globals');
 const db = globals.db;
 const { findMessage } = require('@dsabot/findMessage');
@@ -22,8 +23,8 @@ module.exports = {
                     } else {
                         Character = docs[0].character;
                         if (args.length === 0) {
-                            console.log(ReplySpellList(createSpellList(Character)));
-                            return message.reply(ReplySpellList(createSpellList(Character)));
+                            //console.log(ReplySpellList(createSpellList(Character)));
+                            return message.reply(ReplySpellList(createSpellList(Character))); //?+
                         } else {
                             const Spell = getSpell({
                                 Character: Character,
@@ -32,9 +33,9 @@ module.exports = {
                             if (!Spell) {
                                 return message.reply(findMessage('SPELL_UNKNOWN'));
                             }
-                            return message.reply(
-                                `Du hast folgenden Wert in **${Spell.Name}**: ${Spell.Level}`
-                            );
+                            return message.reply(ReplySpell(Spell));
+                            //    `Du hast folgenden Wert in **${Spell.Name}**: ${Spell.Level}`
+                            //);
                         }
                     }
                 }
@@ -52,8 +53,9 @@ const ReplySpellList = (SpellList = []) => {
 
 const ReplySpell = (Spell = {}) => {
     if (!Spell) return;
-    return `
-    ${Spell.Name}
+
+    return `Deine Werte für ${Spell.Name} (${Spell.Level}) sind:
+    ${Spell.Attributes.map(attribute => `${attribute.Name}: ${attribute.Level}`).join('   ')}
     `;
 };
 
@@ -63,11 +65,12 @@ const createSpellList = (Character = {}) => {
     Character.spells.forEach(spell =>
         SpellList.push(getSpell({ Character: Character, spell_name: spell.id }))
     );
-    return SpellList.filter(value => value !== undefined);
+    return SpellList.filter(value => value !== undefined); //?+
 };
 
 const s = require('./Spells');
 const user = 'hmpf1992#1074';
+//const user = 'Jens#5449';
 const message = {
     author: {
         tag: user,
@@ -76,5 +79,14 @@ const message = {
         console.log(e);
     },
 };
-const args = [];
+const args = ['armatrutz'];
 s.exec(message, args);
+
+const createChantList = (Character = {}) => {
+    if (!Character || !Character.hasOwnProperty('chants')) return;
+    let ChantList = [];
+    Character.chants.forEach(chant =>
+        ChantList.push(getChant({ Character: Character, spell_name: chant.id }))
+    );
+    return ChantList.filter(value => value !== undefined); //?+
+};

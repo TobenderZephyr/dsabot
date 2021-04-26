@@ -1,10 +1,15 @@
-node_modules
+/node_modules/
 .env
 .eslintrc.js
 .eslintrc.json
-.vscode
-.github
-data/dsabot.db
-data/dsabot.db~
-private
+.jshint
+.prettierrc
+/.vscode/
+/.github/
+.DS_Store
+Thumbs.db
+/data/dsabot.db
+!/data/*.js
+!/data/*.json
+/private
 
