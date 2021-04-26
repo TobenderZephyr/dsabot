@@ -1,4 +1,4 @@
-const Chants = [
+module.exports = [
     {
         id: 'bannderdunkelheit',
         name: 'Bann der Dunkelheit',
@@ -397,7 +397,6 @@ const Chants = [
             property: '',
         },
     },
-
     {
         id: 'mondsilberzunge',
         name: 'Mondsilberzunge',
@@ -417,7 +416,253 @@ const Chants = [
             type: 'Chant',
             property: '',
         },
+    },    {
+        id: 'objektsegen',
+        name: 'Objektsegen',
+        attributes: ['MU', 'IN', 'CH'],
+        cost: {
+            initial: 4,
+            additional: {},
+        },
+        effect: {
+            description:
+                'Mit dieser Liturgie werden für Götterdienste benötigte Materialien (z. B. Salbungsöl eines Borongeweihten, das Saatgut eines Perainegeweihten oder Sternenstaub bei Phexgeweihten) gesegnet. Der Gegenstand zählt nicht als geweiht, sondern nur als gesegnet.',
+            duration: { amount: 3, modifier: 'QS', unit: 'Stunden' },
+            unit: null,
+        },
+        chant: {
+            duration: { amount: 4, unit: 'Aktionen' },
+            type: 'Chant',
+            property: '',
+        },
+    },{
+        id: 'ortderruhe',
+        name: 'Ort der Ruhe',
+        attributes: ['MU', 'KL', 'IN'],
+        cost: {
+            initial: 4,
+            additional: {},
+        },
+        effect: {
+            description:
+                'Innerhalb der Zone werden Geräusche gedämpft. Der Radius der Zone beträgt QS x 3 Schritt. Proben gegen Sinnesschärfe (Wahrnehmen), um leise Geräusche wie Flüstern zu hören, sind innerhalb der Zone um QS erschwert. Die Zone verbleibt an Ort und Stelle. Geräusche, die aus der Zone dringen, bleiben gedämpft, Geräusche, die in die Zone eindringen, werden gedämpft.',
+            duration: { amount: 3, modifier: 'QS', unit: 'Stunden' },
+            unit: null,
+        },
+        chant: {
+            duration: { amount: 8, unit: 'Aktionen' },
+            type: 'Chant',
+            property: '',
+        },
+    },{
+        id: 'pflanzenwuchs',
+        name: 'Pflanzenwuchs',
+        attributes: ['KL', 'IN', 'CH'],
+        cost: {
+            initial: 8,
+            additional: {},
+        },
+        effect: {
+            description:
+                'Die Liturgie lässt eine maximal buschgroße Pflanze übernatürlich schnell wachsen. Pro QS wächst die Pflanze 30 % schneller als für die Gattung typisch.',
+            duration: { amount: 1, modifier: null, unit: 'Jahr' },
+            unit: null,
+        },
+        chant: {
+            duration: { amount: 16, unit: 'Aktionen' },
+            type: 'Chant',
+            property: '',
+        },
+    },{
+        id: 'rabenruf',
+        name: 'Rabenruf',
+        attributes: ['MU', 'KL', 'IN'],
+        cost: {
+            initial: 8,
+            additional: {},
+        },
+        effect: {
+            description:
+                'Der Geweihte ruft bis zu QS x 3 Raben aus einem Radius von QS x 3 Meilen herbei. Die Vögel verhalten sich ihm gegenüber zutraulich. Der Geweihte kann einen der Raben dazu benutzen, einen kleinen Gegenstand wie einen Ring zu transportieren, maximal bis zu einer Reichweite von QS x 3 Meile. Der Rabe findet den Zielort in der Regel automatisch. Es können maximal so viele Raben zum Geweihten fliegen, wie sich zu diesem Zeitpunkt in der Reichweite der Liturgie befinden.',
+            duration: { amount: 3, modifier: 'QS', unit: 'Stunden' },
+            unit: null,
+        },
+        chant: {
+            duration: { amount: 16, unit: 'Aktionen' },
+            type: 'Chant',
+            property: '',
+        },
+    },{
+        id: 'schlaf',
+        name: 'Schlaf',
+        attributes: ['KL', 'IN', 'CH'],
+        cost: {
+            initial: 8,
+            additional: {},
+        },
+        effect: {
+            description:
+                'Der Geweihte betäubt den Betroffenen. Erreicht dieser so Betäubung Stufe IV, schläft er ein und ist vor Ablauf der Wirkungsdauer nur durch großen Lärm, kräftiges Anstoßen oder Ähnliches zu wecken. Ungestört schläft er, bis er auf natürlichem Wege erwacht.',
+            duration: { amount: 3, modifier: 'QS', unit: 'Minuten' },
+            unit: null,
+        },
+        chant: {
+            duration: { amount: 2, unit: 'Aktionen' },
+            type: 'Chant',
+            property: '',
+        },
+    },{
+        id: 'schlangenstab',
+        name: 'Schlangenstab',
+        attributes: ['MU', 'KL', 'IN'],
+        cost: {
+            initial: 8,
+            additional: {},
+        },
+        effect: {
+            description:
+                'Die Schlange beschützt den Geweihten mit den ihr zur Verfügung stehenden Mitteln und folgt ihm. Stirbt die Schlange, verwandelt sie sich wieder zurück in das Objekt. Die Schlange gilt als gesegnet wie durch einen Objektsegen.',
+            duration: { amount: 3, modifier: 'QS', unit: 'Minuten' },
+            unit: null,
+        },
+        chant: {
+            duration: { amount: 2, unit: 'Aktionen' },
+            type: 'Chant',
+            property: '',
+        },
+    },{
+        id: 'schlangenzunge',
+        name: 'Schlangenzunge',
+        attributes: ['MU', 'KL', 'IN'],
+        cost: {
+            initial: 8,
+            additional: {},
+        },
+        effect: {
+            description:
+                'Für Umstehende klingt dies wie zischende Laute. Bei der Darstellung eines solchen Gespräches sollte bedacht werden, dass Schlangen einen tierischen Verstand haben und die Welt anders wahrnehmen als Menschen.',
+            duration: { amount: 3, modifier: 'QS', unit: 'Minuten' },
+            unit: null,
+        },
+        chant: {
+            duration: { amount: 8, unit: 'Aktionen' },
+            type: 'Chant',
+            property: '',
+        },
+    },{
+        id: 'schmerzresistenz',
+        name: 'Schmerzresistenz',
+        attributes: ['MU', 'IN', 'KO'],
+        cost: {
+            initial: 8,
+            additional: {},
+        },
+        effect: {
+            description:
+                'Alle Effekte der Stufen des Zustands Schmerz können ignoriert werden, bis auf Stufe IV (ab Stufe IV wird der Geweihe von den ganz normalen Auswirkungen des Zustands betroffen).',
+            duration: { amount: 3, modifier: 'QS', unit: 'Kampfrunden' },
+            unit: null,
+        },
+        chant: {
+            duration: { amount: 1, unit: 'Aktion' },
+            type: 'Chant',
+            property: '',
+        },
+    },{
+        id: 'schutzderwehrlosen',
+        name: 'Schutz der Wehrlosen',
+        attributes: ['MU', 'IN', 'CH'],
+        cost: {
+            initial: 8,
+            additional: {},
+        },
+        effect: {
+            description:
+                'Der Geweihte kann einen Kämpfer, der eine wehr- oder schutzlose Person angreift oder angreifen will, herausfordern. Der Herausgeforderte lässt von seinem Opfer ab und greift stattdessen den Rondrageweihten an.',
+            duration: { amount: 3, modifier: 'QS', unit: 'Minuten' },
+            unit: null,
+        },
+        chant: {
+            duration: { amount: 1, unit: 'Aktion' },
+            type: 'Chant',
+            property: '',
+        },
+    },{
+        id: 'sternenglanz',
+        name: 'Sternenglanz',
+        attributes: ['KL', 'IN', 'CH'],
+        cost: {
+            initial: 8,
+            additional: {},
+        },
+        effect: {
+            description:
+                'Es kann so einen um QS x 10 % höheren Preis erzielen. Misstrauische Käufer können diese Täuschung durchschauen, wenn ihnen eine vergleichende Probe auf Sinnesschärfe (Suchen) erschwert um QS +2 gelingt.',
+            duration: { amount: 15, modifier: 'QS', unit: 'Minuten' },
+            unit: null,
+        },
+        chant: {
+            duration: { amount: 2, unit: 'Aktion' },
+            type: 'Chant',
+            property: '',
+        },
+    },{
+        id: 'wahrheit',
+        name: 'Wahrheit',
+        attributes: ['MU', 'KL', 'IN'],
+        cost: {
+            initial: 16,
+            additional: {},
+        },
+        effect: {
+            description:
+                'Der Betroffene muss dem Geweihten (und nur ihm) wahrheitsgemäß auf jede seiner Frage antworten, so lange die Wirkungsdauer der Liturgie anhält. Das Opfer der Liturgie weiß, was es sagt.',
+            duration: { amount: 3, modifier: 'QS', unit: 'Minuten' },
+            unit: null,
+        },
+        chant: {
+            duration: { amount: 8, unit: 'Aktion' },
+            type: 'Chant',
+            property: '',
+        },
+    },{
+        id: 'wieselflink',
+        name: 'Wieselflink',
+        attributes: ['IN', 'IN', 'GE'],
+        cost: {
+            initial: 8,
+            additional: {},
+        },
+        effect: {
+            description:
+                'Der Geweihte wird flinker und schneller. Je nach QS erhält er verschiedene Boni. Die Boni sind kumulativ, d.h. bei QS 5 hat der Geweihte insgesamt GE +3, GS + 1 und AW +1. Durch die Steigerung der GE können auch die Schadensschwellen bei Kampftechniken mit GE betroffen sein. Der Geweihte macht also eventuell mehr Schaden mit einigen Waffen.',
+            duration: { amount: 3, modifier: 'QS', unit: 'Minuten' },
+            unit: null,
+        },
+        chant: {
+            duration: { amount: 2, unit: 'Aktion' },
+            type: 'Chant',
+            property: '',
+        },
+    },
+    {
+        id: 'wundersameverstaendigung',
+        name: 'Wundersame Verständigung',
+        attributes: ['KL', 'KL', 'IN'],
+        cost: {
+            initial: 8,
+            additional: {},
+        },
+        effect: {
+            description:
+                'Der Geweihte erhält die Stufen in der Sprache, die er gerade für seine Kommunikation benötigt. Es ist nicht notwendig, dass der Geweihte schon einmal etwas von der Sprache gehört oder gelesen hat.',
+            duration: { amount: 3, modifier: 'QS', unit: 'Stunden' },
+            unit: null,
+        },
+        chant: {
+            duration: { amount: 2, unit: 'Aktion' },
+            type: 'Chant',
+            property: '',
+        },
     },
 ];
-
-module.exports = { Chants };
