@@ -16,7 +16,8 @@ module.exports = {
 			const numberOfDice = parseInt( params[0] );
 			const diceValues = parseInt( params[1] );
 			const result = roll( numberOfDice, diceValues, message.author.tag );
-			message.reply(`${findMessage('ROLL')} ${result.dice.join(', ')} (Gesamt: ${result.sum} + ${Bonus} = ${result.sum + Bonus})` );
+                        let total = (Bonus ? (Bonus + result.sum) : result.sum)
+			message.reply(`${findMessage('ROLL')} ${result.dice.join(', ')} (Gesamt: ${result.sum}${Bonus ? `+${Bonus}=${total}`})` );
 		}
 	},
 };
