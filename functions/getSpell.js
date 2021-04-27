@@ -30,15 +30,14 @@ const getSpell = ({ Character: Character = [], spell_name: spell_name = '' } = {
 
     let Level = 0; // This is the minimum attributes value.
     let Spell = Character.spells.find(spell => spell.id === spell_entry.id) || {}; //?+
-    if (Spell) {
+    if (Spell && Spell.hasOwnProperty('level')) {
         Level = Spell.level || 0;
     }
-    let Name = spell_entry.name;
     let ModifiedBy = spell_entry.modified_by;
     let Attributes = getAttributeLevels(spell_entry.attributes, Character);
 
     return {
-        Name: Name,
+        Name: spell_entry.name,
         Level: Level,
         Attributes: Attributes,
         ModifiedBy: ModifiedBy,

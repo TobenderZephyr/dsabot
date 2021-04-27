@@ -140,7 +140,8 @@ const Replies = [
 	{ id: 'PARRY_CRIT_SUCCESS',	string: 'Kritischer Erfolg! Du darfst einen Passierschlag ausführen!'},
 	{ id: 'ROLL', 				string: 'Du würfelst:'},
 	{ id: 'HEADS_OR_TAILS', 	string: 'Die Münze landet auf ' },
-	{ id: 'SPELL_UNKNOWN',		string: 'Diesen Zauber kenne ich nicht.'}
+	{ id: 'SPELL_UNKNOWN', 		string: 'Diesen Zauber kenne ich nicht.' },
+	{ id: 'NO_SPELLS',			string: 'Du kennst keine Zaubersprüche.'}
 ];
 const Declination = ['dem', 'der', 'dem', '']; // Maskulinum, Feminimum, Neutrum, None
 const Articles = ['Der','Die','Das',''];
