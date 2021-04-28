@@ -18,7 +18,12 @@ module.exports = {
             Character = docs[0].character;
             if (!Character.hasOwnProperty('chants')) return message.reply(findMessage('NO_CHANTS'));
             if (args.length === 0) {
-                return message.reply(ReplyChantList(createChantList(Character)));
+                const Embed = new Discord.MessageEmbed()
+                    .setColor('#0099ff')
+                    .setTitle(findMessage('SPELLS_TITLE'))
+                    .setDescription(findMessage('SPELLS_DESCRIPTION'))
+                    .addField(ReplyChantList(createChantList(Character)), '\u200B', true);
+                return message.reply(Embed);
             }
             const Chant = getChant({
                 Character: Character,

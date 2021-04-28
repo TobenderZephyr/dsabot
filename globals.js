@@ -141,8 +141,12 @@ const Replies = [
 	{ id: 'ROLL', 				string: 'Du würfelst:'},
 	{ id: 'HEADS_OR_TAILS', 	string: 'Die Münze landet auf ' },
 	{ id: 'SPELL_UNKNOWN', 		string: 'Diesen Zauber kenne ich nicht.' },
-	{ id: 'NO_SPELLS',			string: 'Du kennst keine Zaubersprüche.'},
-	{ id: 'NO_CHANTS',			string: 'Du kennst keine Liturgien.'}
+	{ id: 'NO_SPELLS', 			string: 'Du kennst keine Zaubersprüche.' },
+	{ id: 'SPELLS_TITLE', 		string: 'Zaubersprüche'},
+	{ id: 'SPELLS_DESCRIPTION', string: 'Folgende Zaubersprüche beherrschst du:'},
+	{ id: 'NO_CHANTS', 			string: 'Du kennst keine Liturgien.' },
+	{ id: 'CHANTS_TITLE', 		string: 'Liturgien'},
+	{ id: 'CHANTS_DESCRIPTION', string: 'Folgende Liturgien beherrschst du:'},
 ];
 const Declination = ['dem', 'der', 'dem', '']; // Maskulinum, Feminimum, Neutrum, None
 const Articles = ['Der','Die','Das',''];

@@ -18,7 +18,12 @@ module.exports = {
             Character = docs[0].character;
             if (!Character.hasOwnProperty('spells')) return message.reply(findMessage('NO_SPELLS'));
             if (args.length === 0) {
-                return message.reply(ReplySpellList(createSpellList(Character)));
+                const Embed = new Discord.MessageEmbed()
+                    .setColor('#0099ff')
+                    .setTitle(findMessage('SPELLS_TITLE'))
+                    .setDescription(findMessage('SPELLS_DESCRIPTION'))
+                    .addField(ReplySpellList(createSpellList(Character)), '\u200B', true);
+                return message.reply(Embed);
             }
             const Spell = getSpell({
                 Character: Character,
