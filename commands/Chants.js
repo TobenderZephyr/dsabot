@@ -1,5 +1,6 @@
 //const globals = require('../globals');
 const globals = require('../globals');
+const Discord = require('discord.js');
 const db = globals.db;
 const { findMessage } = require('@dsabot/findMessage');
 const { getChant } = require('@dsabot/getChant');
