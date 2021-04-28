@@ -20,8 +20,8 @@ module.exports = {
             if (args.length === 0) {
                 const Embed = new Discord.MessageEmbed()
                     .setColor('#0099ff')
-                    .setTitle(findMessage('SPELLS_TITLE'))
-                    .setDescription(findMessage('SPELLS_DESCRIPTION'))
+                    .setTitle(findMessage('CHANTS_TITLE'))
+                    .setDescription(findMessage('CHANTS_DESCRIPTION'))
                     .addField(ReplyChantList(createChantList(Character)), '\u200B', true);
                 return message.reply(Embed);
             }
