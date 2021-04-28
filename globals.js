@@ -146,7 +146,8 @@ const Replies = [
 	{ id: 'SPELLS_DESCRIPTION', string: 'Folgende Zaubersprüche beherrschst du:'},
 	{ id: 'NO_CHANTS', 			string: 'Du kennst keine Liturgien.' },
 	{ id: 'CHANTS_TITLE', 		string: 'Liturgien'},
-	{ id: 'CHANTS_DESCRIPTION', string: 'Folgende Liturgien beherrschst du:'},
+	{ id: 'CHANTS_DESCRIPTION', string: 'Folgende Liturgien beherrschst du:' },
+	{ id: 'CHANT_UNKNOWN',		string: 'Diese Liturgie kenne ich nicht.'}
 ];
 const Declination = ['dem', 'der', 'dem', '']; // Maskulinum, Feminimum, Neutrum, None
 const Articles = ['Der','Die','Das',''];

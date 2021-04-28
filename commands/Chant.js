@@ -21,8 +21,7 @@ module.exports = {
             if (docs.length === 0) {
                 return message.reply(findMessage('NOENTRY'));
             }
-            if (!docs[0].character.hasOwnProperty('chants'))
-                return message.reply(findMessage('NO_CHANTS'));
+            if (!docs[0].character.hasOwnProperty('chants')) return message.reply(findMessage('NO_CHANTS'));
             if (!isNaN(args[0])) {
                 return message.reply(findMessage('WRONG_ARGUMENTS'));
             }
@@ -44,7 +43,7 @@ module.exports = {
             );
             const Reply = new Discord.MessageEmbed();
             Reply.addFields({
-                name: `Du würfelst auf das Talent **${Chant.Name}** ( Stufe ${Chant.Level} ${
+                name: `Du würfelst auf die Liturgie **${Chant.Name}** ( Stufe ${Chant.Level} ${
                     Bonus ? `${f(Bonus)} ` : ''
                 })`,
                 value: CreateResultTable({
@@ -72,17 +71,15 @@ module.exports = {
             } else if (Passed < 3) {
                 Reply.addFields({
                     name: findMessage('TITLE_FAILURE'),
-                    value: `${
-                        Passed === 0 ? 'Keine Probe' : `nur ${Passed}/3 Proben`
-                    } erfolgreich. 😪`,
+                    value: `${Passed === 0 ? 'Keine Probe' : `nur ${Passed}/3 Proben`} erfolgreich. 😪`,
                     inline: false,
                 });
             } else {
                 Reply.addFields({
                     name: findMessage('TITLE_SUCCESS'),
-                    value: `Dein verbleibender Bonus: ${PointsRemaining}/${
-                        Chant.Level
-                    } (QS${CalculateQuality(PointsRemaining)})`,
+                    value: `Dein verbleibender Bonus: ${PointsRemaining}/${Chant.Level} (QS${CalculateQuality(
+                        PointsRemaining
+                    )})`,
                     inline: false,
                 });
             }
