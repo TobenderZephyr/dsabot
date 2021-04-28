@@ -124,13 +124,7 @@ The container needs at least the following Environment variables:
 `BOT_TOKEN`: The token which you retrieve for your bot Discord Developer Portal
 `CMDPREFIX`: Instead of using `!` as your prefix, you may want to use your own.
 
-### Attention
-
-As of version 1.5, more data is stored into separated json files which reside under the data folder.
-To not place an empty directory into the container, please first create an empty file 'dsabot.db' and mount that into the container.
-You could also update json files (Spells, Chants, and more to come) on your own.
-
-You may run the container with `docker run -rm -v ./data/dsabot.db:/usr/src/app/data/dsabot.db -e BOT_TOKEN=[token] -e CMDPREFIX=! tobenderzephyr/dsabot:latest`
+You may run the container with `docker run -rm -v ./data:/usr/src/app/data/ -e BOT_TOKEN=[token] -e CMDPREFIX=! tobenderzephyr/dsabot:latest`
 
 The database is stored under `./data`, so you are good to just mount this as a volume as seen in the example above.
 
@@ -149,7 +143,7 @@ services:
       BOT_TOKEN: <YOUR TOKEN>
       CMDPREFIX: !
     volumes:
-      - ./data/dsabot.db:/usr/src/app/data/dsabot.db
+      - ./data/:/usr/src/app/data/
 ```
 
 ## manual setup
