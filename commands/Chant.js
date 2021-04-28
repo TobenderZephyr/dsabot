@@ -86,7 +86,6 @@ module.exports = {
                     inline: false,
                 });
             }
-
             message.reply(Reply);
         });
     },

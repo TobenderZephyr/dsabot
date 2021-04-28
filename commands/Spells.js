@@ -51,18 +51,3 @@ const createSpellList = (Character = {}) => {
     );
     return SpellList.filter(value => value !== undefined); //?+
 };
-/*
-//const s = require('./Spells');
-const c = require('./Cast');
-const user = 'hmpf1992#1074';
-//const user = 'Jens#5449';
-const message = {
-    author: { tag: user },
-    reply: function (e) {
-        console.log(e);
-    },
-};
-const args = ['fulminictus'];
-//s.exec(message, args);
-c.exec(message, args);
-*/
