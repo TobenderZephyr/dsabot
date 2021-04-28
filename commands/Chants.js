@@ -6,9 +6,9 @@ const { getChant } = require('@dsabot/getChant');
 module.exports = {
     name: 'chants',
     description: 'Zeigt dir deinen Fertigkeitswert im jeweiligen Magietalent (Götterwirken).',
-    aliases: ['chant', 'segen', 'liturgie'],
-    usage: '<Zauber>',
-    needs_args: true,
+    aliases: ['segen', 'liturgie', 'liturgien', 'zeremonien'],
+    usage: '[<Liturgie / Zeremonie>]',
+    needs_args: false,
 
     async exec(message, args) {
         console.log(message.author.tag);
@@ -17,6 +17,7 @@ module.exports = {
                 return message.reply(findMessage('NOENTRY'));
             }
             Character = docs[0].character;
+            if (!Character.hasOwnProperty('chants')) return message.reply(findMessage('NO_CHANTS'));
             if (args.length === 0) {
                 return message.reply(ReplyChantList(createChantList(Character))); //?+
             }
@@ -37,18 +38,22 @@ const createChantList = (Character = {}) => {
     let ChantList = [];
 
     // todo: send 'chant' to getChant() so we can filter out blessings.
-    Character.chants.forEach(chant => ChantList.push(getChant({ Character: Character, chant_name: chant.id })));
+    Character.chants.forEach(chant =>
+        ChantList.push(getChant({ Character: Character, chant_name: chant.id }))
+    );
     return ChantList.filter(value => value !== undefined); //?+
 };
 
 const ReplyChantList = (ChantList = []) => {
     if (!ChantList) return;
-    return `${ChantList.map(chant => `${chant.name} ${chant.level ? `(${chant.level})` : ''}`).join('\n')}`;
+    return `${ChantList.map(chant => `${chant.Name} ${chant.Level ? `(${chant.Level})` : ''}`).join(
+        '\n'
+    )}`;
 };
 
 const ReplyChant = (Chant = {}) => {
     if (!Chant) return;
-    return `Deine Werte für ${Chant.name} ${Chant.level ? '(' + Chant.level + ')' : ''} sind:
+    return `Deine Werte für ${Chant.Name} ${Chant.Level ? '(' + Chant.Level + ')' : ''} sind:
 
     ${Chant.Attributes.map(attribute => `${attribute.Name}: ${attribute.Level}`).join('   ')}
     `;

@@ -3,48 +3,48 @@ const Discord = require('discord.js');
 const db = globals.db;
 const { roll } = require('@dsabot/Roll');
 const { findMessage } = require('@dsabot/findMessage');
-const { getSpell } = require('@dsabot/getSpell');
+const { getChant } = require('@dsabot/getChant');
 const { CalculateQuality } = require('@dsabot/CalculateQuality');
 const { CompareResults } = require('@dsabot/CompareResults');
 const { CreateResultTable, f } = require('@dsabot/CreateResultTable');
 module.exports = {
-    name: 'cast',
+    name: 'chant',
     description:
         ' Du machst eine Fertigkeitsprobe auf Magietalente.\n' +
         ' Es werden drei Würfel auf deine Eigenschaftswerte geworfen. Deine Boni werden in' +
         ' die Berechnung einbezogen.',
-    aliases: ['zaubern'],
-    usage: '<Zaubern> [<-Erschwernis> / <+Erleichterung>]',
+    aliases: [''],
+    usage: '<Liturgie/Zeremonie> [<-Erschwernis> / <+Erleichterung>]',
     needs_args: false,
     async exec(message, args) {
         db.find({ user: message.author.tag }, (err, docs) => {
             if (docs.length === 0) {
                 return message.reply(findMessage('NOENTRY'));
             }
-            if (!docs[0].character.hasOwnProperty('spells'))
-                return message.reply(findMessage('NO_SPELLS'));
+            if (!docs[0].character.hasOwnProperty('chants'))
+                return message.reply(findMessage('NO_CHANTS'));
             if (!isNaN(args[0])) {
                 return message.reply(findMessage('WRONG_ARGUMENTS'));
             }
-            const Spell = getSpell({ Character: docs[0].character, spell_name: args[0] });
-            if (!Spell) {
-                return message.reply(findMessage('SPELL_UNKNOWN'));
+            const Chant = getSpell({ Character: docs[0].character, chant_name: args[0] });
+            if (!Chant) {
+                return message.reply(findMessage('CHANT_UNKNOWN'));
             }
-            if (!Spell.Level || !Spell.Attributes) {
+            if (!Chant.Level || !Chant.Attributes) {
                 return;
             }
-            const Attributes = Spell.Attributes;
+            const Attributes = Chant.Attributes;
             const DiceThrow = roll(3, 20, message.author.tag).dice;
             const Bonus = parseInt(args[1]) || 0;
             let { Passed, CriticalHit, Fumbles, PointsUsed, PointsRemaining } = CompareResults(
                 DiceThrow,
                 Attributes.map(attr => attr.Level),
                 Bonus,
-                Spell.Level
+                Chant.Level
             );
             const Reply = new Discord.MessageEmbed();
             Reply.addFields({
-                name: `Du würfelst auf das Talent **${Spell.Name}** ( Stufe ${Spell.Level} ${
+                name: `Du würfelst auf das Talent **${Chant.Name}** ( Stufe ${Chant.Level} ${
                     Bonus ? `${f(Bonus)} ` : ''
                 })`,
                 value: CreateResultTable({
@@ -81,7 +81,7 @@ module.exports = {
                 Reply.addFields({
                     name: findMessage('TITLE_SUCCESS'),
                     value: `Dein verbleibender Bonus: ${PointsRemaining}/${
-                        Spell.Level
+                        Chant.Level
                     } (QS${CalculateQuality(PointsRemaining)})`,
                     inline: false,
                 });

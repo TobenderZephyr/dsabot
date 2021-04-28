@@ -473,4 +473,88 @@ module.exports = [
         },
         chant: { duration: { amount: 2, unit: 'Aktion' }, type: 'Chant', property: '' },
     },
+    {
+        id: 'ackersegen',
+        name: 'Ackersegen',
+        attributes: ['MU', 'KL', 'IN'],
+        cost: { initial: 16, additional: {} },
+        effect: {
+            description:
+                'Der Geweihte wandert über das frisch gesäte Feld und segnet die Ackerfrüchte. Die Wirkung des Segens entfaltet sich auf einer Fläche von bis zu QS x 1.000 Quadratschritt (der Geweihte darf vom Zentrum des betroffenen Gebietes aber nicht weiter weg sein, als die Reichweite der Liturgie beträgt). Die Ackerfrucht ist weniger anfällig gegen Krankheiten und Ungeziefer, während alle anderen Pflanzen auf dem Acker in ihrem Wachstum gehemmt werden. Der Segen schützt die Pflanzen jedoch nicht vor äußeren Einflüssen wie Dürre, Überflutung oder Hagelschlag.',
+            duration: { amount: 1, modifier: null, unit: 'Wachstumszyklus (6-12Mo)' },
+            instant: false,
+            pulse: false,
+        },
+        chant: { duration: { amount: 1, unit: 'Stunden' }, type: 'Ceremonie', property: '' },
+    },
+    {
+        id: 'exorzismus',
+        name: 'Exorzismus',
+        attributes: ['MU', 'IN', 'CH'],
+        cost: { initial: 32, additional: {} },
+        effect: {
+            description:
+                'Mit einem Exorzismus werden Dämonen und Geister ausgetrieben, die Besitz von einem Lebewesen ergriffen haben. Gelingt der Exorzismus, wird der Dämon oder Geist aus dem Körper vertrieben und zurück in die Niederhöllen oder ins Totenreich verbannt.',
+            duration: {},
+            instant: true,
+            pulse: false,
+        },
+        chant: { duration: { amount: 8, unit: 'Stunden' }, type: 'Ceremonie', property: '' },
+    },
+    {
+        id: 'geweihterpanzer',
+        name: 'Geweihter Panzer',
+        attributes: ['MU', 'IN', 'CH'],
+        cost: { initial: 16, additional: {} },
+        effect: {
+            description:
+                'Die Rüstung des Geweihten gilt als geweiht. Wenn Dämonen den Geweihten angreifen, verursachen erfolgreiche Angriffe des Dämons 1W3 SP bei ihm, da er den Geweihten oder seine Rüstung berühren muss.',
+            duration: { amount: 15, modifier: 'QS', unit: 'Minuten' },
+            instant: false,
+            pulse: false,
+        },
+        chant: { duration: { amount: 30, unit: 'Minuten' }, type: 'Ceremonie', property: '' },
+    },
+    {
+        id: 'loewengestalt',
+        name: 'Löwengestalt',
+        attributes: ['MU', 'KL', 'IN'],
+        cost: { initial: 16, additional: {} },
+        effect: {
+            description:
+                'Der Geweihte verwandelt sich in einen Löwen. Hierbei wird die Kleidung nicht mitverwandelt. In der Löwengestalt behält der Geweihte seine geistigen Eigenschaften und erhält die körperlichen Eigenschaften und Fähigkeiten des Löwen. Zudem kann er QS x 2 Punkte zusätzlich auf die körperlichen Eigenschaften des Löwen verteilen. In der Löwengestalt kann er keine übernatürlichen Fähigkeiten wie Zauber und Liturgien wirken. In Löwengestalt gilt der Geweihte als gesegnet.',
+            duration: { amount: 3, modifier: 'QS', unit: 'Stunden' },
+            instant: false,
+            pulse: false,
+        },
+        chant: { duration: { amount: 30, unit: 'Minuten' }, type: 'Ceremonie', property: '' },
+    },
+    {
+        id: 'nebelleib',
+        name: 'Nebelleib',
+        attributes: ['KL', 'IN', 'CH'],
+        cost: { initial: 16, additional: {} },
+        effect: {
+            description:
+                'Der Körper des Phexgeweihten verwandelt sich in Nebel. Seine Kleidung und Gegenstände, die er am Körper trug, werden nicht mitverwandelt. Profane, magische und geweihte Waffen richten gegen den Nebel keinen Schaden an. Zauber mit dem Merkmal Verwandlung können nicht gegen den Nebel eingesetzt werden. Der Geweihte kann sich bei relativer Windstille mit GS 4 willentlich fortbewegen; bei leichtem Gegenwind muss er eine Probe auf Willenskraft bestehen, um nicht abgetrieben zu werden; bei starkem Gegenwind wird er aber in Windrichtung davongeblasen, ohne sich dagegen wehren zu können. Der Geweihte kann seine Umgebung mit allen fünf Sinnen wahrnehmen. Der Geweihte bleibt so lange ein Nebel, bis die Wirkungsdauer vorüber ist.',
+            duration: { amount: 10, modifier: 'QS', unit: 'Minuten' },
+            instant: false,
+            pulse: false,
+        },
+        chant: { duration: { amount: 30, unit: 'Minuten' }, type: 'Ceremonie', property: '' },
+    },
+    {
+        id: 'objektweihe',
+        name: 'Objektweihe',
+        attributes: ['KL', 'IN', 'CH'],
+        cost: { initial: 16, additional: {} },
+        effect: {
+            description:
+                'Das Objekt, üblicherweise ein liturgischer Gegenstand oder eine rituelle Waffe wie ein Sonnenzepter oder ein Rondrakamm, wird geweiht. Damit wird es von den karmalen Kräften der jeweiligen Gottheit durchdrungen, weswegen üblicherweise nur ausgewählte, der Gottheit gefällige Gegenstände geweiht und nur wahren Gläubigen ausgehändigt werden. Sollte das geweihte Objekt eine Waffe sein, gilt sie nun als geweihte Waffe. Das Objekt darf maximal 4 Stein wiegen. Für jede QS kann das Objekt 1 Stein mehr wiegen. Die Objektweihe wird vor allem für die geweihten Rabenschnäbel der Borongeweihten, das Sonnenzepter der Praioten und die Rondrakämme der Rondrageweihtenschaft verwendet. (Für die Herstellung von Zeremonialgegenständen ist allerdings noch die SF "Zeremonialgegenstände herstellen" notwendig.)',
+            duration: {},
+            instant: true,
+            pulse: false,
+        },
+        chant: { duration: { amount: 2, unit: 'Stunden' }, type: 'Ceremonie', property: '' },
+    },
 ];

@@ -1,22 +1,5 @@
 const { getAttributeLevels } = require('@dsabot/getAttributeLevels');
-const Spells = require('../data/Spells');
-/* definition of attributes in spell database
-
-  {
-    id: 'adlerauge',                        // the id of the spell inside characters database.
-    name: 'Adlerauge',                      // the well-known name of the spell.
-    attributes: [ 'KL', 'IN', 'FF' ],       // needed attribute checks when casting the spell
-    spellduration: 2,                       // the player needs this many actions to cast the spell. 
-    modified_by: [],                        // the spell is modified by this character's attribute
-    cost: null,                             // how many units does the spell cost? (when activated)
-    cost_type: 'asp',                       // what kind of points does the character need?
-                                            // AsP = Astral Points, KaP = Karmal Points
-    effect: '',                             // What is the desired effect of this spell?
-    effectduration: ''                      // How long does the effect last?
-    talent: null                            //  
-  },
-
-*/
+const Spells = require('../data/Spells.json');
 
 const getSpell = ({ Character: Character = [], spell_name: spell_name = '' } = {}) => {
     const spell_entry =
@@ -24,11 +7,12 @@ const getSpell = ({ Character: Character = [], spell_name: spell_name = '' } = {
         Spells.find(spell => spell.name.toLowerCase() === spell_name.toLowerCase());
 
     if (!spell_entry) {
-        console.log(`getSpell did not find entry for ${spell_name}`);
+        console.log(`getSpell() did not find entry for ${spell_name}`);
         return;
     }
 
     let Level = 0; // This is the minimum attributes value.
+    if (!Character.hasOwnProperty('spells')) return;
     let Spell = Character.spells.find(spell => spell.id === spell_entry.id) || {}; //?+
     if (Spell && Spell.hasOwnProperty('level')) {
         Level = Spell.level || 0;
