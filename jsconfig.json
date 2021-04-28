@@ -4,8 +4,9 @@
         "paths": {
             "@dsabot/*": ["./functions/*"],
             "@globals": ["./globals"],
-            "@data": ["./data/*"],
-            "@Commands": ["./commands/*"]
+            "@data/*": ["./data/*"],
+            "@Commands/*": ["./commands/*"],
+            "@Lib/*": ["./lib/*"]
         },
     },
     "exclude": ["node_modules"],

@@ -1,6 +1,6 @@
 {
   "name": "dsabot",
-  "version": "1.1.0",
+  "version": "1.5.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -11,7 +11,8 @@
   "_moduleAliases": {
     "@dsabot": "functions",
     "@data": "data",
-    "@Commands": "commands"
+    "@Commands": "commands",
+    "@Lib": "lib"
   },
   "author": "",
   "license": "ISC",

@@ -8,7 +8,7 @@ module.exports = {
     description: 'Zeigt dir deinen Fertigkeitswert im jeweiligen Magietalent.',
     aliases: ['spell', 'zauber'],
     usage: '<Zauber>',
-    needs_args: true,
+    needs_args: false,
 
     async exec(message, args) {
         db.find({ user: message.author.tag }, (err, docs) => {
@@ -46,8 +46,6 @@ const ReplySpell = (Spell = {}) => {
 const createSpellList = (Character = {}) => {
     if (!Character || !Character.hasOwnProperty('spells')) return;
     let SpellList = [];
-    Character.spells.forEach(spell =>
-        SpellList.push(getSpell({ Character: Character, spell_name: spell.id }))
-    );
+    Character.spells.forEach(spell => SpellList.push(getSpell({ Character: Character, spell_name: spell.id })));
     return SpellList.filter(value => value !== undefined); //?+
 };

@@ -1,5 +1,5 @@
 const { getAttributeLevels } = require('@dsabot/getAttributeLevels');
-const Spells = require('../data/Spells.json');
+const Spells = require('@Lib/Spells.json');
 
 const getSpell = ({ Character: Character = [], spell_name: spell_name = '' } = {}) => {
     const spell_entry =
