@@ -21,14 +21,14 @@ module.exports = {
             if (args.length === 0) {
                 return message.reply(ReplyChantList(createChantList(Character))); //?+
             }
-            const Spell = getChant({
+            const Chant = getChant({
                 Character: Character,
                 chant_name: args[0],
             });
-            if (!Spell) {
+            if (!Chant) {
                 return message.reply(findMessage('SPELL_UNKNOWN'));
             }
-            return message.reply(ReplyChant(Spell));
+            return message.reply(ReplyChant(Chant));
         });
     },
 };

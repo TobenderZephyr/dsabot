@@ -26,7 +26,7 @@ module.exports = {
             if (!isNaN(args[0])) {
                 return message.reply(findMessage('WRONG_ARGUMENTS'));
             }
-            const Chant = getSpell({ Character: docs[0].character, chant_name: args[0] });
+            const Chant = getChant({ Character: docs[0].character, chant_name: args[0] });
             if (!Chant) {
                 return message.reply(findMessage('CHANT_UNKNOWN'));
             }
