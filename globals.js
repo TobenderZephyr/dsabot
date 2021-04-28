@@ -139,7 +139,15 @@ const Replies = [
 	{ id: 'PARRY_SUCCESS',		string: 'Parade erfolgreich.'},
 	{ id: 'PARRY_CRIT_SUCCESS',	string: 'Kritischer Erfolg! Du darfst einen Passierschlag ausführen!'},
 	{ id: 'ROLL', 				string: 'Du würfelst:'},
-	{ id: 'HEADS_OR_TAILS',		string: 'Die Münze landet auf '}
+	{ id: 'HEADS_OR_TAILS', 	string: 'Die Münze landet auf ' },
+	{ id: 'SPELL_UNKNOWN', 		string: 'Diesen Zauber kenne ich nicht.' },
+	{ id: 'NO_SPELLS', 			string: 'Du kennst keine Zaubersprüche.' },
+	{ id: 'SPELLS_TITLE', 		string: 'Zaubersprüche'},
+	{ id: 'SPELLS_DESCRIPTION', string: 'Folgende Zaubersprüche beherrschst du:'},
+	{ id: 'NO_CHANTS', 			string: 'Du kennst keine Liturgien.' },
+	{ id: 'CHANTS_TITLE', 		string: 'Liturgien'},
+	{ id: 'CHANTS_DESCRIPTION', string: 'Folgende Liturgien beherrschst du:' },
+	{ id: 'CHANT_UNKNOWN',		string: 'Diese Liturgie kenne ich nicht.'}
 ];
 const Declination = ['dem', 'der', 'dem', '']; // Maskulinum, Feminimum, Neutrum, None
 const Articles = ['Der','Die','Das',''];
@@ -231,5 +239,6 @@ const Advantages = [
 const Disadvantages = [
 	{}
 ];
+
 module.exports = { Werte, Talente, Coin, TalentKategorien, DiceRegex, Discord, MessageEmbed, db, Replies, MeleeWeapons, Weapons, RangedWeapons, CombatTechniques, Articles, Declination };
 

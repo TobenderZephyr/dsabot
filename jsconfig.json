@@ -3,11 +3,14 @@
         "baseUrl": ".",
         "paths": {
             "@dsabot/*": ["./functions/*"],
-            "@globals": ["./globals"]
+            "@globals": ["./globals"],
+            "@data/*": ["./data/*"],
+            "@Commands/*": ["./commands/*"],
+            "@Lib/*": ["./lib/*"]
         },
     },
     "exclude": ["node_modules"],
     "typeAcquisition": {
-        "exclude": [ "dotenv" ]
+        "exclude": [ "dotenv", "source-map" ]
       },
 }
