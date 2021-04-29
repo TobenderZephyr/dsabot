@@ -5,6 +5,6 @@ module.exports = {
         '@Commands/(.*)': '<rootDir>/commands/$1',
         '@Root/(.*)': '<rootDir>/$1',
         '@data/(.*)': '<rootDir>/data/$i',
-        '@lib/(.*)': '<rootDir>/lib/$i',
+        '@Lib/(.*)': '<rootDir>/lib/$i',
     },
 };
