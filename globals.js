@@ -2,7 +2,7 @@ const Discord = require('discord.js');
 const Datastore = require('nedb'),
 	db = new Datastore({
 		filename: 'data/dsabot.db',
-		autoload: true,
+		autoload: false,
 	});
 const MessageEmbed = new Discord.MessageEmbed();
 const money = [{
