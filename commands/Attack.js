@@ -1,10 +1,9 @@
 require('module-alias/register');
 const globals = require('../globals');
 const db = globals.db;
-const Random = require('random');
-//const { roll } = require('@dsabot/Roll');
-const { findMessage } = require('@dsabot/findMessage');
 const { roll } = require('@dsabot/Roll');
+const { findMessage } = require('@dsabot/findMessage');
+
 module.exports = {
     name: 'attack',
     description: 'Würfelt den Attackewert auf eine Nahkampfwaffe.',
@@ -26,8 +25,6 @@ function handleAttack(err, docs, message) {
     if (docs.length === 0) {
         return message.reply(findMessage('NOENTRY'));
     }
-
-    Random.use(message.author.tag);
 
     const Player = docs[0].character;
     const Weapon = getWeapon(args[0]);
