@@ -1,6 +1,6 @@
 # DSA Discord Bot
 
-![GitHub package.json version](https://img.shields.io/github/package-json/v/TobenderZephyr/dsabot?style=flat-square) ![node-current](https://img.shields.io/node/v/discord.js?style=flat-square) ![GitHub last commit](https://img.shields.io/github/last-commit/TobenderZephyr/dsabot?style=flat-square) ![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/TobenderZephyr/dsabot-docker/Build%20Image%20on%20Push/main?label=docker%20image&style=flat-square) [Docker Pulls](https://img.shields.io/docker/pulls/tobenderzephyr/dsabot) [![CodeQL](https://github.com/TobenderZephyr/dsabot/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/TobenderZephyr/dsabot/actions/workflows/codeql-analysis.yml)
+![GitHub package.json version](https://img.shields.io/github/package-json/v/TobenderZephyr/dsabot?style=flat-square) ![node-current](https://img.shields.io/node/v/discord.js?style=flat-square) ![GitHub last commit](https://img.shields.io/github/last-commit/TobenderZephyr/dsabot?style=flat-square) ![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/TobenderZephyr/dsabot-docker/Build%20Image%20on%20Push/main?label=docker%20image&style=flat-square) ![Docker Pulls](https://img.shields.io/docker/pulls/tobenderzephyr/dsabot) [![CodeQL](https://github.com/TobenderZephyr/dsabot/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/TobenderZephyr/dsabot/actions/workflows/codeql-analysis.yml)
 
 ===
 
