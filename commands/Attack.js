@@ -1,3 +1,4 @@
+require('module-alias/register');
 const globals = require('../globals');
 const db = globals.db;
 const Random = require('random');
@@ -86,18 +87,18 @@ function handleAttack(err, docs, message) {
     return message.reply(Reply);
 }
 
-const getCombatTechnique = Weapon => {
+function getCombatTechnique(Weapon) {
     if (Weapon)
         return globals.CombatTechniques.find(technique => technique.id === Weapon.combattechnique);
-};
+}
 function getAttribute(abbr) {
     return globals.Werte.find(attribute => attribute.kuerzel === abbr);
 }
 
 function CompareAttackResult(dice = [8, 8], Comparison = 6) {
-    let ok,
-        crit,
-        dd,
+    let ok = false,
+        crit = false,
+        dd = false,
         fumble = false;
 
     dice.forEach((val, index) => {
