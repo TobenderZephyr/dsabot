@@ -1,124 +1,149 @@
+require('module-alias/register');
 const globals = require('../globals');
 const db = globals.db;
-const Random = require('random');
-//const { roll } = require('@dsabot/Roll');
-const { findMessage }= require('@dsabot/findMessage');
+const { roll } = require('@dsabot/Roll');
+const { findMessage } = require('@dsabot/findMessage');
 
 module.exports = {
-	name: 'attack',
-	description: 'Würfelt den Attackewert auf eine Nahkampfwaffe.',
-	aliases: ['angriff','attacke'],
-	usage: '<Waffe>',
-	needs_args: true,
+    name: 'attack',
+    description: 'Würfelt den Attackewert auf eine Nahkampfwaffe.',
+    aliases: ['angriff', 'attacke'],
+    usage: '<Waffe>',
+    needs_args: true,
 
-	async exec(message, args) {
-		try {
-			db.find({
-				user: message.author.tag,
-			}, function(err, docs) {
-				if (docs.length === 0) {
-					return message.reply(findMessage('NOENTRY'));
-				}
-				else {
-
-					Random.use(message.author.tag);
-
-					const Player = docs[0].character;
-					const Weapon = globals.Weapons.find(w => w.id === args[0].toLowerCase());
-					if(!Weapon) { return message.reply(globals.Replies.find(r => r.id === 'NO_SUCH_WEAPON').string); }
-
-					// Determining Both Attack and Ranged Attack Values.
-					const CombatTechnique = globals.CombatTechniques.find(technique => technique.id === Weapon.combattechnique);
-					let PlayerCombatTechnique = Player.combattechniques.find(technique => technique.id === CombatTechnique.id);
-					let CombatTechniqueValue = null;
-					if (PlayerCombatTechnique) { CombatTechniqueValue = PlayerCombatTechnique.level; }
-					if(!CombatTechniqueValue) { CombatTechniqueValue = 6; }
-					let Attribute;
-					let AttackValue = CombatTechniqueValue;
-					if (globals.MeleeWeapons.find(MeleeWeapon => MeleeWeapon.id === Weapon.id)) { 
-						// For melee combat, MU is used for determining the Attack Value. Also, any weapon-based attack modifiers apply.
-						Attribute = Player.attributes.find(a => a.id === 'mut').level;
-						AttackValue += Weapon.at_mod;
-					}
-					else {
-						// For ranged combat, FF is used for determining Attack Value
-						Attribute = Player.attributes.find(a => a.id === 'fingerfertigkeit').level;
-					}
-					AttackValue += Math.floor((Attribute - 8)/3);
-
-					let dice = [];
-					let Bonus = 0;
-					if(args[1] && !isNaN(parseInt(args[1]))) { Bonus = parseInt(args[1]); }
-					let Comparison = Math.floor(AttackValue + Bonus);
-					let CriticalHit = false;
-					let Patzer = false;
-					let Ok = false;
-					let DoubleDamage = false;
-
-					for (let i = 0; i < 2; i++) {
-						dice.push(Random.int(1,20));
-					}
-
-					// If there is a cleaner way to do these checks, I'm all into it.
-					if((dice[0] == 1) && dice[1] <= Comparison) 	 { CriticalHit = true; DoubleDamage = true; Ok = true; }
-					else if((dice[0] == 1) && dice[1] > Comparison)	 { CriticalHit = true; Ok = true; }
-					else if((dice[0] == 20) && dice[1] > Comparison) { Patzer = true; }
-					else if(dice[0] <= Comparison && !CriticalHit) 	 { Ok = true; dice.pop(); }
-					else if(dice[0] > Comparison ) 					 { dice.pop(); }
-
-
-					let Reply = 'Du greifst mit ' + globals.Declination[Weapon.article] + ' ' + Weapon.name + ' an.\n';
-					Reply += 'Dein Angriffswert für ' + CombatTechnique.name + ' ist ' + Math.floor(((Attribute - 8)/3) + CombatTechniqueValue) + '. (KtW: ' + CombatTechniqueValue + ')\n';
-					Reply += 'Deine 🎲: ` ' + dice.join(', ') + ' `.\n\n';
-
-					if(!Ok) {
-						Reply += globals.Replies.find(reply => reply.id === 'COMBAT_FAIL').string;
-						if(Patzer)			{ Reply += globals.Replies.find(reply => reply.id === 'COMBAT_CRIT_FAIL').string; }
-					}
-					else {
-						if(CriticalHit) 	{ Reply += globals.Replies.find(reply => reply.id === 'COMBAT_CRIT_SUCCESS').string; }
-						if(DoubleDamage) 	{ Reply += globals.Replies.find(reply => reply.id === 'COMBAT_DOUBLEDAMAGE').string; }
-						if(!CriticalHit) 	{ Reply += globals.Replies.find(reply => reply.id === 'COMBAT_SUCCESS').string; }
-
-						// adding 1 to damage for every point above weapon's "Leiteigenschaft"
-						// applies only to Melee Weapons.
-						let AttackBonus = 0;
-						if (globals.MeleeWeapons.find(MeleeWeapon => MeleeWeapon.id === Weapon.id))
-						{
-							if(Weapon.DmgThreshold) {
-								CombatTechnique.Leiteigenschaft.forEach(LEKuerzel => {
-									let Leiteigenschaft = globals.Werte.find(attribute => attribute.kuerzel === LEKuerzel);
-									let DmgThreshold = Weapon.DmgThreshold;
-									let AttributeValue = Player.attributes.find(attribute => attribute.id === Leiteigenschaft.id).level;
-									if(DmgThreshold<AttributeValue) {
-										AttackBonus += Math.floor(AttributeValue - DmgThreshold);
-									}
-								});
-							}
-						}
-						const DieModificator  = Weapon.diemodificator;
-						let Damage = DieModificator + AttackBonus;
-						let DamageDice = [];
-						for (let i = 0; i < Weapon.dice; i++) {
-							DamageDice.push(Random.int(1,6));
-						}
-						DamageDice.forEach(result => {
-							Damage += result;
-						});
-						if(DoubleDamage) { Damage *= 2; }
-
-						Reply += '\n\nHier aufklappen, wenn der Gegner nicht parieren/Ausweichen konnte:\n';
-						Reply += '||' + globals.Articles[Weapon.article] + ' ' + Weapon.name + ' (' + Weapon.dice + 'W6+' + Weapon.diemodificator +') erzielt ` ' + Damage + ' ` Schaden.';
-						Reply += '\nDeine 🎲: ` ' + DamageDice.join(',') + ' `.||\n';
-					}
-
-					return message.reply( Reply );
-
-				}
-			});
-		}
-		catch (e) {
-			throw e;
-		}
-	},
+    async exec(message, args) {
+        try {
+            db.find({ user: message.author.tag }, (err, docs) => handleAttack(err, docs, message));
+        } catch (e) {
+            throw e;
+        }
+    },
 };
+
+function handleAttack(err, docs, message) {
+    if (docs.length === 0) {
+        return message.reply(findMessage('NOENTRY'));
+    }
+
+    const Player = docs[0].character;
+    const Weapon = getWeapon(args[0]);
+    if (!Weapon) {
+        return message.reply(findMessage('NO_SUCH_WEAPON'));
+    }
+
+    // Determining Both Attack and Ranged Attack Values.
+    let CombatTechnique = getCombatTechniqueLevel(Player, getCombatTechnique(Weapon)); //?+
+
+    let Attribute = isMeleeWeapon(Weapon)
+        ? getAttributeLevel(Player, 'mut')
+        : getAttributeLevel(Player, 'fingerfertigkeit');
+
+    let AttackValue = isMeleeWeapon(Weapon)
+        ? CombatTechnique.level + Weapon.at_mod
+        : CombatTechnique.level;
+
+    AttackValue += Math.floor((Attribute - 8) / 3);
+
+    let dice = roll(2, 20).dice;
+    let Bonus = parseInt(args[1]) || 0;
+    let Comparison = Math.floor(AttackValue + Bonus);
+    const AttackResult = CompareAttackResult(dice, Comparison);
+
+    let Reply = `Du greifst mit ${Weapon.name} an.\n Dein Angriffswert für ${CombatTechnique.name} ist ${AttackValue} (KtW: ${CombatTechnique.level})\n`;
+    Reply += 'Deine 🎲: ` ' + AttackResult.Dice.join(', ') + ' `.\n\n';
+
+    Reply += !AttackResult.Ok ? findMessage('COMBAT_FAIL') : findMessage('COMBAT_SUCCESS');
+    Reply += AttackResult.Patzer ? findMessage('COMBAT_CRIT_FAIL') : '';
+    Reply += AttackResult.CriticalHit ? findMessage('COMBAT_CRIT_SUCCESS') : '';
+    Reply += AttackResult.DoubleDamage ? findMessage('COMBAT_DOUBLEDAMAGE') : '';
+
+    if (AttackResult.Ok) {
+        // adding 1 to damage for every point above weapon's "Leiteigenschaft"
+        // applies only to Melee Weapons.
+        let AttackBonus = 0;
+        if (isMeleeWeapon(Weapon) && Weapon.DmgThreshold) {
+            CombatTechnique.Leiteigenschaft.forEach(abbr => {
+                let Attribute = getAttribute(abbr);
+                let AttributeValue = getAttributeLevel(Player, Attribute.id);
+                if (Weapon.DmgThreshold < AttributeValue) {
+                    AttackBonus += Math.floor(AttributeValue - Weapon.DmgThreshold);
+                }
+            });
+        }
+
+        let DamageDice = roll(1, 6).dice;
+        let Damage = Weapon.diemodificator + AttackBonus + DamageDice.reduce((p, v) => p + v);
+        Damage = AttackResult.DoubleDamage ? (Damage *= 2) : Damage;
+
+        Reply += '\n\nHier aufklappen, wenn der Gegner nicht parieren/Ausweichen konnte:\n';
+        Reply += `|| ${Weapon.name} (${Weapon.dice}W6+${Weapon.diemodificator}) richtet ${Damage} schaden an.`;
+        Reply += '\nDeine 🎲: ` ' + DamageDice.join(',') + ' `.||\n';
+    }
+
+    return message.reply(Reply);
+}
+
+function getCombatTechnique(Weapon) {
+    if (Weapon)
+        return globals.CombatTechniques.find(technique => technique.id === Weapon.combattechnique);
+}
+function getAttribute(abbr) {
+    return globals.Werte.find(attribute => attribute.kuerzel === abbr);
+}
+
+function CompareAttackResult(dice = [8, 8], Comparison = 6) {
+    let ok = false,
+        crit = false,
+        dd = false,
+        fumble = false;
+
+    dice.forEach((val, index) => {
+        if (index === 0) {
+            ok = val <= Comparison ? true : false;
+            crit = val === 1 ? true : false;
+            fumble = val === 20 ? true : false;
+            if ((ok && !crit) || (!ok && !fumble)) {
+                dice.pop();
+            }
+        }
+        if (index === 1) {
+            dd = crit && val < Comparison ? true : false;
+            fumble = !crit && val > Comparison ? true : false;
+        }
+    });
+    return {
+        Ok: ok,
+        Patzer: fumble,
+        CriticalHit: crit,
+        DoubleDamage: dd,
+        Dice: dice,
+    };
+}
+
+function getAttributeLevel(Player = {}, Attribute = '') {
+    return Player.attributes.find(a => a.id === Attribute).level;
+}
+
+function getCombatTechniqueLevel(Player = {}, CombatTechnique = {}) {
+    if (Player && CombatTechnique) {
+        const p = Player.combattechniques.find(technique => technique.id === CombatTechnique.id);
+        return {
+            id: CombatTechnique.id,
+            name: CombatTechnique.name,
+            level: p ? p.level : 6,
+            Leiteigenschaft: CombatTechnique.Leiteigenschaft,
+        };
+    }
+}
+
+function getWeapon(Weapon = '') {
+    if (Weapon)
+        return globals.Weapons.find(
+            w => w.id === Weapon.toLowerCase() || w.name.toLowerCase() === Weapon.toLowerCase()
+        );
+}
+
+function isMeleeWeapon(Weapon) {
+    if (globals.MeleeWeapons.find(MeleeWeapon => MeleeWeapon.id === Weapon.id)) return true;
+    else return false;
+}
