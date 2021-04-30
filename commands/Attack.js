@@ -34,23 +34,17 @@ function handleAttack(err, docs) {
     }
 
     // Determining Both Attack and Ranged Attack Values.
-    const CombatTechnique = getCombatTechnique(Weapon);
-    let PlayerCombatTechnique = getPlayerCombatTechnique(Player, CombatTechnique);
+    let CombatTechnique = getPlayerCombatTechnique(Player, getCombatTechnique(Weapon));
+    let CombatTechniqueValue = CombatTechnique.hasOwnProperty('level') ? CombatTechnique.level : 6;
 
-    let CombatTechniqueValue = 6;
-    if (PlayerCombatTechnique.hasOwnProperty('level'))
-        CombatTechniqueValue = PlayerCombatTechnique.level || 6;
+    let Attribute = isMeleeWeapon(Weapon)
+        ? getAttribute(Player, 'mut')
+        : getAttribute(Player, 'fingerfertigkeit');
 
-    let Attribute;
-    let AttackValue = CombatTechniqueValue;
-    if (globals.MeleeWeapons.find(MeleeWeapon => MeleeWeapon.id === Weapon.id)) {
-        // For melee combat, MU is used for determining the Attack Value. Also, any weapon-based attack modifiers apply.
-        Attribute = Player.attributes.find(a => a.id === 'mut').level;
-        AttackValue += Weapon.at_mod;
-    } else {
-        // For ranged combat, FF is used for determining Attack Value
-        Attribute = Player.attributes.find(a => a.id === 'fingerfertigkeit').level;
-    }
+    let AttackValue = isMeleeWeapon(Weapon)
+        ? CombatTechniqueValue + Weapon.at_mod
+        : CombatTechniqueValue;
+
     AttackValue += Math.floor((Attribute - 8) / 3);
 
     let dice = [];
@@ -168,11 +162,20 @@ const getCombatTechnique = Weapon => {
     if (Weapon)
         return globals.CombatTechniques.find(technique => technique.id === Weapon.combattechnique);
 };
-function getPlayerCombatTechnique(Player, CombatTechnique) {
+function getAttribute(Player = {}, Attribute = '') {
+    return Player.attributes.find(a => a.id === Attribute).level;
+}
+
+function getPlayerCombatTechnique(Player = {}, CombatTechnique = {}) {
     if (Player && CombatTechnique)
         return Player.combattechniques.find(technique => technique.id === CombatTechnique.id);
 }
 
-function getWeapon(Weapon) {
+function getWeapon(Weapon = '') {
     if (Weapon) return globals.Weapons.find(w => w.id === Weapon.toLowerCase());
+}
+
+function isMeleeWeapon(Weapon) {
+    if (globals.MeleeWeapons.find(MeleeWeapon => MeleeWeapon.id === Weapon.id)) return true;
+    else return false;
 }
