@@ -2,8 +2,6 @@
 
 ![GitHub package.json version](https://img.shields.io/github/package-json/v/TobenderZephyr/dsabot?style=flat-square) ![node-current](https://img.shields.io/node/v/discord.js?style=flat-square) ![GitHub last commit](https://img.shields.io/github/last-commit/TobenderZephyr/dsabot?style=flat-square) ![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/TobenderZephyr/dsabot-docker/Build%20Image%20on%20Push/main?label=docker%20image&style=flat-square) ![Docker Pulls](https://img.shields.io/docker/pulls/tobenderzephyr/dsabot) [![CodeQL](https://github.com/TobenderZephyr/dsabot/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/TobenderZephyr/dsabot/actions/workflows/codeql-analysis.yml)
 
-===
-
 This Project is a fork of LucaSchwan/dsa-bot.
 
 It is a Discord.js Bot written in JavaScript to support playing the German Pen & Paper RPG "Das Schwarze Auge" (The Dark Eye). The Bot has a built-in Database based on Endb and can handle character sheets from [The Dark Aid](https://www.ulisses-ebooks.de/product/212543/The-Dark-Aid-alpha).
