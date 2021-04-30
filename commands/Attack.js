@@ -21,7 +21,7 @@ module.exports = {
 };
 
 function handleAttack(err, docs, message) {
-    if (err) return err;
+    if (err) throw new Error(err);
     if (docs.length === 0) {
         return message.reply(findMessage('NOENTRY'));
     }
