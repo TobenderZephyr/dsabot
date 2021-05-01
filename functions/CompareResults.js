@@ -18,28 +18,27 @@ const CompareResults = (
     let CriticalHit = 0;
     let AllPointsUsed = [];
 
-    for (let i = 0; i < Throws.length; i++) {
-        let PointsUsed = 0;
-        if (Math.floor(AttributeLevels[i] + Bonus) >= Throws[i]) {
+    Throws.forEach((Throw, key) => {
+        let AttributeLevel = AttributeLevels.find((v, k) => key === k);
+        if (Math.floor(AttributeLevel + Bonus) >= Throw) {
             Passed++;
-        } else if (Math.floor(AttributeLevels[i] + PointsRemaining + Bonus) >= Throws[i]) {
+        } else if (Math.floor(AttributeLevel + PointsRemaining + Bonus) >= Throw) {
             Passed++;
-            PointsUsed = Throws[i] - Bonus - AttributeLevels[i];
+            PointsUsed = Throw - Bonus - AttributeLevel;
             PointsRemaining -= PointsUsed;
         } else {
-            // We need to use all our points, so that next die/dice
-            // would not return a 'Passed'.
             PointsUsed = PointsRemaining;
             PointsRemaining -= PointsUsed;
         }
-        if (Throws[i] == 1) {
+        if (Throw === 1) {
             CriticalHit++;
         }
-        if (Throws[i] == 20) {
+        if (Throw === 20) {
             Fumbles++;
         }
         AllPointsUsed.push(PointsUsed);
-    }
+    });
+
     return {
         Passed: Passed,
         CriticalHit: CriticalHit,
