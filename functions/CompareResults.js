@@ -19,6 +19,7 @@ const CompareResults = (
     let AllPointsUsed = [];
 
     Throws.forEach((Throw, key) => {
+        let PointsUsed = 0;
         let AttributeLevel = AttributeLevels.find((v, k) => key === k);
         if (Math.floor(AttributeLevel + Bonus) >= Throw) {
             Passed++;
