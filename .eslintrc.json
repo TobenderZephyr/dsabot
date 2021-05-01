@@ -6,9 +6,6 @@
             "jsx": true
         }
     },
-    "extends": [
-        "prettier"
-    ],
     "rules": {
         "constructor-super": 2,
         "for-direction": 2,
@@ -69,6 +66,12 @@
         "valid-typeof": 2
     },
     "env": {
-        "node": true
-    }
+        "node": true,
+        "jest": true,
+        "commonjs": true,
+        "es2017": true
+    },
+    "extends":[
+        "prettier"
+    ]
 }
