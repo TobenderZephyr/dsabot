@@ -13,14 +13,16 @@ module.exports = {
 
     async exec(message, args) {
         try {
-            db.find({ user: message.author.tag }, (err, docs) => handleAttack(err, docs, message));
+            db.find({ user: message.author.tag }, (err, docs) =>
+                handleAttack(err, docs, { message: message, args: args })
+            );
         } catch (e) {
             throw e;
         }
     },
 };
 
-function handleAttack(err, docs, message) {
+function handleAttack(err, docs, { message: message, args: args }) {
     if (docs.length === 0) {
         return message.reply(findMessage('NOENTRY'));
     }
@@ -76,7 +78,11 @@ function handleAttack(err, docs, message) {
         Damage = AttackResult.DoubleDamage ? (Damage *= 2) : Damage;
 
         Reply += '\n\nHier aufklappen, wenn der Gegner nicht parieren/Ausweichen konnte:\n';
-        Reply += `|| ${Weapon.name} (${Weapon.dice}W6+${Weapon.diemodificator}) richtet ${Damage} schaden an.`;
+        Reply += `|| ${Weapon.name} (${Weapon.dice}W6+${
+            Weapon.diemodificator
+        }) richtet ${Damage} schaden an. ${
+            AttackBonus ? `(+${AttackBonus} Bonus auf Leiteigenschaft)` : ''
+        }`;
         Reply += '\nDeine 🎲: ` ' + DamageDice.join(',') + ' `.||\n';
     }
 

@@ -130,16 +130,81 @@ it('returns false ', () => {
 });
 
 // main function
-/*
-it('should abort with a message', () => {
+
+it('should abort with a message: no entry found', () => {
+    const reply = jest.fn(str => str);
+
     const message = {
-        reply: function (e) {
-            throw new Error(e);
-        },
+        reply: reply,
     };
-    const err = 'error';
     const handleAttack = rewireUtils.__get__('handleAttack');
-    expect(handleAttack(err)).toThrowError();
-    //expect(handleAttack(null, [])).toThrowError();
+    //expect(handleAttack(err)).toThrowError();
+    expect(handleAttack(null, [], { message: message })).toEqual(
+        'Sorry, für dich habe ich leider keinen Eintrag 😥'
+    );
 });
-*/
+
+it('should abort with a message: No such weapon', () => {
+    const reply = jest.fn(str => str);
+
+    const message = {
+        reply: reply,
+    };
+    const handleAttack = rewireUtils.__get__('handleAttack');
+    const args = [''];
+    expect(handleAttack(null, [{ character: {} }], { message: message, args: args })).toEqual(
+        'Diese Waffe gibt es nicht.'
+    );
+});
+
+it('complete run with melee weapon', () => {
+    const reply = jest.fn(str => str);
+
+    const message = {
+        reply: reply,
+    };
+    const character = {
+        attributes: [
+            { id: 'mut', level: 10 },
+            { id: 'fingerfertigkeit', level: 10 },
+            { id: 'klugheit', level: 10 },
+            { id: 'intuition', level: 10 },
+            { id: 'charisma', level: 10 },
+            { id: 'gewandtheit', level: 16 },
+            { id: 'konstitution', level: 10 },
+            { id: 'koerperkraft', level: 10 },
+        ],
+        combattechniques: [{ id: 'dolche', level: 8 }],
+    };
+    const handleAttack = rewireUtils.__get__('handleAttack');
+    const args = ['messer'];
+    expect(
+        handleAttack(null, [{ character: character }], { message: message, args: args })
+    ).toEqual(expect.any(String));
+});
+
+it('complete run with ranged weapon', () => {
+    const reply = jest.fn(str => str);
+
+    const message = {
+        reply: reply,
+    };
+    const character = {
+        attributes: [
+            { id: 'mut', level: 10 },
+            { id: 'fingerfertigkeit', level: 14 },
+            { id: 'klugheit', level: 10 },
+            { id: 'intuition', level: 10 },
+            { id: 'charisma', level: 10 },
+            { id: 'gewandtheit', level: 16 },
+            { id: 'konstitution', level: 10 },
+            { id: 'koerperkraft', level: 10 },
+        ],
+        combattechniques: [{ id: 'boegen', level: 8 }],
+    };
+    const handleAttack = rewireUtils.__get__('handleAttack');
+    const args = ['langbogen'];
+    expect(
+        handleAttack(null, [{ character: character }], { message: message, args: args })
+    ).toEqual(expect.any(String));
+});
