@@ -68,6 +68,7 @@ function getAttribute(attribute = '') {
         ? globals.Werte.find(a => a.kuerzel === attribute.toUpperCase())
         : globals.Werte.find(a => a.name.toLowerCase() === attribute.toLowerCase());
 }
+
 module.exports = {
     name: 'attribute',
     description: '',
@@ -84,3 +85,4 @@ module.exports = {
         });
     },
 };
+

@@ -17,8 +17,17 @@ const TestValues = [
     [13, 5],
     [14, 5],
     [15, 5],
+    [16, 6],
+    [17, 6],
+    [18, 6],
+    [19, 6],
+    [20, 6],
 ];
 
 test.each(TestValues)('Retrieving Quality for %s', (input, output) => {
     expect(CalculateQuality(input)).toBe(output);
+});
+
+it('should return 1 without input', () => {
+    expect(CalculateQuality()).toBe(1);
 });

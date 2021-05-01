@@ -16,7 +16,7 @@ module.exports = {
             if (docs.length === 0) {
                 return message.reply(findMessage('NOENTRY'));
             }
-            Character = docs[0].character;
+            const Character = docs[0].character;
             if (!Character.hasOwnProperty('spells')) return message.reply(findMessage('NO_SPELLS'));
             if (args.length === 0) {
                 const Embed = new Discord.MessageEmbed()
@@ -52,6 +52,8 @@ const ReplySpell = (Spell = {}) => {
 const createSpellList = (Character = {}) => {
     if (!Character || !Character.hasOwnProperty('spells')) return;
     let SpellList = [];
-    Character.spells.forEach(spell => SpellList.push(getSpell({ Character: Character, spell_name: spell.id })));
+    Character.spells.forEach(spell =>
+        SpellList.push(getSpell({ Character: Character, spell_name: spell.id }))
+    );
     return SpellList.filter(value => value !== undefined); //?+
 };

@@ -7,10 +7,10 @@
             "@data/*": ["./data/*"],
             "@Commands/*": ["./commands/*"],
             "@Lib/*": ["./lib/*"]
-        },
+        }
     },
     "exclude": ["node_modules"],
     "typeAcquisition": {
-        "exclude": [ "dotenv", "source-map" ]
-      },
+        "exclude": ["dotenv", "source-map"]
+    }
 }
