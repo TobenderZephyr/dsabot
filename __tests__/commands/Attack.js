@@ -139,7 +139,7 @@ it('should abort with a message: no entry found', () => {
     };
     const handleAttack = rewireUtils.__get__('handleAttack');
     //expect(handleAttack(err)).toThrowError();
-    expect(handleAttack(null, [], { message: message })).toEqual(
+    expect(handleAttack([], { message: message })).toEqual(
         'Sorry, für dich habe ich leider keinen Eintrag 😥'
     );
 });
@@ -152,7 +152,7 @@ it('should abort with a message: No such weapon', () => {
     };
     const handleAttack = rewireUtils.__get__('handleAttack');
     const args = [''];
-    expect(handleAttack(null, [{ character: {} }], { message: message, args: args })).toEqual(
+    expect(handleAttack([{ character: {} }], { message: message, args: args })).toEqual(
         'Diese Waffe gibt es nicht.'
     );
 });
@@ -178,9 +178,9 @@ it('complete run with melee weapon', () => {
     };
     const handleAttack = rewireUtils.__get__('handleAttack');
     const args = ['messer'];
-    expect(
-        handleAttack(null, [{ character: character }], { message: message, args: args })
-    ).toEqual(expect.any(String));
+    expect(handleAttack([{ character: character }], { message: message, args: args })).toEqual(
+        expect.any(String)
+    );
 });
 
 it('complete run with ranged weapon', () => {
@@ -204,7 +204,7 @@ it('complete run with ranged weapon', () => {
     };
     const handleAttack = rewireUtils.__get__('handleAttack');
     const args = ['langbogen'];
-    expect(
-        handleAttack(null, [{ character: character }], { message: message, args: args })
-    ).toEqual(expect.any(String));
+    expect(handleAttack([{ character: character }], { message: message, args: args })).toEqual(
+        expect.any(String)
+    );
 });

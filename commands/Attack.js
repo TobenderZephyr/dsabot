@@ -13,16 +13,21 @@ module.exports = {
 
     async exec(message, args) {
         try {
-            db.find({ user: message.author.tag }, (err, docs) =>
-                handleAttack(err, docs, { message: message, args: args })
-            );
+            db.find({ user: message.author.tag }, (err, docs) => {
+                if (err) {
+                    message.reply(findMessage('ERROR'));
+                    throw new Error(err);
+                }
+                handleAttack(docs, { message: message, args: args });
+            });
         } catch (e) {
+            message.reply(findMessage('ERROR'));
             throw e;
         }
     },
 };
 
-function handleAttack(err, docs, { message: message, args: args }) {
+function handleAttack(docs, { message: message, args: args }) {
     if (docs.length === 0) {
         return message.reply(findMessage('NOENTRY'));
     }
