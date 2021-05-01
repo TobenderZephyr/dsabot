@@ -5,11 +5,7 @@ const Datastore = require('nedb'),
 		autoload: false,
 	});
 const MessageEmbed = new Discord.MessageEmbed();
-const money = [{
-	'GD': 'Golddukaten',
-	'ST': 'Silbertaler',
-}];
-const DiceRegex = /\s?[DdWw]\s?|(?=\-|\+)/;
+const DiceRegex = /\s?[DdWw]\s?|(?=-|\+)/;
 const Coin = ['Kopf', 'Zahl'];
 const Werte = [
 	{ id: 'mut', kuerzel: 'MU', name: 'Mut' },
@@ -232,13 +228,6 @@ const RangedWeapons = [
 	{ id: 'wurfspeer',			name: 'Wurfspeer',			dice: 1, diemodificator: 2,	article: 0, combattechnique: 'wurfwaffen'}
 ];
 const Weapons = MeleeWeapons.concat(RangedWeapons);
-
-const Advantages = [
-	{}
-];
-const Disadvantages = [
-	{}
-];
 
 module.exports = { Werte, Talente, Coin, TalentKategorien, DiceRegex, Discord, MessageEmbed, db, Replies, MeleeWeapons, Weapons, RangedWeapons, CombatTechniques, Articles, Declination };
 
