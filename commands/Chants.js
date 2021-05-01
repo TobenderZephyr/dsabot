@@ -16,7 +16,7 @@ module.exports = {
             if (docs.length === 0) {
                 return message.reply(findMessage('NOENTRY'));
             }
-            Character = docs[0].character;
+            const Character = docs[0].character;
             if (!Character.hasOwnProperty('chants')) return message.reply(findMessage('NO_CHANTS'));
             if (args.length === 0) {
                 const Embed = new Discord.MessageEmbed()
