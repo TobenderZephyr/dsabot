@@ -8,18 +8,15 @@ const { db } = require('../globals');
 const { Werte } = require('../globals');
 
 function getAttributeLevel(Character = {}, Attribute = {}) {
-    console.log(`get attribute level.`);
     return Character.attributes.find(attribute => attribute.id === Attribute.id).level;
 }
 
 function getAttribute(attribute = '') {
-    console.log(`get attribute object.`);
     return attribute.length === 2
         ? Werte.find(a => a.kuerzel === attribute.toUpperCase())
         : Werte.find(a => a.name.toLowerCase() === attribute.toLowerCase());
 }
 function HandleNamedAttributes({ Character = {}, args = [] } = {}) {
-    console.log(`Hello. Here i am.`);
     const Attribute = getAttribute(args[0]);
     const Level = getAttributeLevel(Character, Attribute) || 8;
 
@@ -34,7 +31,7 @@ function handleAttributeCheck(doc, { message, args }) {
         return message.reply(findMessage('NOENTRY'));
     }
     const Attribute = isString(args[0])
-        ? HandleNamedAttributes({ Character: doc.character, args: args[0] })
+        ? HandleNamedAttributes({ Character: doc.character, args: args })
         : null;
     const Level = Attribute ? Attribute.Level : args[0] || 8;
     const Bonus = parseInt(args[1], 10) || 0;
