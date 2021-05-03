@@ -8,17 +8,17 @@ const getSpell = ({ Character: Character = [], spell_name: spell_name = '' } = {
 
     if (!spell_entry) {
         console.log(`getSpell() did not find entry for ${spell_name}`);
-        return;
+        return null;
     }
 
     let Level = 0; // This is the minimum attributes value.
-    if (!Character.hasOwnProperty('spells')) return;
-    let Spell = Character.spells.find(spell => spell.id === spell_entry.id) || {}; //?+
+    if (!Character.hasOwnProperty('spells')) return null;
+    const Spell = Character.spells.find(spell => spell.id === spell_entry.id) || null; //?+
     if (Spell && Spell.hasOwnProperty('level')) {
         Level = Spell.level || 0;
     }
-    let ModifiedBy = spell_entry.modified_by;
-    let Attributes = getAttributeLevels(spell_entry.attributes, Character);
+    const ModifiedBy = spell_entry.modified_by;
+    const Attributes = getAttributeLevels(spell_entry.attributes, Character);
 
     return {
         Name: spell_entry.name,

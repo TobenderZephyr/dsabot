@@ -1,14 +1,13 @@
-const globals = require('../globals');
+const { Werte } = require('../globals');
 
 const getAttributeLevels = (Attributes = [], Character = {}) => {
-    let AttributeId;
-    let AttributeLevel;
-    let AttributeList = [];
-    for (let Attribute of Attributes) {
-        AttributeId = globals.Werte.find(att => att.kuerzel === Attribute).id;
-        AttributeLevel = Character.attributes.find(att => att.id === AttributeId).level;
-        AttributeList.push({ Name: Attribute, Level: AttributeLevel });
-    }
+    const AttributeList = [];
+    Attributes.forEach(Attribute => {
+        const { id } = Werte.find(att => att.kuerzel === Attribute);
+        const { level } = Character.attributes.find(att => att.id === id);
+        AttributeList.push({ Name: Attribute, Level: level });
+    });
+
     return AttributeList;
 };
 module.exports = { getAttributeLevels };

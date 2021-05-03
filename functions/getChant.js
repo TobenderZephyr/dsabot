@@ -9,20 +9,16 @@ const getChant = ({ Character: Character = [], chant_name: chant_name = '' } = {
 
     if (!chant_entry) {
         console.log(`getChant() Did not find entry for ${chant_name}`);
-        return;
+        return null;
     }
 
     let Level = 0; // This is the minimum attributes value.
-    let Chant = Character.chants.find(chant => chant.id === chant_entry.id) || {};
+    const Chant = Character.chants.find(chant => chant.id === chant_entry.id) || null;
     if (Chant && Chant.hasOwnProperty('level')) {
         Level = Chant.level || 0;
     }
-    let Attributes = getAttributeLevels(chant_entry.attributes, Character);
+    const Attributes = getAttributeLevels(chant_entry.attributes, Character);
 
-    return {
-        Name: chant_entry.name,
-        Level: Level,
-        Attributes: Attributes,
-    };
+    return { Name: chant_entry.name, Level: Level, Attributes: Attributes };
 };
 module.exports = { getChant };
