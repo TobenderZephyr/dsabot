@@ -7,6 +7,7 @@ const { CalculateQuality } = require('@dsabot/CalculateQuality');
 const { CompareResults } = require('@dsabot/CompareResults');
 const { CreateResultTable, f } = require('@dsabot/CreateResultTable');
 const { isEmpty } = require('@dsabot/isEmpty');
+const { isString } = require('@dsabot/isString');
 
 const { db } = require('../globals');
 
@@ -27,7 +28,7 @@ module.exports = {
                 }
                 if (!doc.character.hasOwnProperty('spells'))
                     return message.reply(findMessage('NO_SPELLS'));
-                if (!Number.isNaN(args[0])) {
+                if (!isString(args[0])) {
                     return message.reply(findMessage('WRONG_ARGUMENTS'));
                 }
                 const Spell = getSpell({ Character: doc.character, spell_name: args[0] });

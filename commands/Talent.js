@@ -5,6 +5,7 @@ const { getSkill } = require('@dsabot/getSkill');
 const { CalculateQuality } = require('@dsabot/CalculateQuality');
 const { CompareResults } = require('@dsabot/CompareResults');
 const { CreateResultTable } = require('@dsabot/CreateResultTable');
+const { isString } = require('@dsabot/isString');
 const { db } = require('../globals');
 
 module.exports = {
@@ -22,7 +23,7 @@ module.exports = {
                 if (docs.length === 0) {
                     return message.reply(findMessage('NOENTRY'));
                 }
-                if (!Number.isNaN(args[0])) {
+                if (!isString(args[0])) {
                     return message.reply(findMessage('WRONG_ARGUMENTS'));
                 }
 
