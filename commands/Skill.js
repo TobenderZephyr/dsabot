@@ -10,7 +10,7 @@ module.exports = {
     needs_args: true,
 
     async exec(message, args) {
-        db.find({ user: message.author.tag }, (err, docs) => {
+        db.find({ user: message.author.tag }).then(docs => {
             if (docs.length === 0) {
                 return message.reply(findMessage('NOENTRY'));
             }

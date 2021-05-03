@@ -17,7 +17,7 @@ module.exports = {
     usage: '<Talent> [<-Erschwernis> / <+Erleichterung>]',
     needs_args: true,
     async exec(message, args) {
-        db.find({ user: message.author.tag }, (err, docs) => {
+        db.find({ user: message.author.tag }).then(docs => {
             if (docs.length === 0) {
                 return message.reply(findMessage('NOENTRY'));
             }
@@ -67,15 +67,17 @@ module.exports = {
             } else if (Passed < 3) {
                 Reply.addFields({
                     name: findMessage('TITLE_FAILURE'),
-                    value: `${Passed === 0 ? 'Keine Probe' : `nur ${Passed}/3 Proben`} erfolgreich. 😪`,
+                    value: `${
+                        Passed === 0 ? 'Keine Probe' : `nur ${Passed}/3 Proben`
+                    } erfolgreich. 😪`,
                     inline: false,
                 });
             } else {
                 Reply.addFields({
                     name: findMessage('TITLE_SUCCESS'),
-                    value: `Dein verbleibender Bonus: ${PointsRemaining}/${Skill.Level} (QS${CalculateQuality(
-                        PointsRemaining
-                    )})`,
+                    value: `Dein verbleibender Bonus: ${PointsRemaining}/${
+                        Skill.Level
+                    } (QS${CalculateQuality(PointsRemaining)})`,
                     inline: false,
                 });
             }

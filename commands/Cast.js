@@ -17,15 +17,16 @@ module.exports = {
     usage: '<Zaubern> [<-Erschwernis> / <+Erleichterung>]',
     needs_args: false,
     async exec(message, args) {
-        db.find({ user: message.author.tag }, (err, docs) => {
-            if (docs.length === 0) {
+        db.findOne({ user: message.author.tag }).then(doc => {
+            if (Object.keys(doc).length === 0) {
                 return message.reply(findMessage('NOENTRY'));
             }
-            if (!docs[0].character.hasOwnProperty('spells')) return message.reply(findMessage('NO_SPELLS'));
+            if (!doc.character.hasOwnProperty('spells'))
+                return message.reply(findMessage('NO_SPELLS'));
             if (!isNaN(args[0])) {
                 return message.reply(findMessage('WRONG_ARGUMENTS'));
             }
-            const Spell = getSpell({ Character: docs[0].character, spell_name: args[0] });
+            const Spell = getSpell({ Character: doc.character, spell_name: args[0] });
             if (!Spell) {
                 return message.reply(findMessage('SPELL_UNKNOWN'));
             }
@@ -71,15 +72,17 @@ module.exports = {
             } else if (Passed < 3) {
                 Reply.addFields({
                     name: findMessage('TITLE_FAILURE'),
-                    value: `${Passed === 0 ? 'Keine Probe' : `nur ${Passed}/3 Proben`} erfolgreich. 😪`,
+                    value: `${
+                        Passed === 0 ? 'Keine Probe' : `nur ${Passed}/3 Proben`
+                    } erfolgreich. 😪`,
                     inline: false,
                 });
             } else {
                 Reply.addFields({
                     name: findMessage('TITLE_SUCCESS'),
-                    value: `Dein verbleibender Bonus: ${PointsRemaining}/${Spell.Level} (QS${CalculateQuality(
-                        PointsRemaining
-                    )})`,
+                    value: `Dein verbleibender Bonus: ${PointsRemaining}/${
+                        Spell.Level
+                    } (QS${CalculateQuality(PointsRemaining)})`,
                     inline: false,
                 });
             }

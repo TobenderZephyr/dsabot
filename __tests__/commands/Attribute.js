@@ -44,9 +44,9 @@ it('should return with no errors', () => {
             tag: 'test',
         },
     };
-    const docs = [{ character: { attributes: [{ id: 'mut', level: 8 }] } }];
+    const doc = { character: { attributes: [{ id: 'mut', level: 8 }] } };
     const args = ['mut'];
-    expect(handleAttributeCheck(docs, { message, args })).toEqual(expect.any(String));
+    expect(handleAttributeCheck(doc, { message, args })).toEqual(expect.any(String));
 });
 it('should return with no errors', () => {
     const reply = jest.fn(str => str);
@@ -56,7 +56,7 @@ it('should return with no errors', () => {
             tag: 'test',
         },
     };
-    const docs = [{ character: { attributes: [{ id: 'mut', level: 8 }] } }];
+    const docs = { character: { attributes: [{ id: 'mut', level: 8 }] } };
     const args = ['MU'];
     expect(handleAttributeCheck(docs, { message, args })).toEqual(expect.any(String));
 });

@@ -17,15 +17,16 @@ module.exports = {
     usage: '<Liturgie/Zeremonie> [<-Erschwernis> / <+Erleichterung>]',
     needs_args: false,
     async exec(message, args) {
-        db.find({ user: message.author.tag }, (err, docs) => {
-            if (docs.length === 0) {
+        db.findOne({ user: message.author.tag }).then(doc => {
+            if (Object.keys(doc).length === 0) {
                 return message.reply(findMessage('NOENTRY'));
             }
-            if (!docs[0].character.hasOwnProperty('chants')) return message.reply(findMessage('NO_CHANTS'));
+            if (!doc.character.hasOwnProperty('chants'))
+                return message.reply(findMessage('NO_CHANTS'));
             if (!isNaN(args[0])) {
                 return message.reply(findMessage('WRONG_ARGUMENTS'));
             }
-            const Chant = getChant({ Character: docs[0].character, chant_name: args[0] });
+            const Chant = getChant({ Character: doc.character, chant_name: args[0] });
             if (!Chant) {
                 return message.reply(findMessage('CHANT_UNKNOWN'));
             }
@@ -71,15 +72,17 @@ module.exports = {
             } else if (Passed < 3) {
                 Reply.addFields({
                     name: findMessage('TITLE_FAILURE'),
-                    value: `${Passed === 0 ? 'Keine Probe' : `nur ${Passed}/3 Proben`} erfolgreich. 😪`,
+                    value: `${
+                        Passed === 0 ? 'Keine Probe' : `nur ${Passed}/3 Proben`
+                    } erfolgreich. 😪`,
                     inline: false,
                 });
             } else {
                 Reply.addFields({
                     name: findMessage('TITLE_SUCCESS'),
-                    value: `Dein verbleibender Bonus: ${PointsRemaining}/${Chant.Level} (QS${CalculateQuality(
-                        PointsRemaining
-                    )})`,
+                    value: `Dein verbleibender Bonus: ${PointsRemaining}/${
+                        Chant.Level
+                    } (QS${CalculateQuality(PointsRemaining)})`,
                     inline: false,
                 });
             }

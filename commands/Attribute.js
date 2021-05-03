@@ -1,13 +1,17 @@
 require('module-alias/register');
-const globals = require('../globals');
-const db = globals.db;
+
+const { db } = require('../globals');
+const { Werte } = require('../globals');
 const { roll } = require('@dsabot/Roll');
 const { findMessage } = require('@dsabot/findMessage');
 const { CompareResults } = require('@dsabot/CompareResults');
 
-function handleAttributeCheck(docs, { message, args }) {
+function handleAttributeCheck(doc, { message, args }) {
+    if (Object.keys(doc).length === 0) {
+        return message.reply(findMessage('NOENTRY'));
+    }
     let Attribute = isNaN(args[0])
-        ? HandleNamedAttributes({ Character: docs[0].character, args: args })
+        ? HandleNamedAttributes({ Character: doc.character, args: args })
         : null;
     let Level = Attribute ? Attribute.Level : args[0] || 8;
     let Bonus = parseInt(args[1]) || 0;
@@ -49,7 +53,7 @@ function handleAttributeCheck(docs, { message, args }) {
     );
 }
 
-function HandleNamedAttributes({ Character: Character = [], args: args = [] } = {}) {
+function HandleNamedAttributes({ Character: Character = {}, args: args = [] } = {}) {
     let Attribute = getAttribute(args[0]);
     let Level = getAttributeLevel(Character, Attribute) || 8;
 
@@ -65,8 +69,8 @@ function getAttributeLevel(Character = {}, Attribute = {}) {
 
 function getAttribute(attribute = '') {
     return attribute.length === 2
-        ? globals.Werte.find(a => a.kuerzel === attribute.toUpperCase())
-        : globals.Werte.find(a => a.name.toLowerCase() === attribute.toLowerCase());
+        ? Werte.find(a => a.kuerzel === attribute.toUpperCase())
+        : Werte.find(a => a.name.toLowerCase() === attribute.toLowerCase());
 }
 
 module.exports = {
@@ -76,13 +80,11 @@ module.exports = {
     usage: '<Eigenschaft> / <Eigenschaftswert>',
     needs_args: true,
     async exec(message, args) {
-        db.find({ user: message.author.tag }, (err, docs) => {
-            if (err) {
+        db.findOne({ user: message.author.tag })
+            .then(doc => handleAttributeCheck(doc, { message, args }))
+            .catch(err => {
                 message.reply(findMessage('ERROR'));
                 throw new Error(err);
-            }
-            handleAttributeCheck(docs, { message, args });
-        });
+            });
     },
 };
-

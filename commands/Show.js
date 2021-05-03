@@ -13,37 +13,32 @@ module.exports = {
 
     // eslint-disable-next-line no-unused-vars
     async exec(message, args) {
-        try {
-            db.find(
-                {
-                    user: message.author.tag,
-                },
-                function (err, docs) {
-                    if (docs.length === 0) {
-                        return message.reply(findMessage('NOENTRY'));
+        db.find({ user: message.author.tag })
+            .then(docs => {
+                if (docs.length === 0) {
+                    return message.reply(findMessage('NOENTRY'));
+                } else {
+                    const Character = docs[0].character;
+                    let Gender;
+                    if (Character.sex == 'female') {
+                        Gender = '♀️';
                     } else {
-                        const Character = docs[0].character;
-                        let Gender;
-                        if (Character.sex == 'female') {
-                            Gender = '♀️';
-                        } else {
-                            Gender = '♂️';
-                        }
-                        const Reply = new Discord.MessageEmbed();
-                        Reply.setColor('#0099ff');
-                        Reply.setTitle(`${Gender} ${Character.name}`);
-                        Reply.setDescription(
-                            `${Character.age} Jahre, ${Character.race}/${Character.culture}`
-                        );
-                        Reply.addField(Character.professionname, Character.xp.startinglevel);
-
-                        message.reply(Reply);
+                        Gender = '♂️';
                     }
+                    const Reply = new Discord.MessageEmbed();
+                    Reply.setColor('#0099ff');
+                    Reply.setTitle(`${Gender} ${Character.name}`);
+                    Reply.setDescription(
+                        `${Character.age} Jahre, ${Character.race}/${Character.culture}`
+                    );
+                    Reply.addField(Character.professionname, Character.xp.startinglevel);
+
+                    message.reply(Reply);
                 }
-            );
-        } catch (e) {
-            message.reply(findMessage('ERROR'));
-            throw e;
-        }
+            })
+            .catch(err => {
+                message.reply(findMessage('ERROR'));
+                throw new Error(err);
+            });
     },
 };

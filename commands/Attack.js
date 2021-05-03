@@ -1,6 +1,10 @@
 require('module-alias/register');
-const globals = require('../globals');
-const db = globals.db;
+
+const { db } = require('../globals');
+const { CombatTechniques } = require('../globals');
+const { Werte } = require('../globals');
+const { Weapons } = require('../globals');
+const { MeleeWeapons } = require('../globals');
 const { roll } = require('@dsabot/Roll');
 const { findMessage } = require('@dsabot/findMessage');
 
@@ -12,27 +16,23 @@ module.exports = {
     needs_args: true,
 
     async exec(message, args) {
-        try {
-            db.find({ user: message.author.tag }, (err, docs) => {
-                if (err) {
-                    message.reply(findMessage('ERROR'));
-                    throw new Error(err);
-                }
-                handleAttack(docs, { message: message, args: args });
+        db.findOne({ user: message.author.tag })
+            .then(doc => {
+                handleAttack(doc, { message: message, args: args });
+            })
+            .catch(err => {
+                message.reply(findMessage('ERROR'));
+                throw new Error(err);
             });
-        } catch (e) {
-            message.reply(findMessage('ERROR'));
-            throw e;
-        }
     },
 };
 
-function handleAttack(docs, { message: message, args: args }) {
-    if (docs.length === 0) {
+function handleAttack(doc, { message: message, args: args }) {
+    if (Object.keys(doc).length === 0) {
         return message.reply(findMessage('NOENTRY'));
     }
 
-    const Player = docs[0].character;
+    const Player = doc.character;
     const Weapon = getWeapon(args[0]);
     if (!Weapon) {
         return message.reply(findMessage('NO_SUCH_WEAPON'));
@@ -95,11 +95,10 @@ function handleAttack(docs, { message: message, args: args }) {
 }
 
 function getCombatTechnique(Weapon) {
-    if (Weapon)
-        return globals.CombatTechniques.find(technique => technique.id === Weapon.combattechnique);
+    if (Weapon) return CombatTechniques.find(technique => technique.id === Weapon.combattechnique);
 }
 function getAttribute(abbr) {
-    return globals.Werte.find(attribute => attribute.kuerzel === abbr);
+    return Werte.find(attribute => attribute.kuerzel === abbr);
 }
 
 function CompareAttackResult(dice = [8, 8], Comparison = 6) {
@@ -149,12 +148,12 @@ function getCombatTechniqueLevel(Player = {}, CombatTechnique = {}) {
 
 function getWeapon(Weapon = '') {
     if (Weapon)
-        return globals.Weapons.find(
+        return Weapons.find(
             w => w.id === Weapon.toLowerCase() || w.name.toLowerCase() === Weapon.toLowerCase()
         );
 }
 
 function isMeleeWeapon(Weapon) {
-    if (globals.MeleeWeapons.find(MeleeWeapon => MeleeWeapon.id === Weapon.id)) return true;
+    if (MeleeWeapons.find(MeleeWeapon => MeleeWeapon.id === Weapon.id)) return true;
     else return false;
 }
