@@ -1,24 +1,24 @@
 const { getAttributeLevels } = require('@dsabot/getAttributeLevels');
 const Chants = require('@Lib/Chants.json');
 
-const getChant = ({ Character: Character = [], chant_name: chant_name = '' } = {}) => {
+const getChant = ({ Character: Character = [], chant_name: chantName = '' } = {}) => {
     //if (!Character.hasOwnProperty('chants')) return;
-    let chant_entry =
-        Chants.find(chant => chant.id.toLowerCase() === chant_name.toLowerCase()) ||
-        Chants.find(chant => chant.name.toLowerCase() === chant_name.toLowerCase());
+    const chantEntry =
+        Chants.find(chant => chant.id.toLowerCase() === chantName.toLowerCase()) ||
+        Chants.find(chant => chant.name.toLowerCase() === chantName.toLowerCase());
 
-    if (!chant_entry) {
-        console.log(`getChant() Did not find entry for ${chant_name}`);
+    if (!chantEntry) {
+        console.log(`getChant() Did not find entry for ${chantName}`);
         return null;
     }
 
     let Level = 0; // This is the minimum attributes value.
-    const Chant = Character.chants.find(chant => chant.id === chant_entry.id) || null;
+    const Chant = Character.chants.find(chant => chant.id === chantEntry.id) || null;
     if (Chant && Chant.hasOwnProperty('level')) {
         Level = Chant.level || 0;
     }
-    const Attributes = getAttributeLevels(chant_entry.attributes, Character);
+    const Attributes = getAttributeLevels(chantEntry.attributes, Character);
 
-    return { Name: chant_entry.name, Level: Level, Attributes: Attributes };
+    return { Name: chantEntry.name, Level: Level, Attributes: Attributes };
 };
 module.exports = { getChant };

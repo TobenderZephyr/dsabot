@@ -1,7 +1,8 @@
 require('module-alias/register');
 const rewire = require('rewire');
-const rewireUtils = rewire('@Commands/Attribute');
 const Attribute = require('@Commands/Attribute');
+
+const rewireUtils = rewire('@Commands/Attribute');
 const HandleNamedAttributes = rewireUtils.__get__('HandleNamedAttributes');
 const getAttributeLevel = rewireUtils.__get__('getAttributeLevel');
 const getAttribute = rewireUtils.__get__('getAttribute');
@@ -70,7 +71,7 @@ it('should return with no errors', () => {
     };
     const docs = [{ character: { attributes: [{ id: 'mut', level: 8 }] } }];
     const args = [8];
-    for (let i = 0; i < 30; i++) {
+    for (let i = 0; i < 30; i += 1) {
         expect(handleAttributeCheck(docs, { message, args })).toEqual(expect.any(String));
     }
 });
@@ -84,7 +85,7 @@ it('should return with no errors', () => {
     };
     const docs = [{ character: { attributes: [{ id: 'mut', level: 8 }] } }];
     const args = [8, '+2'];
-    for (let i = 0; i < 30; i++) {
+    for (let i = 0; i < 30; i += 1) {
         expect(handleAttributeCheck(docs, { message, args })).toEqual(expect.any(String));
     }
 });

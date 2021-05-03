@@ -7,7 +7,7 @@ const roll = (numberOfDice, numberOfEyes, tag) => {
     if (tag) {
         Random.use(tag);
     }
-    for (let i = 0; i < numberOfDice; i++) {
+    for (let i = 0; i < numberOfDice; i += 1) {
         const result = Random.int(1, numberOfEyes);
         dice.push(result);
         sum += result;

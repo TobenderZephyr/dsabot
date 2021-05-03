@@ -7,20 +7,16 @@
  * @param  {BigInt} Bonus=0
  * @param  {BigInt} PointsRemaining=0
  */
-const CompareResults = (
-    Throws = [],
-    AttributeLevels = [8, 8, 8],
-    Bonus = 0,
-    PointsRemaining = 0
-) => {
+const CompareResults = (Throws = [], AttributeLevels = [8, 8, 8], Bonus = 0, Points = 0) => {
     let Passed = 0;
     let Fumbles = 0;
     let CriticalHit = 0;
+    let PointsRemaining = Points;
     const AllPointsUsed = [];
 
     Throws.forEach((Throw, key) => {
         let PointsUsed = 0;
-        let AttributeLevel = AttributeLevels.find((v, k) => key === k);
+        const AttributeLevel = AttributeLevels.find((v, k) => key === k);
         if (Math.floor(AttributeLevel + Bonus) >= Throw) {
             Passed += 1;
         } else if (Math.floor(AttributeLevel + PointsRemaining + Bonus) >= Throw) {

@@ -35,7 +35,7 @@ async function CreateFromFile(message, data) {
 }
 async function commandHandler(message) {
     // console.log(`${new Date().toUTCString()} ${message.author.tag} (size: ${message.attachments.size})`);
-    if (message.attachments.size > 0 && message.channel.type == 'dm' && !message.author.bot) {
+    if (message.attachments.size > 0 && message.channel.type === 'dm' && !message.author.bot) {
         try {
             const response = await fetch(message.attachments.first().url);
             const data = await validateJSON(response);
@@ -71,7 +71,8 @@ client.once('ready', () => {
     console.log('Ready!');
 });
 const commandFiles = fs.readdirSync('./commands/').filter(file => file.endsWith('.js'));
-for (const file of commandFiles) {
+
+commandFiles.forEach(file => {
     const command = require(`./commands/${file}`);
     client.commands.set(command.name, command);
-}
+});

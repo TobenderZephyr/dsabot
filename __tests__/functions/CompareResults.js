@@ -3,7 +3,7 @@ require('module-alias/register');
 const { CompareResults } = require('@dsabot/CompareResults');
 
 it('should return an object', () => {
-    let Obj = {
+    const Obj = {
         Passed: 0,
         CriticalHit: 0,
         Fumbles: 0,
@@ -15,7 +15,7 @@ it('should return an object', () => {
 });
 
 it('should match No. of Fumbles', () => {
-    let Obj = {
+    const Obj = {
         Passed: 0,
         CriticalHit: 0,
         Fumbles: 2,
@@ -26,7 +26,7 @@ it('should match No. of Fumbles', () => {
 });
 
 it('should match No. of Passed', () => {
-    let Obj = {
+    const Obj = {
         Passed: 3,
         CriticalHit: 0,
         Fumbles: 0,
@@ -37,7 +37,7 @@ it('should match No. of Passed', () => {
 });
 
 it('should match No. of Critical Hits', () => {
-    let Obj = {
+    const Obj = {
         Passed: 3,
         CriticalHit: 2,
         Fumbles: 0,
@@ -48,7 +48,7 @@ it('should match No. of Critical Hits', () => {
 });
 
 it('should decrease Points remaining', () => {
-    let Obj = {
+    const Obj = {
         Passed: 3,
         CriticalHit: 0,
         Fumbles: 0,

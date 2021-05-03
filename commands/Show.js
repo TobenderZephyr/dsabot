@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
-const { db } = require('../globals');
 const { findMessage } = require('@dsabot/findMessage');
+const { db } = require('../globals');
 
 module.exports = {
     name: 'show',

@@ -21,7 +21,7 @@ const ReplyChantList = (ChantList = []) => {
 
 const ReplyChant = (Chant = {}) => {
     if (!Chant) return null;
-    return `Deine Werte für ${Chant.Name} ${Chant.Level ? '(' + Chant.Level + ')' : ''} sind:
+    return `Deine Werte für ${Chant.Name} ${Chant.Level ? `(${Chant.Level})` : ''} sind:
 
     ${Chant.Attributes.map(attribute => `${attribute.Name}: ${attribute.Level}`).join('   ')}
     `;
@@ -35,28 +35,34 @@ module.exports = {
     needs_args: false,
 
     async exec(message, args) {
-        db.findOne({ user: message.author.tag }).then(doc => {
-            if (Object.keys(doc).length === 0) {
-                return message.reply(findMessage('NOENTRY'));
-            }
-            const Character = doc.character;
-            if (!Character.hasOwnProperty('chants')) return message.reply(findMessage('NO_CHANTS'));
-            if (args.length === 0) {
-                const Embed = new Discord.MessageEmbed()
-                    .setColor('#0099ff')
-                    .setTitle(findMessage('CHANTS_TITLE'))
-                    .setDescription(findMessage('CHANTS_DESCRIPTION'))
-                    .addField(ReplyChantList(createChantList(Character)), '\u200B', true);
-                return message.reply(Embed);
-            }
-            const Chant = getChant({
-                Character: Character,
-                chant_name: args[0],
+        db.findOne({ user: message.author.tag })
+            .then(doc => {
+                if (Object.keys(doc).length === 0) {
+                    return message.reply(findMessage('NOENTRY'));
+                }
+                const Character = doc.character;
+                if (!Character.hasOwnProperty('chants'))
+                    return message.reply(findMessage('NO_CHANTS'));
+                if (args.length === 0) {
+                    const Embed = new Discord.MessageEmbed()
+                        .setColor('#0099ff')
+                        .setTitle(findMessage('CHANTS_TITLE'))
+                        .setDescription(findMessage('CHANTS_DESCRIPTION'))
+                        .addField(ReplyChantList(createChantList(Character)), '\u200B', true);
+                    return message.reply(Embed);
+                }
+                const Chant = getChant({
+                    Character: Character,
+                    chant_name: args[0],
+                });
+                if (!Chant) {
+                    return message.reply(findMessage('SPELL_UNKNOWN'));
+                }
+                return message.reply(ReplyChant(Chant));
+            })
+            .catch(err => {
+                message.reply(findMessage('ERROR'));
+                throw new Error(err);
             });
-            if (!Chant) {
-                return message.reply(findMessage('SPELL_UNKNOWN'));
-            }
-            return message.reply(ReplyChant(Chant));
-        });
     },
 };

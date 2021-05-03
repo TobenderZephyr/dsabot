@@ -1,3 +1,7 @@
+function f(n) {
+    return (n > 0 ? '+' : '') + n;
+}
+
 const CreateResultTable = ({
     Attributes: Attributes,
     Throws: Throws,
@@ -19,10 +23,6 @@ const CreateResultTable = ({
         .padStart(6)}
 	\`\`\`
 	`;
-};
-
-const f = n => {
-    return (n > 0 ? '+' : '') + n;
 };
 
 module.exports = { CreateResultTable, f };

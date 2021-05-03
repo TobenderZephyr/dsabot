@@ -33,26 +33,32 @@ module.exports = {
     needs_args: false,
 
     async exec(message, args) {
-        db.find({ user: message.author.tag }).then(docs => {
-            if (docs.length === 0) {
-                return message.reply(findMessage('NOENTRY'));
-            }
-            const Character = docs[0].character;
-            if (!Character.hasOwnProperty('spells')) return message.reply(findMessage('NO_SPELLS'));
-            if (args.length === 0) {
-                const Embed = new Discord.MessageEmbed()
-                    .setColor('#0099ff')
-                    .setTitle(findMessage('SPELLS_TITLE'))
-                    .setDescription(findMessage('SPELLS_DESCRIPTION'))
-                    .addField(ReplySpellList(createSpellList(Character)), '\u200B', true);
-                return message.reply(Embed);
-            }
-            const Spell = getSpell({
-                Character: Character,
-                spell_name: args[0],
+        db.find({ user: message.author.tag })
+            .then(docs => {
+                if (docs.length === 0) {
+                    return message.reply(findMessage('NOENTRY'));
+                }
+                const Character = docs[0].character;
+                if (!Character.hasOwnProperty('spells'))
+                    return message.reply(findMessage('NO_SPELLS'));
+                if (args.length === 0) {
+                    const Embed = new Discord.MessageEmbed()
+                        .setColor('#0099ff')
+                        .setTitle(findMessage('SPELLS_TITLE'))
+                        .setDescription(findMessage('SPELLS_DESCRIPTION'))
+                        .addField(ReplySpellList(createSpellList(Character)), '\u200B', true);
+                    return message.reply(Embed);
+                }
+                const Spell = getSpell({
+                    Character: Character,
+                    spell_name: args[0],
+                });
+                if (!Spell) return message.reply(findMessage('SPELL_UNKNOWN'));
+                return message.reply(ReplySpell(Spell));
+            })
+            .catch(err => {
+                message.reply(findMessage('ERROR'));
+                throw new Error(err);
             });
-            if (!Spell) return message.reply(findMessage('SPELL_UNKNOWN'));
-            return message.reply(ReplySpell(Spell));
-        });
     },
 };
