@@ -1,47 +1,47 @@
 {
-  "name": "dsabot",
-  "version": "1.5.2",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "lint": "eslint commands/",
-    "start": "node index.js",
-    "test": "jest --collectCoverage"
-  },
-  "_moduleAliases": {
-    "@dsabot": "functions",
-    "@data": "data",
-    "@Commands": "commands",
-    "@Lib": "lib"
-  },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "discord.js": "^12.5.3",
-    "dotenv": "^8.2.0",
-    "module-alias": "^2.2.2",
-    "nedb-promises": "^4.1.2",
-    "node-fetch": "^2.6.1",
-    "random": "^3.0.6"
-  },
-  "devDependencies": {
-    "@types/jest": "^26.0.23",
-    "babel-plugin-rewire": "^1.2.0",
-    "eslint": "^6.8.0",
-    "eslint-config-airbnb": "^18.2.1",
-    "eslint-config-prettier": "^6.8.0",
-    "eslint-import-resolver-module-alias": "github:tenfold/eslint-import-resolver-module-alias",
-    "eslint-plugin-prettier": "^3.4.0",
-    "jest": "^26.6.3",
-    "rewire": "^5.0.0"
-  },
-  "jest": {
-    "collectCoverage": true,
-    "collectCoverageFrom": [
-      "**/*.{js,jsx}",
-      "!**/node_modules/**",
-      "!**/vendor/**"
-    ],
-    "coverageDirectory": "coverage"
-  }
+    "name": "dsabot",
+    "version": "1.6.1",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "lint": "eslint commands/",
+        "start": "node index.js",
+        "test": "jest --collectCoverage"
+    },
+    "_moduleAliases": {
+        "@dsabot": "functions",
+        "@data": "data",
+        "@Commands": "commands",
+        "@Lib": "lib"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "discord.js": "^12.5.3",
+        "dotenv": "^8.2.0",
+        "module-alias": "^2.2.2",
+        "nedb-promises": "^4.1.2",
+        "node-fetch": "^2.6.1",
+        "random": "^3.0.6"
+    },
+    "devDependencies": {
+        "@types/jest": "^26.0.23",
+        "babel-plugin-rewire": "^1.2.0",
+        "eslint": "^6.8.0",
+        "eslint-config-airbnb": "^18.2.1",
+        "eslint-config-prettier": "^6.8.0",
+        "eslint-import-resolver-module-alias": "github:tenfold/eslint-import-resolver-module-alias",
+        "eslint-plugin-prettier": "^3.4.0",
+        "jest": "^26.6.3",
+        "rewire": "^5.0.0"
+    },
+    "jest": {
+        "collectCoverage": true,
+        "collectCoverageFrom": [
+            "**/*.{js,jsx}",
+            "!**/node_modules/**",
+            "!**/vendor/**"
+        ],
+        "coverageDirectory": "coverage"
+    }
 }
