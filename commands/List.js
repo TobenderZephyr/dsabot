@@ -4,19 +4,8 @@ const { isEmpty } = require('@dsabot/isEmpty');
 const { db } = require('../globals');
 const { Werte } = require('../globals');
 
-async function findUser(request = '') {
-    return db
-        .findOne({
-            $or: [
-                { user: request.replace('@', '') },
-                { uid: request.replaceAll(/[<>!@]/gi, '') },
-                { character: { name: request } },
-            ],
-        })
-        .then(doc => doc);
-}
-function doHeading(attributes) {
-    return `${''.padStart(25)}${attributes
+function printHeader(attributes) {
+    return `${''.padStart(31)}${attributes
         .map(a => `${a.Short}`.padEnd(4).padStart(6))
         .join('|')}\n`;
 }
@@ -38,20 +27,64 @@ function getStats(user) {
     user.character.attributes.forEach(attribute => {
         Attributes.push(getAttribute(attribute));
     });
-    Attributes.sort((a, b) => (a.id > b.id ? 1 : a.id < b.id ? -1 : 0));
+    Attributes.sort((a, b) => (a.id > b.id ? 1 : -1));
     return Attributes;
+}
+
+function returnResult(message, Characters) {
+    if (isEmpty(Characters)) return message.reply(findMessage('NO_CHARACTERS'));
+
+    Characters.sort((a, b) => (a.Name > b.Name ? 1 : -1));
+    let Reply = `\`\`\`\n${printHeader(Characters[0].Attributes)}`;
+
+    Characters.forEach(c => {
+        Reply += `${c.Name.toString().padEnd(30)} ${listStats(c.Attributes)}`;
+    });
+
+    Reply += `\`\`\``;
+    return message.reply(Reply);
+}
+
+async function findUser(request = '') {
+    return db
+        .findOne({
+            $or: [
+                { user: request.replace('@', '') },
+                { uid: request.replaceAll(/[<>!@]/gi, '') },
+                { character: { name: request } },
+            ],
+        })
+        .then(doc => doc);
+}
+
+async function findUsers(message) {
+    const Characters = [];
+
+    db.find({})
+        .limit(10)
+        .then(users => {
+            users.forEach(user => {
+                Characters.push({
+                    Name: user.character.name,
+                    Attributes: getStats(user),
+                });
+            });
+        })
+        .then(() => returnResult(message, Characters));
 }
 
 module.exports = {
     name: 'list',
     description: 'Gibt eine Liste von Mitspielern aus.',
     aliases: ['liste'],
-    usage: '',
+    usage: '[@Mention / Benutzername]',
     needs_args: false,
 
     exec: async (message, args) => {
-        if (!args) return;
-        console.log(args[0].replaceAll(/[<>!@]/gi, ''));
+        if (!args) return null;
+        if (args[0] === '--all') {
+            return findUsers(message);
+        }
         const Characters = []; //?+
         Promise.all(
             args.map(arg => {
@@ -64,15 +97,8 @@ module.exports = {
                     }
                 });
             })
-        ).then(() => {
-            if (isEmpty(Characters)) return findMessage('NO_CHARACTERS');
-            let Reply = `\`\`\`\n${doHeading(Characters[0].Attributes)}`;
-            Characters.forEach(c => {
-                Reply += `${c.Name.toString().padEnd(24)} ${listStats(c.Attributes)}`;
-            });
-            Reply += `\`\`\``;
-            return message.reply(Reply);
-        });
+        ).then(() => returnResult(message, Characters));
+        return null;
     },
 };
 /*
