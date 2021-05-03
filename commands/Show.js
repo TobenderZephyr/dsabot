@@ -1,8 +1,8 @@
-// eslint-disable-next-line no-unused-vars
-const globals = require('../globals');
 const Discord = require('discord.js');
-const db = globals.db;
 const { findMessage } = require('@dsabot/findMessage');
+const { isEmpty } = require('@dsabot/isEmpty');
+
+const { db } = require('../globals');
 
 module.exports = {
     name: 'show',
@@ -13,37 +13,28 @@ module.exports = {
 
     // eslint-disable-next-line no-unused-vars
     async exec(message, args) {
-        try {
-            db.find(
-                {
-                    user: message.author.tag,
-                },
-                function (err, docs) {
-                    if (docs.length === 0) {
-                        return message.reply(findMessage('NOENTRY'));
-                    } else {
-                        const Character = docs[0].character;
-                        let Gender;
-                        if (Character.sex == 'female') {
-                            Gender = '♀️';
-                        } else {
-                            Gender = '♂️';
-                        }
-                        const Reply = new Discord.MessageEmbed();
-                        Reply.setColor('#0099ff');
-                        Reply.setTitle(`${Gender} ${Character.name}`);
-                        Reply.setDescription(
-                            `${Character.age} Jahre, ${Character.race}/${Character.culture}`
-                        );
-                        Reply.addField(Character.professionname, Character.xp.startinglevel);
-
-                        message.reply(Reply);
-                    }
+        db.find({ user: message.author.tag })
+            .then(docs => {
+                if (isEmpty(docs)) {
+                    return message.reply(findMessage('NOENTRY'));
                 }
-            );
-        } catch (e) {
-            message.reply(findMessage('ERROR'));
-            throw e;
-        }
+                const Character = docs[0].character;
+
+                const Gender = Character.sex === 'female' ? '♀️' : '♂️';
+
+                const Reply = new Discord.MessageEmbed();
+                Reply.setColor('#0099ff');
+                Reply.setTitle(`${Gender} ${Character.name}`);
+                Reply.setDescription(
+                    `${Character.age} Jahre, ${Character.race}/${Character.culture}`
+                );
+                Reply.addField(Character.professionname, Character.xp.startinglevel);
+
+                return message.reply(Reply);
+            })
+            .catch(err => {
+                message.reply(findMessage('ERROR'));
+                throw new Error(err);
+            });
     },
 };

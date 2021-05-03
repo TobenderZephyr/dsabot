@@ -1,7 +1,7 @@
 require('module-alias/register');
 const rewire = require('rewire');
-const rewireUtils = rewire('@Commands/Attack');
 
+const rewireUtils = rewire('@Commands/Attack');
 const getWeapon = rewireUtils.__get__('getWeapon');
 const getAttributeLevel = rewireUtils.__get__('getAttributeLevel');
 const getCombatTechniqueLevel = rewireUtils.__get__('getCombatTechniqueLevel');
@@ -139,7 +139,7 @@ it('should abort with a message: no entry found', () => {
     };
     const handleAttack = rewireUtils.__get__('handleAttack');
     //expect(handleAttack(err)).toThrowError();
-    expect(handleAttack([], { message: message })).toEqual(
+    expect(handleAttack({}, { message: message })).toEqual(
         'Sorry, für dich habe ich leider keinen Eintrag 😥'
     );
 });
@@ -178,7 +178,7 @@ it('complete run with melee weapon', () => {
     };
     const handleAttack = rewireUtils.__get__('handleAttack');
     const args = ['messer'];
-    expect(handleAttack([{ character: character }], { message: message, args: args })).toEqual(
+    expect(handleAttack({ character: character }, { message: message, args: args })).toEqual(
         expect.any(String)
     );
 });
@@ -204,7 +204,7 @@ it('complete run with ranged weapon', () => {
     };
     const handleAttack = rewireUtils.__get__('handleAttack');
     const args = ['langbogen'];
-    expect(handleAttack([{ character: character }], { message: message, args: args })).toEqual(
+    expect(handleAttack({ character: character }, { message: message, args: args })).toEqual(
         expect.any(String)
     );
 });

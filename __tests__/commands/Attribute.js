@@ -1,7 +1,8 @@
 require('module-alias/register');
 const rewire = require('rewire');
-const rewireUtils = rewire('@Commands/Attribute');
 const Attribute = require('@Commands/Attribute');
+
+const rewireUtils = rewire('@Commands/Attribute');
 const HandleNamedAttributes = rewireUtils.__get__('HandleNamedAttributes');
 const getAttributeLevel = rewireUtils.__get__('getAttributeLevel');
 const getAttribute = rewireUtils.__get__('getAttribute');
@@ -44,9 +45,9 @@ it('should return with no errors', () => {
             tag: 'test',
         },
     };
-    const docs = [{ character: { attributes: [{ id: 'mut', level: 8 }] } }];
+    const doc = { character: { attributes: [{ id: 'mut', level: 8 }] } };
     const args = ['mut'];
-    expect(handleAttributeCheck(docs, { message, args })).toEqual(expect.any(String));
+    expect(handleAttributeCheck(doc, { message, args })).toEqual(expect.any(String));
 });
 it('should return with no errors', () => {
     const reply = jest.fn(str => str);
@@ -56,7 +57,7 @@ it('should return with no errors', () => {
             tag: 'test',
         },
     };
-    const docs = [{ character: { attributes: [{ id: 'mut', level: 8 }] } }];
+    const docs = { character: { attributes: [{ id: 'mut', level: 8 }] } };
     const args = ['MU'];
     expect(handleAttributeCheck(docs, { message, args })).toEqual(expect.any(String));
 });
@@ -70,7 +71,7 @@ it('should return with no errors', () => {
     };
     const docs = [{ character: { attributes: [{ id: 'mut', level: 8 }] } }];
     const args = [8];
-    for (let i = 0; i < 30; i++) {
+    for (let i = 0; i < 30; i += 1) {
         expect(handleAttributeCheck(docs, { message, args })).toEqual(expect.any(String));
     }
 });
@@ -84,15 +85,18 @@ it('should return with no errors', () => {
     };
     const docs = [{ character: { attributes: [{ id: 'mut', level: 8 }] } }];
     const args = [8, '+2'];
-    for (let i = 0; i < 30; i++) {
+    for (let i = 0; i < 30; i += 1) {
         expect(handleAttributeCheck(docs, { message, args })).toEqual(expect.any(String));
     }
 });
+
 it('should return empty', () => {
-    const message = { author: { tag: 'test' } };
+    const message = { author: { tag: 'test' }, reply: jest.fn(str => str) };
     const args = ['MU'];
-    expect(Attribute.exec(message, args)).toEqual(expect.objectContaining({}));
+    expect(Attribute.exec(message, args)).toBeInstanceOf(Promise);
+    //expect(Attribute.exec(message, args)).resolves.toBeUndefined();
 });
+
 /*
 
 const reply = jest.fn(str => str);

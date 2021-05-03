@@ -1,6 +1,6 @@
 const { findMessage } = require('@dsabot/findMessage');
-const globals = require('../globals');
-const db = globals.db;
+const { db } = require('../globals');
+
 module.exports = {
     name: 'remove',
     description:
@@ -9,13 +9,12 @@ module.exports = {
     usage: '',
     needs_args: false,
     // eslint-disable-next-line no-unused-vars
-    async exec(message, args) {
-        db.remove({ user: message.author.tag }, err => {
-            if (err) {
+    async exec(message) {
+        db.remove({ user: message.author.tag })
+            .then(() => message.reply(findMessage('DELETED_DATA')))
+            .catch(err => {
                 message.reply(findMessage('ERROR'));
                 throw new Error(err);
-            }
-            return message.reply(findMessage('DELETED_DATA'));
-        });
+            });
     },
 };

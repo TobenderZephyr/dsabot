@@ -1,15 +1,12 @@
 const Discord = require('discord.js');
-const Datastore = require('nedb'),
-	db = new Datastore({
+const Datastore = require('nedb-promises')
+
+const db = Datastore.create({
 		filename: 'data/dsabot.db',
 		autoload: false,
 	});
 const MessageEmbed = new Discord.MessageEmbed();
-const money = [{
-	'GD': 'Golddukaten',
-	'ST': 'Silbertaler',
-}];
-const DiceRegex = /\s?[DdWw]\s?|(?=\-|\+)/;
+const DiceRegex = /\s?[DdWw]\s?|(?=-|\+)/;
 const Coin = ['Kopf', 'Zahl'];
 const Werte = [
 	{ id: 'mut', kuerzel: 'MU', name: 'Mut' },
@@ -147,7 +144,8 @@ const Replies = [
 	{ id: 'NO_CHANTS', 			string: 'Du kennst keine Liturgien.' },
 	{ id: 'CHANTS_TITLE', 		string: 'Liturgien'},
 	{ id: 'CHANTS_DESCRIPTION', string: 'Folgende Liturgien beherrschst du:' },
-	{ id: 'CHANT_UNKNOWN',		string: 'Diese Liturgie kenne ich nicht.'}
+	{ id: 'CHANT_UNKNOWN', 		string: 'Diese Liturgie kenne ich nicht.' },
+	{ id: 'NO_CHARACTERS', 		string: 'Keine Benutzer auf dieser Liste gefunden.'}
 ];
 const Declination = ['dem', 'der', 'dem', '']; // Maskulinum, Feminimum, Neutrum, None
 const Articles = ['Der','Die','Das',''];
@@ -233,12 +231,4 @@ const RangedWeapons = [
 ];
 const Weapons = MeleeWeapons.concat(RangedWeapons);
 
-const Advantages = [
-	{}
-];
-const Disadvantages = [
-	{}
-];
-
 module.exports = { Werte, Talente, Coin, TalentKategorien, DiceRegex, Discord, MessageEmbed, db, Replies, MeleeWeapons, Weapons, RangedWeapons, CombatTechniques, Articles, Declination };
-

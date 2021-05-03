@@ -63,7 +63,13 @@
         "no-with": 2,
         "require-yield": 2,
         "use-isnan": 2,
-        "valid-typeof": 2
+        "valid-typeof": 2,
+        "no-underscore-dangle": 0,
+        "spaced-comment": 0,
+        "no-console": 0,
+        "no-unneeded-ternary": 0,
+        "object-shorthand": 0,
+        "no-useless-rename": 0
     },
     "env": {
         "node": true,
@@ -71,5 +77,14 @@
         "commonjs": true,
         "es2017": true
     },
-    "extends": ["prettier"]
+    "plugins": [
+        "prettier"
+    ],
+    "extends": [
+        "airbnb",
+        "prettier"
+    ],
+    "settings": {
+        "import/resolver": "module-alias"
+    }
 }

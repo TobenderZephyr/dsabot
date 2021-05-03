@@ -1,85 +1,107 @@
-const globals = require('../globals');
-const db = globals.db;
 const Random = require('random');
+const { findMessage } = require('@dsabot/findMessage');
+const { isEmpty } = require('@dsabot/isEmpty');
+
+const { db } = require('../globals');
+const { Werte } = require('../globals');
+const { Weapons } = require('../globals');
+const { CombatTechniques } = require('../globals');
+const { MeleeWeapons } = require('../globals');
 
 module.exports = {
-	name: 'parry',
-	description: 'Würfelt den Paradewert auf eine Nahkampfwaffe.',
-	aliases: ['parieren','parade'],
-	usage: '<Waffe>',
-	needs_args: true,
+    name: 'parry',
+    description: 'Würfelt den Paradewert auf eine Nahkampfwaffe.',
+    aliases: ['parieren', 'parade'],
+    usage: '<Waffe>',
+    needs_args: true,
 
-	async exec(message, args) {
-		try {
-			db.find({
-				user: message.author.tag,
-			}, function(err, docs) {
-				if (docs.length === 0) {
-					return message.reply(globals.Replies.find(r => r.id === 'NOENTRY').string);
-				}
-				else {
+    async exec(message, args) {
+        db.find({ user: message.author.tag }).then(docs => {
+            if (isEmpty(docs)) {
+                return message.reply(findMessage('NOENTRY'));
+            }
 
-					Random.use(message.author.tag);
+            Random.use(message.author.tag);
 
-					const Player = docs[0].character;
-					const Weapon = globals.Weapons.find(w => w.id === args[0].toLowerCase());
-					if(!Weapon) { return message.reply(globals.Replies.find(r => r.id === 'NO_SUCH_WEAPON').string);}
+            const Player = docs[0].character;
+            const Weapon = Weapons.find(w => w.id === args[0].toLowerCase());
+            if (!Weapon) {
+                return message.reply(findMessage('NO_SUCH_WEAPON'));
+            }
 
-					if(!globals.MeleeWeapons.find(MeleeWeapon => MeleeWeapon.id === Weapon.id)) {
-						return message.reply(globals.Replies.find(r => r.id === 'PARRY_WRONG_WEAPON').string);
-					}
-					const CombatTechnique = globals.CombatTechniques.find(technique => technique.id === Weapon.combattechnique);
-					let PlayerCombatTechnique = Player.combattechniques.find(technique => technique.id === CombatTechnique.id);
-					let CombatTechniqueValue = null;
-					if (PlayerCombatTechnique) { CombatTechniqueValue = PlayerCombatTechnique.level; }
-					if(!CombatTechniqueValue) { CombatTechniqueValue = 6; }
+            if (!MeleeWeapons.find(MeleeWeapon => MeleeWeapon.id === Weapon.id)) {
+                return message.reply(findMessage('PARRY_WRONG_WEAPON'));
+            }
+            const CombatTechnique = CombatTechniques.find(
+                technique => technique.id === Weapon.combattechnique
+            );
+            const PlayerCombatTechnique = Player.combattechniques.find(
+                technique => technique.id === CombatTechnique.id
+            );
+            let CombatTechniqueValue = null;
+            if (PlayerCombatTechnique) {
+                CombatTechniqueValue = PlayerCombatTechnique.level;
+            }
+            if (!CombatTechniqueValue) {
+                CombatTechniqueValue = 6;
+            }
 
-					let ParryValue = Math.ceil(CombatTechniqueValue/2);
-					CombatTechniqueValue.Leiteigenschaft.forEach( Property => {
-						let Attribute = globals.Werte.find(a => a.kuerzel === Property.id);
-						ParryValue += Math.floor((Player.attributes.find(a => a.id === Attribute).level - 8)/3);
-					});
-					ParryValue += Weapon.pa_mod;
+            let ParryValue = Math.ceil(CombatTechniqueValue / 2);
+            CombatTechniqueValue.Leiteigenschaft.forEach(Property => {
+                const Attribute = Werte.find(a => a.kuerzel === Property.id);
+                ParryValue += Math.floor(
+                    (Player.attributes.find(a => a.id === Attribute).level - 8) / 3
+                );
+            });
+            ParryValue += Weapon.pa_mod;
 
-					let dice = [];
-					let Bonus = 0;
-					if(args[1] && !isNaN(parseInt(args[1]))) { Bonus = parseInt(args[1]); }
-					let Comparison = Math.floor(ParryValue + Bonus);
-					let Patzer = false;
-					let Critical = false;
-					let Ok = false;
+            const dice = [];
 
-					for (let i = 0; i < 2; i++) {
-						dice.push(Random.int(1,20));
-					}
+            const Bonus = parseInt(args[1], 10) || 0;
 
-					// If there is a cleaner way to do these checks, I'm all into it.
-					if((dice[0] == 1) && dice[1] <= Comparison) 	 { Critical = true; Ok = true; }
-					else if(dice[0] <= Comparison && !Critical) 	 { Ok = true; dice.pop(); }
-					else if((dice[0] == 20) && dice[1] > Comparison) { Patzer = true; }
-					else if(dice[0] > Comparison ) 					 { dice.pop(); }
+            const Comparison = Math.floor(ParryValue + Bonus);
+            let Patzer = false;
+            let Critical = false;
+            let Ok = false;
 
+            for (let i = 0; i < 2; i += 1) {
+                dice.push(Random.int(1, 20));
+            }
 
-					let Reply = 'Du versuchst, mit ' + globals.Declination[Weapon.article] + ' ' + Weapon.name + ' zu parieren.\n';
-					Reply += 'Dein Paradewert für ' + CombatTechnique.name + ' ist ' + Math.floor(ParryValue - Weapon.pa_mod) + '. (Waffe: ' + Weapon.pa_mod + ')\n';
-					Reply += 'Deine 🎲: ` ' + dice.join(', ') + ' `.\n\n';
+            // If there is a cleaner way to do these checks, I'm all into it.
+            if (dice[0] === 1 && dice[1] <= Comparison) {
+                Critical = true;
+                Ok = true;
+            } else if (dice[0] <= Comparison && !Critical) {
+                Ok = true;
+                dice.pop();
+            } else if (dice[0] === 20 && dice[1] > Comparison) {
+                Patzer = true;
+            } else if (dice[0] > Comparison) {
+                dice.pop();
+            }
 
-					if(!Ok) {
-						Reply += globals.Replies.find(reply => reply.id === 'PARRY_FAIL').string;
-						if(Patzer)			{ Reply += globals.Replies.find(reply => reply.id === 'PARRY_CRIT_FAIL').string; }
-					}
-					else {
-						if(Critical) 	{ Reply += globals.Replies.find(reply => reply.id === 'PARRY_CRIT_SUCCESS').string; }
-						if(!Critical) 	{ Reply += globals.Replies.find(reply => reply.id === 'PARRY_SUCCESS').string; }
-					}
+            let Reply = `Du versuchst, mit ${Weapon.name} zu parieren.\n`;
+            Reply += `Dein Paradewert für ${CombatTechnique.name}  ist ${Math.floor(
+                ParryValue - Weapon.pa_mod
+            )}. (Waffe ${Weapon.pa_mod})\n`;
+            Reply += `Deine 🎲: ${dice.join(', ')}\n\n`;
 
-					return message.reply( Reply );
+            if (!Ok) {
+                Reply += findMessage('PARRY_FAIL');
+                if (Patzer) {
+                    Reply += findMessage('PARRY_CRIT_FAIL');
+                }
+            } else {
+                if (Critical) {
+                    Reply += findMessage('PARRY_CRIT_SUCCESS');
+                }
+                if (!Critical) {
+                    Reply += findMessage('PARRY_SUCCESS');
+                }
+            }
 
-				}
-			});
-		}
-		catch (e) {
-			throw e;
-		}
-	},
+            return message.reply(Reply);
+        });
+    },
 };
