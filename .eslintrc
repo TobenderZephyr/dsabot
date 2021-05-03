@@ -82,5 +82,8 @@
     "extends": [
         "airbnb",
         "prettier"
-    ]
+    ],
+    "settings": {
+        "import/resolver": "module-alias"
+    }
 }
