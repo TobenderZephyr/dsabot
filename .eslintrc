@@ -77,14 +77,6 @@
         "commonjs": true,
         "es2017": true
     },
-    "plugins": [
-        "prettier"
-    ],
-    "extends": [
-        "airbnb",
-        "prettier"
-    ],
-    "settings": {
-        "import/resolver": "module-alias"
-    }
+    "plugins": ["prettier"],
+    "extends": ["airbnb", "prettier"]
 }
