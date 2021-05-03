@@ -1,5 +1,6 @@
 const { findMessage } = require('@dsabot/findMessage');
 const { getSkill } = require('@dsabot/getSkill');
+const { isEmpty } = require('@dsabot/isEmpty');
 const { db } = require('../globals');
 
 module.exports = {
@@ -12,7 +13,7 @@ module.exports = {
     async exec(message, args) {
         db.find({ user: message.author.tag })
             .then(docs => {
-                if (docs.length === 0) {
+                if (isEmpty(docs)) {
                     return message.reply(findMessage('NOENTRY'));
                 }
                 const Skill = getSkill({ Character: docs[0].character, args: args });

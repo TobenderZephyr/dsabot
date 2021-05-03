@@ -1,6 +1,7 @@
 require('module-alias/register');
 const { roll } = require('@dsabot/Roll');
 const { findMessage } = require('@dsabot/findMessage');
+const { isEmpty } = require('@dsabot/isEmpty');
 
 const { db } = require('../globals');
 const { CombatTechniques } = require('../globals');
@@ -74,7 +75,7 @@ function isMeleeWeapon(Weapon) {
 }
 
 function handleAttack(doc, { message, args }) {
-    if (Object.keys(doc).length === 0) {
+    if (isEmpty(doc)) {
         return message.reply(findMessage('NOENTRY'));
     }
 
@@ -103,7 +104,7 @@ function handleAttack(doc, { message, args }) {
     const AttackResult = CompareAttackResult(dice, Comparison);
 
     let Reply = `Du greifst mit ${Weapon.name} an.\n Dein Angriffswert für ${CombatTechnique.name} ist ${AttackValue} (KtW: ${CombatTechnique.level})\n`;
-    Reply += `Deine 🎲: ${AttackResult.Dice.join(', ')}\n\n`;
+    Reply += `Deine 🎲: \` ${AttackResult.Dice.join(', ')} \`\n\n`;
 
     Reply += !AttackResult.Ok ? findMessage('COMBAT_FAIL') : findMessage('COMBAT_SUCCESS');
     Reply += AttackResult.Patzer ? findMessage('COMBAT_CRIT_FAIL') : '';

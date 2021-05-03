@@ -144,7 +144,8 @@ const Replies = [
 	{ id: 'NO_CHANTS', 			string: 'Du kennst keine Liturgien.' },
 	{ id: 'CHANTS_TITLE', 		string: 'Liturgien'},
 	{ id: 'CHANTS_DESCRIPTION', string: 'Folgende Liturgien beherrschst du:' },
-	{ id: 'CHANT_UNKNOWN',		string: 'Diese Liturgie kenne ich nicht.'}
+	{ id: 'CHANT_UNKNOWN', 		string: 'Diese Liturgie kenne ich nicht.' },
+	{ id: 'NO_CHARACTERS', 		string: 'Keine Benutzer auf dieser Liste gefunden.'}
 ];
 const Declination = ['dem', 'der', 'dem', '']; // Maskulinum, Feminimum, Neutrum, None
 const Articles = ['Der','Die','Das',''];

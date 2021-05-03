@@ -89,11 +89,14 @@ it('should return with no errors', () => {
         expect(handleAttributeCheck(docs, { message, args })).toEqual(expect.any(String));
     }
 });
+
 it('should return empty', () => {
-    const message = { author: { tag: 'test' } };
+    const message = { author: { tag: 'test' }, reply: jest.fn(str => str) };
     const args = ['MU'];
-    expect(Attribute.exec(message, args)).toEqual(expect.objectContaining({}));
+    expect(Attribute.exec(message, args)).toBeInstanceOf(Promise);
+    //expect(Attribute.exec(message, args)).resolves.toBeUndefined();
 });
+
 /*
 
 const reply = jest.fn(str => str);

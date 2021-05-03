@@ -1,5 +1,7 @@
 const Discord = require('discord.js');
 const { findMessage } = require('@dsabot/findMessage');
+const { isEmpty } = require('@dsabot/isEmpty');
+
 const { db } = require('../globals');
 
 module.exports = {
@@ -13,7 +15,7 @@ module.exports = {
     async exec(message, args) {
         db.find({ user: message.author.tag })
             .then(docs => {
-                if (docs.length === 0) {
+                if (isEmpty(docs)) {
                     return message.reply(findMessage('NOENTRY'));
                 }
                 const Character = docs[0].character;

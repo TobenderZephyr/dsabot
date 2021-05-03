@@ -6,6 +6,7 @@ const { getSpell } = require('@dsabot/getSpell');
 const { CalculateQuality } = require('@dsabot/CalculateQuality');
 const { CompareResults } = require('@dsabot/CompareResults');
 const { CreateResultTable, f } = require('@dsabot/CreateResultTable');
+const { isEmpty } = require('@dsabot/isEmpty');
 
 const { db } = require('../globals');
 
@@ -21,7 +22,7 @@ module.exports = {
     async exec(message, args) {
         db.findOne({ user: message.author.tag })
             .then(doc => {
-                if (Object.keys(doc).length === 0) {
+                if (isEmpty(doc)) {
                     return message.reply(findMessage('NOENTRY'));
                 }
                 if (!doc.character.hasOwnProperty('spells'))

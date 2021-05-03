@@ -1,6 +1,8 @@
 const Discord = require('discord.js');
 const { findMessage } = require('@dsabot/findMessage');
 const { getChant } = require('@dsabot/getChant');
+const { isEmpty } = require('@dsabot/isEmpty');
+
 const { db } = require('../globals');
 
 const createChantList = (Character = {}) => {
@@ -37,7 +39,7 @@ module.exports = {
     async exec(message, args) {
         db.findOne({ user: message.author.tag })
             .then(doc => {
-                if (Object.keys(doc).length === 0) {
+                if (isEmpty(doc)) {
                     return message.reply(findMessage('NOENTRY'));
                 }
                 const Character = doc.character;

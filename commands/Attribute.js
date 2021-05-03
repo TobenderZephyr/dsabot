@@ -2,6 +2,7 @@ require('module-alias/register');
 const { roll } = require('@dsabot/Roll');
 const { findMessage } = require('@dsabot/findMessage');
 const { CompareResults } = require('@dsabot/CompareResults');
+const { isEmpty } = require('@dsabot/isEmpty');
 
 const { db } = require('../globals');
 const { Werte } = require('../globals');
@@ -26,10 +27,10 @@ function HandleNamedAttributes({ Character = {}, args = [] } = {}) {
 }
 
 function handleAttributeCheck(doc, { message, args }) {
-    if (Object.keys(doc).length === 0) {
+    if (isEmpty(doc)) {
         return message.reply(findMessage('NOENTRY'));
     }
-    const Attribute = Number.isNaN(args[0])
+    const Attribute = !Number.isNaN(args[0])
         ? HandleNamedAttributes({ Character: doc.character, args: args })
         : null;
     const Level = Attribute ? Attribute.Level : args[0] || 8;

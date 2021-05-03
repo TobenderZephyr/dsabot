@@ -1,5 +1,7 @@
 const Random = require('random');
 const { findMessage } = require('@dsabot/findMessage');
+const { isEmpty } = require('@dsabot/isEmpty');
+
 const { db } = require('../globals');
 const { Werte } = require('../globals');
 const { Weapons } = require('../globals');
@@ -15,7 +17,7 @@ module.exports = {
 
     async exec(message, args) {
         db.find({ user: message.author.tag }).then(docs => {
-            if (docs.length === 0) {
+            if (isEmpty(docs)) {
                 return message.reply(findMessage('NOENTRY'));
             }
 

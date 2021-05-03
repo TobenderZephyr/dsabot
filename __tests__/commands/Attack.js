@@ -1,7 +1,7 @@
 require('module-alias/register');
 const rewire = require('rewire');
-const rewireUtils = rewire('@Commands/Attack');
 
+const rewireUtils = rewire('@Commands/Attack');
 const getWeapon = rewireUtils.__get__('getWeapon');
 const getAttributeLevel = rewireUtils.__get__('getAttributeLevel');
 const getCombatTechniqueLevel = rewireUtils.__get__('getCombatTechniqueLevel');

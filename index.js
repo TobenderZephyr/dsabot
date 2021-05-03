@@ -25,6 +25,7 @@ async function CreateFromFile(message, data) {
     }).then(docs => {
         if (docs.length === 0) {
             db.insert({
+                uid: `${message.author.id}`,
                 user: message.author.tag,
                 character: data,
             }).then(() => {
@@ -56,7 +57,7 @@ async function commandHandler(message) {
         if (!command) return null;
         if (command.needs_args && !args.length) {
             return message.reply(
-                `${findMessage('TOO_FEW_ARGS').string}\n${cmdprefix}${commandName} ${command.usage}`
+                `${findMessage('TOO_FEW_ARGS')}\n${cmdprefix}${commandName} ${command.usage}`
             );
         }
         command.exec(message, args);

@@ -1,13 +1,19 @@
 require('module-alias/register');
+const { findMessage } = require('@dsabot/findMessage');
+const { isEmpty } = require('@dsabot/isEmpty');
 const { db } = require('../globals');
 const { Werte } = require('../globals');
 
-function isEmpty(document = {}) {
-    return Object.keys(document).length === 0 ? true : false;
-}
-
 async function findUser(request = '') {
-    return db.findOne({ user: request }).then(doc => doc);
+    return db
+        .findOne({
+            $or: [
+                { user: request.replace('@', '') },
+                { uid: request.replaceAll(/[<>!@]/gi, '') },
+                { character: { name: request } },
+            ],
+        })
+        .then(doc => doc);
 }
 function doHeading(attributes) {
     return `${''.padStart(25)}${attributes
@@ -36,29 +42,38 @@ function getStats(user) {
     return Attributes;
 }
 
-module.exports.exec = async function exec(message, args) {
-    if (!args) return;
-    const Characters = []; //?+
-    Promise.all(
-        args.map(arg => {
-            return findUser(arg).then(user => {
-                if (!isEmpty(user)) {
-                    Characters.push({
-                        Name: arg,
-                        Attributes: getStats(user),
-                    });
-                }
+module.exports = {
+    name: 'list',
+    description: 'Gibt eine Liste von Mitspielern aus.',
+    aliases: ['liste'],
+    usage: '',
+    needs_args: false,
+
+    exec: async (message, args) => {
+        if (!args) return;
+        console.log(args[0].replaceAll(/[<>!@]/gi, ''));
+        const Characters = []; //?+
+        Promise.all(
+            args.map(arg => {
+                return findUser(arg).then(user => {
+                    if (!isEmpty(user)) {
+                        Characters.push({
+                            Name: user.character.name,
+                            Attributes: getStats(user),
+                        });
+                    }
+                });
+            })
+        ).then(() => {
+            if (isEmpty(Characters)) return findMessage('NO_CHARACTERS');
+            let Reply = `\`\`\`\n${doHeading(Characters[0].Attributes)}`;
+            Characters.forEach(c => {
+                Reply += `${c.Name.toString().padEnd(24)} ${listStats(c.Attributes)}`;
             });
-        })
-    ).then(() => {
-        //console.log(Characters)
-        let Reply = `\`\`\`\n${doHeading(Characters[0].Attributes)}`;
-        Characters.forEach(c => {
-            Reply += `${c.Name.toString().padEnd(24)} ${listStats(c.Attributes)}`;
+            Reply += `\`\`\``;
+            return message.reply(Reply);
         });
-        Reply += `\`\`\``;
-        message.reply(Reply);
-    });
+    },
 };
 /*
 (async () => {
