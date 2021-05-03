@@ -1,21 +1,40 @@
 require('module-alias/register');
-
-const { db } = require('../globals');
-const { Werte } = require('../globals');
 const { roll } = require('@dsabot/Roll');
 const { findMessage } = require('@dsabot/findMessage');
 const { CompareResults } = require('@dsabot/CompareResults');
+
+const { db } = require('../globals');
+const { Werte } = require('../globals');
+
+function getAttributeLevel(Character = {}, Attribute = {}) {
+    return Character.attributes.find(attribute => attribute.id === Attribute.id).level;
+}
+
+function getAttribute(attribute = '') {
+    return attribute.length === 2
+        ? Werte.find(a => a.kuerzel === attribute.toUpperCase())
+        : Werte.find(a => a.name.toLowerCase() === attribute.toLowerCase());
+}
+function HandleNamedAttributes({ Character = {}, args = [] } = {}) {
+    const Attribute = getAttribute(args[0]);
+    const Level = getAttributeLevel(Character, Attribute) || 8;
+
+    return {
+        Name: Attribute.name,
+        Level,
+    };
+}
 
 function handleAttributeCheck(doc, { message, args }) {
     if (Object.keys(doc).length === 0) {
         return message.reply(findMessage('NOENTRY'));
     }
-    let Attribute = isNaN(args[0])
+    const Attribute = Number.isNaN(args[0])
         ? HandleNamedAttributes({ Character: doc.character, args: args })
         : null;
-    let Level = Attribute ? Attribute.Level : args[0] || 8;
-    let Bonus = parseInt(args[1]) || 0;
-    let dice = roll(2, 20, message.author.tag).dice;
+    const Level = Attribute ? Attribute.Level : args[0] || 8;
+    const Bonus = parseInt(args[1], 10) || 0;
+    const { dice } = roll(2, 20, message.author.tag);
     const Result = CompareResults(dice, [Level, Level], Bonus);
 
     // handle crits
@@ -52,27 +71,6 @@ function handleAttributeCheck(doc, { message, args }) {
         }`
     );
 }
-
-function HandleNamedAttributes({ Character: Character = {}, args: args = [] } = {}) {
-    let Attribute = getAttribute(args[0]);
-    let Level = getAttributeLevel(Character, Attribute) || 8;
-
-    return {
-        Name: Attribute.name,
-        Level: Level,
-    };
-}
-
-function getAttributeLevel(Character = {}, Attribute = {}) {
-    return Character.attributes.find(attribute => attribute.id === Attribute.id).level;
-}
-
-function getAttribute(attribute = '') {
-    return attribute.length === 2
-        ? Werte.find(a => a.kuerzel === attribute.toUpperCase())
-        : Werte.find(a => a.name.toLowerCase() === attribute.toLowerCase());
-}
-
 module.exports = {
     name: 'attribute',
     description: '',

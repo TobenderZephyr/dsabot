@@ -1,9 +1,30 @@
-//const globals = require('../globals');
-const globals = require('../globals');
-const db = globals.db;
 const Discord = require('discord.js');
 const { findMessage } = require('@dsabot/findMessage');
 const { getSpell } = require('@dsabot/getSpell');
+const { db } = require('../globals');
+
+const ReplySpellList = (SpellList = []) => {
+    if (!SpellList) return findMessage('NO_SPELLS');
+    return `${SpellList.map(s => `${s.Name} (${s.Level})`).join('\n')}`;
+};
+
+const ReplySpell = (Spell = {}) => {
+    if (!Spell) return null;
+    return `Deine Werte für ${Spell.Name} (${Spell.Level}) sind:
+
+    ${Spell.Attributes.map(attribute => `${attribute.Name}: ${attribute.Level}`).join('   ')}
+    `;
+};
+
+const createSpellList = (Character = {}) => {
+    if (!Character || !Character.hasOwnProperty('spells')) return null;
+    const SpellList = [];
+    Character.spells.forEach(spell =>
+        SpellList.push(getSpell({ Character: Character, spell_name: spell.id }))
+    );
+    return SpellList.filter(value => value !== undefined); //?+
+};
+
 module.exports = {
     name: 'spells',
     description: 'Zeigt dir deinen Fertigkeitswert im jeweiligen Magietalent.',
@@ -34,26 +55,4 @@ module.exports = {
             return message.reply(ReplySpell(Spell));
         });
     },
-};
-
-const ReplySpellList = (SpellList = []) => {
-    if (!SpellList) return findMessage('NO_SPELLS');
-    return `${SpellList.map(s => `${s.Name} (${s.Level})`).join('\n')}`;
-};
-
-const ReplySpell = (Spell = {}) => {
-    if (!Spell) return;
-    return `Deine Werte für ${Spell.Name} (${Spell.Level}) sind:
-
-    ${Spell.Attributes.map(attribute => `${attribute.Name}: ${attribute.Level}`).join('   ')}
-    `;
-};
-
-const createSpellList = (Character = {}) => {
-    if (!Character || !Character.hasOwnProperty('spells')) return;
-    let SpellList = [];
-    Character.spells.forEach(spell =>
-        SpellList.push(getSpell({ Character: Character, spell_name: spell.id }))
-    );
-    return SpellList.filter(value => value !== undefined); //?+
 };

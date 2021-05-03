@@ -19,11 +19,13 @@ function getStats(user) {
 async function findUser(request = '') {
     return db.findOne({ user: request }).then(doc => doc);
 }
-function doHeading(a) {
-    return a.map(a => a.Short);
+function doHeading(attributes) {
+    return `${''.padStart(25)}${attributes
+        .map(a => `${a.Short}`.padEnd(4).padStart(6))
+        .join('|')}\n`;
 }
-function listStats(a) {
-    return a.map(a => a.Level);
+function listStats(attributes) {
+    return `${attributes.map(a => `${a.Level}`.padEnd(4).padStart(6)).join('|')}\n`;
 }
 function getAttribute(attribute_request = { id: 'mut', level: 9 }) {
     const Attribute = Werte.find(a => a.id === attribute_request.id);
@@ -68,9 +70,17 @@ module.exports.exec = async function exec(message, args) {
                 }
             });
         })
-    ).then(() => console.log(Characters));
+    ).then(() => {
+        //console.log(Characters)
+        let Reply = `\`\`\`\n${doHeading(Characters[0].Attributes)}`;
+        Characters.forEach(c => {
+            Reply += `${c.Name.toString().padEnd(24)} ${listStats(c.Attributes)}`;
+        });
+        Reply += `\`\`\``;
+        message.reply(Reply);
+    });
 };
-
+/*
 (async () => {
     db.loadDatabase();
 
@@ -79,3 +89,4 @@ module.exports.exec = async function exec(message, args) {
 
     l.exec(msg, ['tobenderzephyr#2509', 'ElManu#8438']);
 })();
+*/

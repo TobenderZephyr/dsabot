@@ -1,7 +1,7 @@
-const globals = require('../globals');
-const db = globals.db;
 const { findMessage } = require('@dsabot/findMessage');
 const { getSkill } = require('@dsabot/getSkill');
+const { db } = require('../globals');
+
 module.exports = {
     name: 'skill',
     description: 'Zeigt dir deinen Fertigkeitswert im jeweiligen Talent.',
