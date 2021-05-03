@@ -5,17 +5,7 @@ const { Werte } = require('../globals');
 function isEmpty(document = {}) {
     return Object.keys(document).length === 0 ? true : false;
 }
-function getStats(user) {
-    const Attributes = [];
-    user.character.attributes.forEach(attribute => {
-        Attributes.push(getAttribute(attribute));
-    });
 
-    Attributes.sort((a, b) => (a.id > b.id ? 1 : a.id < b.id ? -1 : 0));
-    // console.log(doHeading(Attributes));
-    // console.log(listStats(Attributes));
-    return Attributes;
-}
 async function findUser(request = '') {
     return db.findOne({ user: request }).then(doc => doc);
 }
@@ -37,23 +27,13 @@ function getAttribute(attribute_request = { id: 'mut', level: 9 }) {
     };
 }
 
-function handleArray(request) {
-    db.find({ user: { $in: request } }, (error, documents) => handleDocuments(documents));
-}
-
-function handleAll(args) {
-    db.find({}, (error, documents) => handleDocuments(documents));
-}
-function handleDocuments(documents) {
-    const Users = [];
-    documents.forEach(document => {
-        if (document) {
-            Users.push({
-                Name: document.user,
-                Attributes: getStats(document),
-            });
-        }
+function getStats(user) {
+    const Attributes = [];
+    user.character.attributes.forEach(attribute => {
+        Attributes.push(getAttribute(attribute));
     });
+    Attributes.sort((a, b) => (a.id > b.id ? 1 : a.id < b.id ? -1 : 0));
+    return Attributes;
 }
 
 module.exports.exec = async function exec(message, args) {

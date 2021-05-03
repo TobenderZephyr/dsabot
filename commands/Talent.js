@@ -1,12 +1,12 @@
-const globals = require('../globals');
 const Discord = require('discord.js');
-const db = globals.db;
 const { roll } = require('@dsabot/Roll');
 const { findMessage } = require('@dsabot/findMessage');
 const { getSkill } = require('@dsabot/getSkill');
 const { CalculateQuality } = require('@dsabot/CalculateQuality');
 const { CompareResults } = require('@dsabot/CompareResults');
 const { CreateResultTable } = require('@dsabot/CreateResultTable');
+const { db } = require('../globals');
+
 module.exports = {
     name: 'talent',
     description:
@@ -21,7 +21,7 @@ module.exports = {
             if (docs.length === 0) {
                 return message.reply(findMessage('NOENTRY'));
             }
-            if (!isNaN(args[0])) {
+            if (!Number.isNaN(args[0])) {
                 return message.reply(findMessage('WRONG_ARGUMENTS'));
             }
 
@@ -30,10 +30,10 @@ module.exports = {
                 return message.reply(findMessage('TALENT_UNKNOWN'));
             }
 
-            const Attributes = Skill.Attributes;
+            const { Attributes } = Skill;
             const DiceThrow = roll(3, 20, message.author.tag).dice;
-            const Bonus = parseInt(args[1]) || 0;
-            let { Passed, CriticalHit, Fumbles, PointsUsed, PointsRemaining } = CompareResults(
+            const Bonus = parseInt(args[1], 10) || 0;
+            const { Passed, CriticalHit, Fumbles, PointsUsed, PointsRemaining } = CompareResults(
                 DiceThrow,
                 Attributes.map(attr => attr.Level),
                 Bonus,
@@ -81,7 +81,7 @@ module.exports = {
                     inline: false,
                 });
             }
-            message.reply(Reply);
+            return message.reply(Reply);
         });
     },
 };

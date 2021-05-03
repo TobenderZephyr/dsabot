@@ -1,7 +1,7 @@
-const globals = require('../globals');
+const { Replies } = require('../globals');
 
-const findMessage = (value) => {
-    return globals.Replies.find(r => r.id === value).string;
+const findMessage = value => {
+    return Replies.find(r => r.id === value).string;
 };
 
 module.exports = { findMessage };

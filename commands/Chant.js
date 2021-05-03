@@ -1,12 +1,12 @@
-const globals = require('../globals');
 const Discord = require('discord.js');
-const db = globals.db;
 const { roll } = require('@dsabot/Roll');
 const { findMessage } = require('@dsabot/findMessage');
 const { getChant } = require('@dsabot/getChant');
 const { CalculateQuality } = require('@dsabot/CalculateQuality');
 const { CompareResults } = require('@dsabot/CompareResults');
 const { CreateResultTable, f } = require('@dsabot/CreateResultTable');
+const { db } = require('../globals');
+
 module.exports = {
     name: 'chant',
     description:
@@ -23,7 +23,7 @@ module.exports = {
             }
             if (!doc.character.hasOwnProperty('chants'))
                 return message.reply(findMessage('NO_CHANTS'));
-            if (!isNaN(args[0])) {
+            if (!Number.isNaN(args[0])) {
                 return message.reply(findMessage('WRONG_ARGUMENTS'));
             }
             const Chant = getChant({ Character: doc.character, chant_name: args[0] });
@@ -31,12 +31,12 @@ module.exports = {
                 return message.reply(findMessage('CHANT_UNKNOWN'));
             }
             if (!Chant.Level || !Chant.Attributes) {
-                return;
+                return null;
             }
-            const Attributes = Chant.Attributes;
+            const { Attributes } = Chant;
             const DiceThrow = roll(3, 20, message.author.tag).dice;
-            const Bonus = parseInt(args[1]) || 0;
-            let { Passed, CriticalHit, Fumbles, PointsUsed, PointsRemaining } = CompareResults(
+            const Bonus = parseInt(args[1], 10) || 0;
+            const { Passed, CriticalHit, Fumbles, PointsUsed, PointsRemaining } = CompareResults(
                 DiceThrow,
                 Attributes.map(attr => attr.Level),
                 Bonus,
@@ -86,7 +86,7 @@ module.exports = {
                     inline: false,
                 });
             }
-            message.reply(Reply);
+            return message.reply(Reply);
         });
     },
 };

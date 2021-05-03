@@ -1,9 +1,32 @@
-//const globals = require('../globals');
-const globals = require('../globals');
 const Discord = require('discord.js');
-const db = globals.db;
 const { findMessage } = require('@dsabot/findMessage');
 const { getChant } = require('@dsabot/getChant');
+const { db } = require('../globals');
+
+const createChantList = (Character = {}) => {
+    if (!Character || !Character.hasOwnProperty('chants')) return null;
+    const ChantList = [];
+    Character.chants.forEach(chant =>
+        ChantList.push(getChant({ Character: Character, chant_name: chant.id }))
+    );
+    return ChantList.filter(value => value !== undefined);
+};
+
+const ReplyChantList = (ChantList = []) => {
+    if (!ChantList) return null;
+    return `${ChantList.map(chant => `${chant.Name} ${chant.Level ? `(${chant.Level})` : ''}`).join(
+        '\n'
+    )}`;
+};
+
+const ReplyChant = (Chant = {}) => {
+    if (!Chant) return null;
+    return `Deine Werte für ${Chant.Name} ${Chant.Level ? '(' + Chant.Level + ')' : ''} sind:
+
+    ${Chant.Attributes.map(attribute => `${attribute.Name}: ${attribute.Level}`).join('   ')}
+    `;
+};
+
 module.exports = {
     name: 'chants',
     description: 'Zeigt dir deinen Fertigkeitswert im jeweiligen Magietalent (Götterwirken).',
@@ -36,30 +59,4 @@ module.exports = {
             return message.reply(ReplyChant(Chant));
         });
     },
-};
-
-const createChantList = (Character = {}) => {
-    if (!Character || !Character.hasOwnProperty('chants')) return;
-    let ChantList = [];
-
-    // todo: send 'chant' to getChant() so we can filter out blessings.
-    Character.chants.forEach(chant =>
-        ChantList.push(getChant({ Character: Character, chant_name: chant.id }))
-    );
-    return ChantList.filter(value => value !== undefined);
-};
-
-const ReplyChantList = (ChantList = []) => {
-    if (!ChantList) return;
-    return `${ChantList.map(chant => `${chant.Name} ${chant.Level ? `(${chant.Level})` : ''}`).join(
-        '\n'
-    )}`;
-};
-
-const ReplyChant = (Chant = {}) => {
-    if (!Chant) return;
-    return `Deine Werte für ${Chant.Name} ${Chant.Level ? '(' + Chant.Level + ')' : ''} sind:
-
-    ${Chant.Attributes.map(attribute => `${attribute.Name}: ${attribute.Level}`).join('   ')}
-    `;
 };

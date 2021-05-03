@@ -3,6 +3,7 @@ const Discord = require('discord.js');
 const { roll } = require('@dsabot/Roll');
 const { findMessage } = require('@dsabot/findMessage');
 const { CompareResults } = require('@dsabot/CompareResults');
+
 module.exports = {
     name: 'tp',
     description:
@@ -15,20 +16,21 @@ module.exports = {
     needs_args: true,
 
     async exec(message, args) {
-        if (isNaN(args[0])) {
+        if (Number.isNaN(args[0])) {
             return message.reply(findMessage('WRONG_ARGUMENTS'));
         }
 
-		let Bonus = parseInt(args[3]) || 0;
-		let Erschwernis = parseInt(args[4]) || 0;
+        const Bonus = parseInt(args[3], 10) || 0;
+        const Erschwernis = parseInt(args[4], 10) || 0;
 
-        const dice = roll(3, 20, message.author.tag).dice;
+        const { dice } = roll(3, 20, message.author.tag);
 
-		const {
-			Passed: Passed,
-			CriticalHit: CriticalHit,
-			Fumbles: Fumbles,
-			PointsRemaining: PointsRemaining} = CompareResults(dice, [args[0], args[1], args[2]], Bonus, Erschwernis);
+        const { Passed, CriticalHit, Fumbles, PointsRemaining } = CompareResults(
+            dice,
+            [args[0], args[1], args[2]],
+            Bonus,
+            Erschwernis
+        );
 
         const Reply = new Discord.MessageEmbed();
         Reply.setTitle(`${findMessage('ROLL')} ${dice.join(', ')}.`);
@@ -59,6 +61,6 @@ module.exports = {
                 inline: false,
             });
         }
-        message.reply(Reply);
+        return message.reply(Reply);
     },
 };

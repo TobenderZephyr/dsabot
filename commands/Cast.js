@@ -89,7 +89,7 @@ module.exports = {
                 });
             }
 
-            message.reply(Reply);
+            return message.reply(Reply);
         });
     },
 };
