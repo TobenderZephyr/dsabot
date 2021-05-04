@@ -11,7 +11,8 @@ const createChantList = (Character = {}) => {
     Character.chants.forEach(chant =>
         ChantList.push(getChant({ Character: Character, chant_name: chant.id }))
     );
-    return ChantList.filter(value => value !== undefined);
+    console.log(ChantList);
+    return ChantList.filter(value => value !== undefined && value !== null);
 };
 
 const ReplyChantList = (ChantList = []) => {
@@ -42,6 +43,7 @@ module.exports = {
                 if (isEmpty(doc)) {
                     return message.reply(findMessage('NOENTRY'));
                 }
+                console.log(doc.character);
                 const Character = doc.character;
                 if (!Character.hasOwnProperty('chants'))
                     return message.reply(findMessage('NO_CHANTS'));
@@ -68,3 +70,14 @@ module.exports = {
             });
     },
 };
+
+const msg = {
+    author: { tag: 'Jens#5449' },
+    reply: e => {
+        console.log(e);
+    },
+};
+const args = [];
+
+const s = require('./Chants');
+s.exec(msg, args);

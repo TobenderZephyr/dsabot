@@ -1,5 +1,6 @@
 require('module-alias/register');
 const rewire = require('rewire');
+const Attack = require('@Commands/Attack');
 
 const rewireUtils = rewire('@Commands/Attack');
 const getWeapon = rewireUtils.__get__('getWeapon');
@@ -12,6 +13,12 @@ const getCombatTechnique = rewireUtils.__get__('getCombatTechnique');
 
 it('should be undefined without value', () => {
     expect(getCombatTechnique({})).toBeUndefined();
+});
+it('should be undefined without value', () => {
+    expect(getCombatTechnique({ combattechnique: 'made-up' })).toBeUndefined();
+});
+it('should be null without any params.', () => {
+    expect(getCombatTechnique()).toBeNull();
 });
 it('should return defined object', () => {
     expect(getCombatTechnique({ combattechnique: 'dolche' })).toEqual(

@@ -1,6 +1,6 @@
 {
     "name": "dsabot",
-    "version": "1.6.1",
+    "version": "1.6.2",
     "description": "",
     "main": "index.js",
     "scripts": {
@@ -39,7 +39,17 @@
         "collectCoverageFrom": [
             "**/*.{js,jsx}",
             "!**/node_modules/**",
-            "!**/vendor/**"
+            "!**/vendor/**",
+            "!**/.github/**",
+            "!**/__tests__/**",
+            "!**/__mocks__/**"
+        ],
+        "coveragePathIgnorePatterns": [
+            "/node_modules/",
+            "<rootDir>/__tests__/",
+            "<rootDir>/.github/",
+            "<rootDir>/coverage/",
+            "<rootDir>/__mocks__/"
         ],
         "coverageDirectory": "coverage"
     }

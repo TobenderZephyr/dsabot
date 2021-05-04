@@ -22,7 +22,7 @@ const createSpellList = (Character = {}) => {
     Character.spells.forEach(spell =>
         SpellList.push(getSpell({ Character: Character, spell_name: spell.id }))
     );
-    return SpellList.filter(value => value !== undefined); //?+
+    return SpellList.filter(value => value !== undefined && value !== null); //?+
 };
 
 module.exports = {

@@ -5,9 +5,10 @@ const { db } = require('../globals');
 const { Werte } = require('../globals');
 
 function printHeader(attributes) {
+    if (!attributes) return null;
     return `${''.padStart(31)}${attributes
         .map(a => `${a.Short}`.padEnd(4).padStart(6))
-        .join('|')}\n`;
+        .join('|')}\n`.toString();
 }
 function listStats(attributes) {
     return `${attributes.map(a => `${a.Level}`.padEnd(4).padStart(6)).join('|')}\n`;
