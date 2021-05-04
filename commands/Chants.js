@@ -70,14 +70,3 @@ module.exports = {
             });
     },
 };
-
-const msg = {
-    author: { tag: 'Jens#5449' },
-    reply: e => {
-        console.log(e);
-    },
-};
-const args = [];
-
-const s = require('./Chants');
-s.exec(msg, args);
