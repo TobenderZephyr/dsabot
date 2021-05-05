@@ -52,9 +52,7 @@ describe('findUser', () => {
     };
 
     List.__Rewire__('db', {
-        findOne: () => {
-            return Promise.resolve(expected);
-        },
+        findOne: () => Promise.resolve(expected),
     });
     const findUser = List.__get__('findUser');
     expect(findUser()).toBeInstanceOf(Promise);
@@ -102,5 +100,35 @@ describe('getStats', () => {
                 },
             ])
         );
+    });
+});
+
+describe('returnResult', () => {
+    const returnResult = List.__get__('returnResult');
+
+    const message = { reply: str => str };
+    const characters = [
+        {
+            Name: 'Zulu',
+            Attributes: [
+                { id: 'charisma', Level: 7, Short: 'CH' },
+                { id: 'mut', Level: 14, Short: 'MU' },
+            ],
+        },
+        {
+            Name: 'Alfa',
+            Attributes: [
+                { id: 'mut', Level: 10, Short: 'MU' },
+                { id: 'charisma', Level: 11, Short: 'CH' },
+            ],
+        },
+    ];
+    it('returns if no characters were found', () => {
+        expect(returnResult(message, [])).toBe('Keine Benutzer auf dieser Liste gefunden.');
+        expect(returnResult(message)).toBe('Keine Benutzer auf dieser Liste gefunden.');
+    });
+
+    it('returns a string ', () => {
+        expect(returnResult(message, characters)).toMatch(/.*/);
     });
 });
