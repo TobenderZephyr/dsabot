@@ -79,3 +79,28 @@ describe('findUsers', () => {
     expect(findUser()).toBeInstanceOf(Promise);
     expect(findUser()).resolves.toEqual(expected);
 });*/
+
+describe('getStats', () => {
+    it('should give name, id and level in order', () => {
+        const getStats = List.__get__('getStats');
+        const user = {
+            character: {
+                attributes: [
+                    { id: 'mut', level: 10 },
+                    { id: 'klugheit', level: 11 },
+                ],
+            },
+        };
+
+        expect(getStats(user)).toEqual(
+            expect.arrayContaining([
+                {
+                    Name: expect.any(String),
+                    Level: expect.any(Number),
+                    Short: expect.any(String),
+                    id: expect.any(String),
+                },
+            ])
+        );
+    });
+});
