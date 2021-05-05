@@ -1,13 +1,11 @@
 require('module-alias/register');
+require('babel-plugin-rewire');
 const List = require('@Commands/List');
 
-const rewire = require('rewire');
-
-const reWireUtils = rewire('@Commands/List');
 // const getStats = reWireUtils.__get__('getStats');
-const getAttribute = reWireUtils.__get__('getAttribute');
-const printHeader = reWireUtils.__get__('printHeader');
-const listStats = reWireUtils.__get__('listStats');
+const getAttribute = List.__get__('getAttribute');
+const printHeader = List.__get__('printHeader');
+const listStats = List.__get__('listStats');
 it('should return an attribute object', () => {
     expect(getAttribute({ id: 'mut', level: 9 })).toEqual(
         expect.objectContaining({

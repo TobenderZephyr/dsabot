@@ -1,3 +1,4 @@
+require('module-alias/register');
 const { getAttributeLevels } = require('@dsabot/getAttributeLevels');
 const Chants = require('@Lib/Chants.json');
 

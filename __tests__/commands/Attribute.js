@@ -1,12 +1,11 @@
 require('module-alias/register');
-const rewire = require('rewire');
+require('babel-plugin-rewire');
 const Attribute = require('@Commands/Attribute');
 
-const rewireUtils = rewire('@Commands/Attribute');
-const HandleNamedAttributes = rewireUtils.__get__('HandleNamedAttributes');
-const getAttributeLevel = rewireUtils.__get__('getAttributeLevel');
-const getAttribute = rewireUtils.__get__('getAttribute');
-const handleAttributeCheck = rewireUtils.__get__('handleAttributeCheck');
+const HandleNamedAttributes = Attribute.__get__('HandleNamedAttributes');
+const getAttributeLevel = Attribute.__get__('getAttributeLevel');
+const getAttribute = Attribute.__get__('getAttribute');
+const handleAttributeCheck = Attribute.__get__('handleAttributeCheck');
 test('getAttribute should return Object', () => {
     const obj = { id: 'mut', kuerzel: 'MU', name: 'Mut' };
     expect(getAttribute('KK')).toEqual(
