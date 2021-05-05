@@ -16,7 +16,7 @@ const createChantList = (Character = {}) => {
 };
 
 const ReplyChantList = (ChantList = []) => {
-    if (!ChantList) return null;
+    if (!ChantList || ChantList.length === 0) return null;
     return `${ChantList.map(chant => `${chant.Name} ${chant.Level ? `(${chant.Level})` : ''}`).join(
         '\n'
     )}`;
