@@ -18,7 +18,7 @@
     "license": "ISC",
     "dependencies": {
         "discord.js": "^12.5.3",
-        "dotenv": "^8.2.0",
+        "dotenv": "^8.5.1",
         "module-alias": "^2.2.2",
         "nedb-promises": "^4.1.2",
         "node-fetch": "^2.6.1",
