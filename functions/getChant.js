@@ -1,14 +1,14 @@
 require('module-alias/register');
 const { getAttributeLevels } = require('@dsabot/getAttributeLevels');
 const Chants = require('@Lib/Chants.json');
-
+const { isEmpty } = require('@dsabot/isEmpty');
 const getChant = ({ Character: Character = [], chant_name: chantName = '' } = {}) => {
     //if (!Character.hasOwnProperty('chants')) return;
     const chantEntry =
         Chants.find(chant => chant.id.toLowerCase() === chantName.toLowerCase()) ||
         Chants.find(chant => chant.name.toLowerCase() === chantName.toLowerCase());
 
-    if (!chantEntry) {
+    if (isEmpty(chantEntry)) {
         console.log(`getChant() Did not find entry for ${chantName}`);
         return null;
     }
