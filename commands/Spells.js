@@ -2,14 +2,15 @@ const Discord = require('discord.js');
 const { findMessage } = require('@dsabot/findMessage');
 const { getSpell } = require('@dsabot/getSpell');
 const { db } = require('../globals');
+const { isEmpty } = require('@dsabot/isEmpty');
 
 const ReplySpellList = (SpellList = []) => {
-    if (!SpellList) return findMessage('NO_SPELLS');
+    if (isEmpty(SpellList)) return findMessage('NO_SPELLS');
     return `${SpellList.map(s => `${s.Name} (${s.Level})`).join('\n')}`;
 };
 
 const ReplySpell = (Spell = {}) => {
-    if (!Spell) return null;
+    if (isEmpty(Spell)) return null;
     return `Deine Werte für ${Spell.Name} (${Spell.Level}) sind:
 
     ${Spell.Attributes.map(attribute => `${attribute.Name}: ${attribute.Level}`).join('   ')}

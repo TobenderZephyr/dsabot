@@ -20,8 +20,8 @@ module.exports = {
             const result = roll(numberOfDice, diceValues, message.author.tag);
             const total = Bonus ? Bonus + result.sum : result.sum;
             message.reply(
-                `${findMessage('ROLL')} ${result.dice.join(', ')} ` +
-                    `(Gesamt: ${result.sum}${Bonus ? `+${Bonus}=${total}` : ``})`
+                `${findMessage('ROLL')} \` ${result.dice.join(' `, ` ')} \`` +
+                    ` (Gesamt: ${result.sum}${Bonus ? `+${Bonus}=${total}` : ``})`
             );
         }
     },
