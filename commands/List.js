@@ -88,16 +88,16 @@ module.exports = {
         }
         const Characters = []; //?+
         Promise.all(
-            args.map(arg => {
-                return findUser(arg).then(user => {
+            args
+                .map(arg => findUser(arg))
+                .then(user => {
                     if (!isEmpty(user)) {
                         Characters.push({
                             Name: user.character.name,
                             Attributes: getStats(user),
                         });
                     }
-                });
-            })
+                })
         ).then(() => returnResult(message, Characters));
         return null;
     },
