@@ -1,3 +1,4 @@
+require('module-alias/register');
 const Discord = require('discord.js');
 const { findMessage } = require('@dsabot/findMessage');
 const { getChant } = require('@dsabot/getChant');
@@ -11,19 +12,18 @@ const createChantList = (Character = {}) => {
     Character.chants.forEach(chant =>
         ChantList.push(getChant({ Character: Character, chant_name: chant.id }))
     );
-    console.log(ChantList);
     return ChantList.filter(value => value !== undefined && value !== null);
 };
 
 const ReplyChantList = (ChantList = []) => {
-    if (!ChantList) return null;
+    if (!ChantList || ChantList.length === 0) return null;
     return `${ChantList.map(chant => `${chant.Name} ${chant.Level ? `(${chant.Level})` : ''}`).join(
         '\n'
     )}`;
 };
 
 const ReplyChant = (Chant = {}) => {
-    if (!Chant) return null;
+    if (!Chant || Object.keys(Chant).length === 0) return null;
     return `Deine Werte für ${Chant.Name} ${Chant.Level ? `(${Chant.Level})` : ''} sind:
 
     ${Chant.Attributes.map(attribute => `${attribute.Name}: ${attribute.Level}`).join('   ')}

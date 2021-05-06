@@ -1,39 +1,43 @@
 require('module-alias/register');
-const rewire = require('rewire');
+require('babel-plugin-rewire');
 const Attribute = require('@Commands/Attribute');
 
-const rewireUtils = rewire('@Commands/Attribute');
-const HandleNamedAttributes = rewireUtils.__get__('HandleNamedAttributes');
-const getAttributeLevel = rewireUtils.__get__('getAttributeLevel');
-const getAttribute = rewireUtils.__get__('getAttribute');
-const handleAttributeCheck = rewireUtils.__get__('handleAttributeCheck');
-test('getAttribute should return Object', () => {
-    const obj = { id: 'mut', kuerzel: 'MU', name: 'Mut' };
-    expect(getAttribute('KK')).toEqual(
-        expect.objectContaining({
-            id: expect.any(String),
-            kuerzel: expect.any(String),
-            name: expect.any(String),
-        })
-    );
-    expect(getAttribute('MU')).toEqual(obj);
-    expect(getAttribute('mut')).toEqual(obj);
-});
-it('should return undefined', () => {
-    expect(getAttribute()).toBeUndefined();
-});
+const HandleNamedAttributes = Attribute.__get__('HandleNamedAttributes');
+const getAttributeLevel = Attribute.__get__('getAttributeLevel');
+const getAttribute = Attribute.__get__('getAttribute');
+const handleAttributeCheck = Attribute.__get__('handleAttributeCheck');
 
-it('returns a number ', () => {
-    expect(getAttributeLevel({ attributes: [{ id: 'mut', level: 8 }] }, { id: 'mut' })).toBe(8);
+describe('getAttribute', () => {
+    test('getAttribute should return Object', () => {
+        const obj = { id: 'mut', kuerzel: 'MU', name: 'Mut' };
+        expect(getAttribute('KK')).toEqual(
+            expect.objectContaining({
+                id: expect.any(String),
+                kuerzel: expect.any(String),
+                name: expect.any(String),
+            })
+        );
+        expect(getAttribute('MU')).toEqual(obj);
+        expect(getAttribute('mut')).toEqual(obj);
+    });
+    it('should return undefined', () => {
+        expect(getAttribute()).toBeUndefined();
+    });
 });
-
-it('should return an object', () => {
-    const Character = {
-        attributes: [{ id: 'mut', level: 8 }],
-    };
-    expect(HandleNamedAttributes({ Character: Character, args: ['mut'] })).toEqual({
-        Name: 'Mut',
-        Level: 8,
+describe('getAttributeLevel', () => {
+    it('returns a number ', () => {
+        expect(getAttributeLevel({ attributes: [{ id: 'mut', level: 8 }] }, { id: 'mut' })).toBe(8);
+    });
+});
+describe('HandleNamedAttribute', () => {
+    it('should return an object', () => {
+        const Character = {
+            attributes: [{ id: 'mut', level: 8 }],
+        };
+        expect(HandleNamedAttributes({ Character: Character, args: ['mut'] })).toEqual({
+            Name: 'Mut',
+            Level: 8,
+        });
     });
 });
 
