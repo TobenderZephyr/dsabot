@@ -1,7 +1,7 @@
 require('module-alias/register');
 require('dotenv').config();
 const fs = require('fs');
-const fetch = require('node-fetch');
+const got = require('got');
 const Discord = require('discord.js');
 const { findMessage } = require('@dsabot/findMessage');
 const { db } = require('./globals');
@@ -10,37 +10,24 @@ db.load();
 const cmdprefix = process.env.CMDPREFIX || '!';
 const client = new Discord.Client();
 
-function validateJSON(body) {
-    try {
-        const data = body.json();
-        return data;
-    } catch (e) {
-        return null;
-    }
-}
-
 async function CreateFromFile(message, data) {
     db.find({
         user: message.author.tag,
     }).then(docs => {
         if (docs.length === 0) {
-            db.insert({
-                uid: `${message.author.id}`,
-                user: message.author.tag,
-                character: data,
-            }).then(() => {
-                message.reply(findMessage('SAVED_DATA'));
-            });
+            db.insert({ uid: `${message.author.id}`, user: message.author.tag, character: data })
+                .then(() => message.reply(findMessage('SAVED_DATA')))
+                .catch(e => {
+                    console.log(e);
+                    message.reply(findMessage('ERROR'));
+                });
         }
     });
 }
 async function commandHandler(message) {
-    // console.log(`${new Date().toUTCString()} ${message.author.tag} (size: ${message.attachments.size})`);
     if (message.attachments.size > 0 && message.channel.type === 'dm' && !message.author.bot) {
         try {
-            const response = await fetch(message.attachments.first().url);
-            const data = await validateJSON(response);
-            if (data) await CreateFromFile(message, data);
+            got(message.attachments.first().url).then(data => CreateFromFile(message, data.body));
         } catch (e) {
             console.log(e);
             return message.reply(findMessage('ERROR'));
@@ -74,6 +61,6 @@ client.once('ready', () => {
 const commandFiles = fs.readdirSync('./commands/').filter(file => file.endsWith('.js'));
 
 commandFiles.forEach(file => {
-    const command = require(`./commands/${file}`);
+    const command = require(`./commands/${file}`); // eslint-disable-line global-require, import/no-dynamic-require
     client.commands.set(command.name, command);
 });
