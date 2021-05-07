@@ -11,8 +11,7 @@ module.exports = {
     usage: '',
     needs_args: false,
 
-    // eslint-disable-next-line no-unused-vars
-    async exec(message, args) {
+    async exec(message) {
         db.find({ user: message.author.tag })
             .then(docs => {
                 if (isEmpty(docs)) {

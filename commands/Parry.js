@@ -1,7 +1,6 @@
-const Random = require('random');
 const { findMessage } = require('@dsabot/findMessage');
 const { isEmpty } = require('@dsabot/isEmpty');
-
+const { Random } = require('@dsabot/Random');
 const { db } = require('../globals');
 const { Werte } = require('../globals');
 const { Weapons } = require('../globals');
@@ -20,8 +19,6 @@ module.exports = {
             if (isEmpty(docs)) {
                 return message.reply(findMessage('NOENTRY'));
             }
-
-            Random.use(message.author.tag);
 
             const Player = docs[0].character;
             const Weapon = Weapons.find(w => w.id === args[0].toLowerCase());

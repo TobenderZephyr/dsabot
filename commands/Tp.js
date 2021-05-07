@@ -27,13 +27,13 @@ module.exports = {
 
         const { Passed, CriticalHit, Fumbles, PointsRemaining } = CompareResults(
             dice,
-            [args[0], args[1], args[2]],
+            [parseInt(args[0], 10), parseInt(args[1], 10), parseInt(args[2], 10)],
             Bonus,
             Erschwernis
         );
 
         const Reply = new Discord.MessageEmbed();
-        Reply.setTitle(`${findMessage('ROLL')} ${dice.join(', ')}.`);
+        Reply.setTitle(`${findMessage('ROLL')} \` ${dice.join(' `  ` ')} \``);
         if (Fumbles >= 2) {
             Reply.setColor('#900c3f');
             Reply.addFields({
