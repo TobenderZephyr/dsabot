@@ -1,31 +1,24 @@
-name: "Bump Version"
-
+name: Bump version
 on:
   push:
     branches:
-      - "master"
-
+      - master
+    paths-ignore:
+      - 'package.json'
+      - 'CHANGELOG.md'
 jobs:
-  bump-version:
-    name: "Bump Version on master"
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: "Checkout source code"
-        uses: "actions/checkout@v2"
-        with:
-          ref: ${{ github.ref }}
-      - name: "cat package.json"
-        run: cat ./package.json
-      - name: "Setup Node.js"
-        uses: "actions/setup-node@v1"
-        with:
-          node-version: 12
-      - name: "Automated Version Bump"
-        uses: "phips28/gh-action-bump-version@master"
-        with:
-          tag-prefix: ''
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: "cat package.json"
-        run: cat ./package.json
+    - uses: actions/checkout@v1
+      with:
+        token: ${{ secrets.BUMP_VERSION_TOKEN }}
+    - name: Bump version and push tag
+      uses: TriPSs/conventional-changelog-action@master
+      with:
+        github-token: ${{ secrets.BUMP_VERSION_TOKEN }}
+        git-message: 'chore(release): {version}'
+        preset: 'angular'
+        tag-prefix: ''
+        output-file: 'CHANGELOG.md'
