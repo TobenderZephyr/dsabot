@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - "master"
+    paths-ignore:
+      - 'package.json'
+      - 'CHANGELOG.md'
 
 jobs:
   bump-version:
@@ -26,6 +29,6 @@ jobs:
         with:
           tag-prefix: ''
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.BUMP_VERSION_TOKEN }}
       - name: "cat package.json"
         run: cat ./package.json
