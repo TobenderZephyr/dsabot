@@ -39,20 +39,21 @@ jobs:
     needs: build
     if: ${{github.event_name == 'push'}}
     runs-on: ubuntu-latest
-      - name: "Checkout source code"
-        uses: "actions/checkout@v2"
-        with:
-          ref: ${{ github.ref }}
-      - name: "Setup Node.js"
-        uses: "actions/setup-node@v1"
-        with:
-          node-version: 12
-      - name: "Automated Version Bump"
-        uses: "phips28/gh-action-bump-version@master"
-        with:
-          tag-prefix: ''
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+    - name: "Checkout source code"
+      uses: "actions/checkout@v2"
+      with:
+        ref: ${{ github.ref }}
+    - name: "Setup Node.js"
+      uses: "actions/setup-node@v1"
+      with:
+        node-version: 12
+    - name: "Automated Version Bump"
+      uses: "phips28/gh-action-bump-version@master"
+      with:
+        tag-prefix: ''
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   deploy:
     needs: bump
