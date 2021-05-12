@@ -13,16 +13,31 @@ on:
       - 'Dockerfile'
   pull_request:
     branches: [ master ]
-
+  pull_request_target:
+    branches: [ master ]
+    
 jobs:
   test:
     runs-on: ubuntu-latest
+    # If the PR is coming from a fork (pull_request_target), ensure it's opened by "dependabot[bot]".
+    # Otherwise, clone it normally.
+    if: |
+     (github.event_name == 'pull_request_target' && github.actor == 'dependabot[bot]') ||
+     (github.event_name != 'pull_request_target' && github.actor != 'dependabot[bot]')
+
     strategy:
       matrix:
         node-version: [15.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
     steps:
-    - uses: actions/checkout@v2
+    - name: Checkout
+      if: ${{ github.event_name != 'pull_request_target' }}
+      uses: actions/checkout@v2
+    - name: Checkout PR
+      if: ${{ github.event_name == 'pull_request_target' }}
+      uses: actions/checkout@v2
+      with:
+        ref: ${{ github.event.pull_request.head.sha }}
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v2
       with:
