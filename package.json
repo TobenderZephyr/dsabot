@@ -5,6 +5,7 @@
     "main": "index.js",
     "scripts": {
         "lint": "eslint commands/",
+        "preinstall": "npx npm-force-resolutions",
         "start": "node index.js",
         "test": "jest --collectCoverage"
     },
@@ -52,5 +53,9 @@
             "<rootDir>/__mocks__/"
         ],
         "coverageDirectory": "coverage"
+    },
+    "resolutions": {
+        "normalize-url": ">=4.5.1",
+        "path-parse": ">=1.0.7"
     }
 }
