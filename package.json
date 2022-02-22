@@ -1,6 +1,6 @@
 {
     "name": "dsabot",
-    "version": "1.6.5",
+    "version": "1.6.6",
     "description": "",
     "main": "index.js",
     "scripts": {
@@ -20,7 +20,7 @@
     "dependencies": {
         "discord.js": "^12.5.3",
         "dotenv": "^10.0.0",
-        "got": "^11.8.2",
+        "got": "^11.8.3",
         "module-alias": "^2.2.2",
         "nedb-promises": "^5.0.3"
     },
