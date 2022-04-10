@@ -22,7 +22,7 @@
         "dotenv": "^16.0.0",
         "got": "^11.8.3",
         "module-alias": "^2.2.2",
-        "nedb-promises": "^5.0.3"
+        "nedb-promises": "^6.0.3"
     },
     "devDependencies": {
         "@types/jest": "^27.4.1",
