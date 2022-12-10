@@ -36,25 +36,6 @@
         "eslint-plugin-prettier": "^4.0.0",
         "jest": "^27.5.1"
     },
-    "jest": {
-        "collectCoverage": true,
-        "collectCoverageFrom": [
-            "**/*.{js,jsx}",
-            "!**/node_modules/**",
-            "!**/vendor/**",
-            "!**/.github/**",
-            "!**/__tests__/**",
-            "!**/__mocks__/**"
-        ],
-        "coveragePathIgnorePatterns": [
-            "/node_modules/",
-            "<rootDir>/__tests__/",
-            "<rootDir>/.github/",
-            "<rootDir>/coverage/",
-            "<rootDir>/__mocks__/"
-        ],
-        "coverageDirectory": "coverage"
-    },
     "resolutions": {
         "normalize-url": ">=4.5.1",
         "path-parse": ">=1.0.7"
