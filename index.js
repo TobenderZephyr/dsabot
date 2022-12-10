@@ -1,8 +1,10 @@
-require('module-alias/register');
-import * as dotenv from 'dotenv';
+const dotenv = require('dotenv');
+const fs = require('fs');
+const got = import('got');
+
 dotenv.config();
-import * as fs from 'fs';
-import * as got from 'got';
+
+require('module-alias/register');
 const Discord = require('discord.js');
 const { findMessage } = require('@dsabot/findMessage');
 const { db } = require('./globals');
