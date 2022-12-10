@@ -1,8 +1,9 @@
 {
     "name": "dsabot",
-    "version": "1.6.6",
+    "version": "1.6.7",
     "description": "",
     "main": "index.js",
+    "type": "commonjs",
     "scripts": {
         "lint": "eslint commands/",
         "preinstall": "npx npm-force-resolutions",
